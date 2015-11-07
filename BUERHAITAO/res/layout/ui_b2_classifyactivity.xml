@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_grey"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null" >
+
+        <!-- 导入title -->
+
+        <include layout="@layout/layout_head" />
+
+        <RelativeLayout
+            android:id="@+id/rl_ditu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp" >
+
+            <TextView
+                android:id="@+id/classify_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/classify_address"
+                android:textColor="#FFF"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="10dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@id/classify_address"
+                android:src="@drawable/b1_ditusousuo" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_sousuokuang"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@id/rl_ditu"
+            android:background="@drawable/shape_corner_down" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:focusable="true"
+                android:focusableInTouchMode="true" >
+
+                <TextView
+                    android:id="@+id/search_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:drawableRight="@drawable/search_classify"
+                    android:text="@string/classify_baby"
+                    android:textColor="#808080"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/search_input"
+                    style="@style/edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/search_detail"
+                    android:focusable="false"
+                    android:hint="@string/classify_search"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ScrollView
+            android:id="@+id/left_category_list"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:scrollbars="none" >
+
+            <RadioGroup
+                android:id="@+id/category_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/white"
+                android:dividerHeight="1dp"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <RelativeLayout
+            android:id="@+id/left_product_grid"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@id/left_category_list"
+            android:background="#FFFFFF"
+            android:scrollbars="none" >
+
+            <GridView
+                android:id="@+id/product_grid"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:listSelector="#00000000"
+                android:numColumns="3" />
+        </RelativeLayout>
+        <!--
+             <View 
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="#FFBB99"/>
+        -->
+    </RelativeLayout>
+
+</LinearLayout>
