@@ -50,14 +50,15 @@ public class B1_HomeActivity extends BaseActivity {
 			im_b1shouji, im_b1bangong, im_b1shenghuo, im_b1techan;
 	// 天天特价,晒单圈,猜你喜欢，每日好店
 	private RelativeLayout rl_b1_a1tttj, b5_3_shaidanquan, rl_b1_a2_cnxh,
-			rl_b1_a3_mrhd;
+			rl_b1_a3_mrhd,rl_fujin;
 	// 搜索选择
 	private RelativeLayout rl_sousuokuang;
 	// 每日好店
-	private AutoGridView list_meirihaodian, list_cainilike;
+	private AutoGridView list_meirihaodian, list_cainilike,fujindianp;
 	private AutoListView listviewHorizontal;
 	private List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 	private List<Map<String, String>> data1 = new ArrayList<Map<String, String>>();
+	private List<Map<String, String>> datax = new ArrayList<Map<String, String>>();
 	private List<Map<String, String>> datagoodsspecial = new ArrayList<Map<String, String>>();
 	// 天天特价
 	private ImageView im_moreinfo;
@@ -119,6 +120,48 @@ public class B1_HomeActivity extends BaseActivity {
 			if (error == null)// 成功
 			{
 				try {
+					datax.clear();
+					// 附近店铺
+					final org.json.JSONArray arrayas = datas
+							.getJSONArray("nearby_store");
+					for (int i = 0; i < arrayas.length(); i++) {
+						JSONObject jsonItem = arrayas.getJSONObject(i);
+
+						Map<String, String> map = new HashMap<String, String>();
+						map.put("store_id", jsonItem.getString("store_id"));
+						map.put("store_name", jsonItem.getString("store_name"));
+						map.put("sc_name", jsonItem.getString("sc_name"));
+						map.put("store_evaluate_count",
+								jsonItem.getString("store_evaluate_count"));
+						map.put("area_info", jsonItem.getString("area_info"));
+						map.put("store_address",
+								jsonItem.getString("store_address"));
+						map.put("store_label",
+								jsonItem.getString("store_label"));
+						map.put("store_desccredit",
+								jsonItem.getString("store_desccredit"));
+						map.put("juli", jsonItem.getString("juli"));
+						datax.add(map);
+					}
+					B1_a3_MeiRiHaoDianAdapter goodadapter1 = new B1_a3_MeiRiHaoDianAdapter(
+							B1_HomeActivity.this, datax);
+					fujindianp.setAdapter(goodadapter1);
+					fujindianp
+							.setOnItemClickListener(new OnItemClickListener() {
+
+								@Override
+								public void onItemClick(AdapterView<?> arg0,
+										View view, int i, long arg3) {
+									Intent intent = new Intent();
+									String storeid = data.get(i)
+											.get("store_id");
+									intent.putExtra("store_id", storeid);
+									intent.setClass(B1_HomeActivity.this,
+											BX_DianPuXiangQingActivity.class);
+									startActivity(intent);
+								}
+							});
+					
 					data.clear();
 					// 每日好店
 					final org.json.JSONArray array = datas
@@ -315,8 +358,10 @@ public class B1_HomeActivity extends BaseActivity {
 		b5_3_shaidanquan = (RelativeLayout) findViewById(R.id.b5_3_shaidanquan);
 		rl_b1_a2_cnxh = (RelativeLayout) findViewById(R.id.rl_b1_a2_cnxh);
 		rl_b1_a3_mrhd = (RelativeLayout) findViewById(R.id.rl_b1_a3_mrhd);
+		rl_fujin = (RelativeLayout) findViewById(R.id.rl_fujin);
 		rl_sousuokuang = (RelativeLayout) findViewById(R.id.rl_sousuokuang);
 		list_meirihaodian = (AutoGridView) findViewById(R.id.list_meirihaodian);
+		fujindianp = (AutoGridView) findViewById(R.id.fujindianp);
 		list_cainilike = (AutoGridView) findViewById(R.id.list_cainilike);
 //		im_b1_a1_pic = (ImageView) findViewById(R.id.im_b1_a1_pic);
 //		tv_b1_a1_chanpinname = (TextView) findViewById(R.id.tv_b1_a1_chanpinname);
@@ -336,7 +381,7 @@ public class B1_HomeActivity extends BaseActivity {
 		gird_dayspecial = (AutoGridView) findViewById(R.id.gird_dayspecial);
 		setListener(im_b1nvshi, im_b1nanshi, im_b1muying, im_b1huazhuang,
 				im_b1shouji, im_b1bangong, im_b1shenghuo, im_b1techan,
-				rl_b1_a1tttj, b5_3_shaidanquan, rl_b1_a2_cnxh, rl_b1_a3_mrhd,
+				rl_b1_a1tttj, b5_3_shaidanquan, rl_b1_a2_cnxh, rl_b1_a3_mrhd,rl_fujin,
 				rl_sousuokuang, rl_ditu, a1_sousuofujin);
 //		setListener(im_b1nvshi, im_b1nanshi, im_b1muying, im_b1huazhuang,
 //				im_b1shouji, im_b1bangong, im_b1shenghuo, im_b1techan,
@@ -406,6 +451,13 @@ public class B1_HomeActivity extends BaseActivity {
 			Intent itmrhd = new Intent();
 			itmrhd.setClass(B1_HomeActivity.this, B1_a3_MeiRiHaoDian.class);
 			startActivity(itmrhd);
+			break;
+
+		// 每日好店
+		case R.id.rl_fujin:
+			Intent asd = new Intent();
+			asd.setClass(B1_HomeActivity.this, B1_a3_MeiRiHaoDian.class);
+			startActivity(asd);
 			break;
 		// 宝贝
 		// case R.id.tv_baobei:
