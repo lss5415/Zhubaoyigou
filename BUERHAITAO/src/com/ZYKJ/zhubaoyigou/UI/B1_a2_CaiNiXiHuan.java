@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -37,6 +38,8 @@ public class B1_a2_CaiNiXiHuan extends BaseActivity implements
 	private MyListView listview_b1_a2_like;
 	private List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 	private B1_a2_CaiNiLikeAdapter cainilikeadapter; 
+	int curpage=1;
+	private Handler mHandler = new Handler();//异步加载或刷新
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

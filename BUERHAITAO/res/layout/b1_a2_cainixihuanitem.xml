@@ -28,8 +28,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="50dp"
                 android:singleLine="true"
-                android:text="产品名称"
+                android:text="产品名aaaaaaaaaa称"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
@@ -40,7 +41,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:text="小于500米"/>
+                android:text="500m"/>
         </RelativeLayout>
 
         <LinearLayout

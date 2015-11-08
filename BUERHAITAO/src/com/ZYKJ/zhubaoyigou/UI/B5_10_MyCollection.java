@@ -155,12 +155,12 @@ public class B5_10_MyCollection extends BaseActivity implements IXListViewListen
 				if (tagProduct.equals("1")) 
 				{
 					curpage = 1;
-					HttpUtils.getFavoriteProduct(res_getFavoriteProduct, getSharedPreferenceValue("key"),String.valueOf("curpage"));
+					HttpUtils.getFavoriteProduct(res_getFavoriteProduct, getSharedPreferenceValue("key"),String.valueOf(curpage));
 					onLoad();
 				}
 				else if (tagStore.equals("1")) {
-					curpage = 1;
-					HttpUtils.getFavoriteStore(res_getFavoriteStore, getSharedPreferenceValue("key"),String.valueOf("curpage1"));
+					curpage1 = 1;
+					HttpUtils.getFavoriteStore(res_getFavoriteStore, getSharedPreferenceValue("key"),String.valueOf(curpage1));
 					onLoad();
 				}
 			}
@@ -176,12 +176,12 @@ public class B5_10_MyCollection extends BaseActivity implements IXListViewListen
 				if (tagProduct.equals("1")) 
 				{
 					curpage += 1;
-					HttpUtils.getFavoriteProduct(res_getFavoriteProduct, getSharedPreferenceValue("key"),String.valueOf("curpage"));
+					HttpUtils.getFavoriteProduct(res_getFavoriteProduct, getSharedPreferenceValue("key"),String.valueOf(curpage));
 					onLoad();
 				}
 				else if (tagStore.equals("1")) {
-					curpage += 1;
-					HttpUtils.getFavoriteStore(res_getFavoriteStore, getSharedPreferenceValue("key"),String.valueOf("curpage1"));
+					curpage1 += 1;
+					HttpUtils.getFavoriteStore(res_getFavoriteStore, getSharedPreferenceValue("key"),String.valueOf(curpage1));
 					onLoad();
 				}
 			}
@@ -270,13 +270,14 @@ public class B5_10_MyCollection extends BaseActivity implements IXListViewListen
 				datas = response.getJSONObject("datas");
 				error = datas.getString("error");
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 			if (error==null)//成功
 			{
 				try {
-					data_store.clear();
+					if (curpage1==1) {
+						data_store.clear();
+					}
 					org.json.JSONArray array = datas.getJSONArray("favorites_list");//等收藏功能完善之后更改array的名字
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject jsonItem = array.getJSONObject(i);

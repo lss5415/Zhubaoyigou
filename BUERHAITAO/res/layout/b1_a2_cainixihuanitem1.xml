@@ -31,8 +31,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="50dp"
                 android:singleLine="true"
-                android:text="产品名称"
+                android:text="产品名aaaaaaaaaa称"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
@@ -43,7 +44,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:text="小于500米"/>
+                android:text="500m"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -58,6 +59,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:textColor="#A0A0A0"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:text="产品简介产品简介产品简介产品简介产品简介产品" />
         </LinearLayout>
 
@@ -84,6 +87,18 @@
                 android:layout_toRightOf="@id/qwe"
                 android:textColor="#F10583"
                 android:text="88" />
+
+            <TextView
+                android:id="@+id/tv_a2_jiage1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_a2_jiage"
+                android:layout_marginLeft="10dp"
+                android:textColor="#A0A0A0"
+                android:visibility="gone"
+                android:text="￥88"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/im_moreinfoadapter"

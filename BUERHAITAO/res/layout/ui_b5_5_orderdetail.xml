@@ -322,6 +322,7 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/btn_deletetheorder_or"
             android:background="@drawable/btn_shanchudingdan" />
  		<!-- 退换货 -->
@@ -330,6 +331,7 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/btn_tocomment_or"
             android:background="@drawable/btn_tuihuanhuo" />
 
@@ -346,6 +348,7 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/btn_querenshouhuo_or"
             android:background="@drawable/btn_quxiaodingdan" />
 

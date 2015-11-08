@@ -292,6 +292,13 @@ public class B1_HomeActivity extends BaseActivity {
 
 		}
 
+		@Override
+		public void onFailure(int statusCode, Header[] headers,
+				Throwable throwable, JSONObject errorResponse) {
+			// TODO Auto-generated method stub
+			super.onFailure(statusCode, headers, throwable, errorResponse);
+		}
+
 	};
 
 	private void initView() {
