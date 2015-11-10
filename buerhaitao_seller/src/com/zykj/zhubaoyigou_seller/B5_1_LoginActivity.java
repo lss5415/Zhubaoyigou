@@ -53,7 +53,7 @@ public class B5_1_LoginActivity extends BaseActivity {
 				RequestDailog.showDialog(this, "正在登录");
 				login_name=et_login_name.getText().toString().trim();
 				passWord=et_passWord.getText().toString().trim();
-				HttpUtils.login(res_login, login_name, passWord);
+				HttpUtils.login(res_login, login_name, passWord,"118.338510","35.063770");
 				break;
 			default:
 				break;
@@ -85,6 +85,7 @@ public class B5_1_LoginActivity extends BaseActivity {
 			if (error==null)//登录成功
 			{
 				try {
+					String a = datas.getString("key");
 					putSharedPreferenceValue("key", datas.getString("key"));
 					putSharedPreferenceValue("store_state", datas.getString("store_state"));
 					putSharedPreferenceValue("store_name", datas.getString("store_name"));

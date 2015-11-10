@@ -47,13 +47,14 @@ public class HttpUtils {
 	 * @param pwd
 	 */
 
-	public static void login(AsyncHttpResponseHandler res, String loginname,
-			String pwd) {
+	public static void login(AsyncHttpResponseHandler res, String loginname,String pwd,String lng,String lat) {
 		String url = null;
 		url = base_url + "index.php?act=seller_login";
 		RequestParams requestParams  = new RequestParams();
 		requestParams.put("mobile", loginname);
 		requestParams.put("password", pwd);
+		requestParams.put("lng", lng);
+		requestParams.put("lat", lat);
 		requestParams.put("client", AppValue.CLIENT);
 		client.post(url,requestParams,res);
 

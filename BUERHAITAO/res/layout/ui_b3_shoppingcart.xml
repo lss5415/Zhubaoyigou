@@ -120,16 +120,20 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_above="@id/gwcdb" >
-
             <ExpandableListView
                 android:id="@+id/list_shoppingcar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+			<View 
+			    android:id="@+id/viewa"
+			    android:layout_width="80dp"
+			    android:visibility="gone"
+			    android:layout_height="fill_parent"/>
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

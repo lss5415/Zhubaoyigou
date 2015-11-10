@@ -378,7 +378,7 @@ public class B_1_1_Edit extends BaseActivity {
 				e.printStackTrace();
 			}
 			
-			RequestDailog.showDialog(this, "正在上传头像，请稍后");
+			RequestDailog.showDialog(this, "正在上传图片，请稍后");
 			HttpUtils.update(res_uploadaPhoto,getSharedPreferenceValue("key"),"avatar",f);
 		}
 	//*****************************图像处理操作     end******************************************

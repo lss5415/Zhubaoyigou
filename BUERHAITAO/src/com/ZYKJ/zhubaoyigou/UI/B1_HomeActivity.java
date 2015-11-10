@@ -83,17 +83,19 @@ public class B1_HomeActivity extends BaseActivity {
 		initView();
 		tv_cityname = (TextView) findViewById(R.id.tv_cityname);
 		if (getIntent().getStringExtra("cityname") == null) {
-			putSharedPreferenceValue("lng", "118.222957");
-			putSharedPreferenceValue("lat", "34.602342");
+			putSharedPreferenceValue("lng", "118.338510");
+			putSharedPreferenceValue("lat", "35.063770");
 			putSharedPreferenceValue("cityid", "168");
-			HttpUtils.getFirstList(res_getSyList, "168", "118.222957",
-					"34.602342");
+			putSharedPreferenceValue("cityname", "连云港");
+			HttpUtils.getFirstList(res_getSyList, "168", "118.338510",
+					"35.063770");
 		} else {
 			cityname = getIntent().getStringExtra("cityname");
 			tv_cityname.setText(cityname);
 			String cityid = getIntent().getStringExtra("cityid");
 			String lng = getIntent().getStringExtra("lng");
 			String lat = getIntent().getStringExtra("lat");
+			putSharedPreferenceValue("cityname", cityname);
 			putSharedPreferenceValue("lng", lng);
 			putSharedPreferenceValue("lat", lat);
 			putSharedPreferenceValue("cityid", cityid);
@@ -551,16 +553,21 @@ public class B1_HomeActivity extends BaseActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		cityname = data.getStringExtra("cityname");
-		tv_cityname.setText(cityname);
-		String cityid = data.getStringExtra("cityid");
-		String lng = data.getStringExtra("lng");
-		String lat = data.getStringExtra("lat");
-		putSharedPreferenceValue("lng", lng);
-		putSharedPreferenceValue("lat", lat);
-		putSharedPreferenceValue("cityid", cityid);
-		HttpUtils.getFirstList(res_getSyList, cityid, lng, lat);
-		super.onActivityResult(requestCode, resultCode, data);
+		try {
+			cityname = data.getStringExtra("cityname");
+			tv_cityname.setText(cityname);
+			String cityid = data.getStringExtra("cityid");
+			String lng = data.getStringExtra("lng");
+			String lat = data.getStringExtra("lat");
+			putSharedPreferenceValue("cityname", cityname);
+			putSharedPreferenceValue("lng", lng);
+			putSharedPreferenceValue("lat", lat);
+			putSharedPreferenceValue("cityid", cityid);
+			HttpUtils.getFirstList(res_getSyList, cityid, lng, lat);
+			super.onActivityResult(requestCode, resultCode, data);
+		} catch (Exception e) {
+			
+		}
 	}
 
 }

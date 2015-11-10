@@ -42,30 +42,27 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_addressTAG"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tv_addressDetail"
+            android:layout_alignBottom="@+id/tv_addressDetail"
             android:layout_alignLeft="@+id/tv_name"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/address_chose" >
+            android:text="@string/defaultaddress"
+            android:textColor="@color/yellow" />
 
-            <TextView
-                android:id="@+id/tv_addressTAG"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/defaultaddress"
-                android:textColor="@color/yellow" />
-
-            <TextView
-                android:id="@+id/tv_addressDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxEms="25"
-                android:singleLine="false"
-                android:text="联合国大厦108楼12321432号房间12312312312"
-                android:textColor="@color/black" />
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/tv_addressDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/address_chose"
+            android:layout_toRightOf="@+id/tv_addressTAG"
+            android:maxEms="25"
+            android:singleLine="false"
+            android:text="联合国大厦108楼12321432号房间12312312312"
+            android:textColor="@color/black" />
     </RelativeLayout>
 
     <View

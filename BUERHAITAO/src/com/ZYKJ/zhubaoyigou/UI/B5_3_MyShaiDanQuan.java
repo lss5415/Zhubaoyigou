@@ -98,12 +98,8 @@ public class B5_3_MyShaiDanQuan extends BaseActivity implements IXListViewListen
 			this.finish();
 		break;
 		case R.id.btn_publish://发布
-			if (getSharedPreferenceValue("certifi_name").length()<1) {
-				Toast.makeText(B5_3_MyShaiDanQuan.this, "请先进行实名认证后再发布。", Toast.LENGTH_LONG).show();
-			}else {
-				Intent fabuIntent=new Intent(this,TestPicActivity.class);
-				startActivity(fabuIntent);
-			}
+			Intent fabuIntent=new Intent(this,TestPicActivity.class);
+			startActivity(fabuIntent);
 		break;
 			
 		case R.id.ll_mypublish://我发表的

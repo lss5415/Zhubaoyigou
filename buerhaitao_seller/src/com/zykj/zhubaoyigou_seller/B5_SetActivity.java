@@ -64,10 +64,10 @@ public class B5_SetActivity extends BaseActivity{
 			}
 			break;
 		case R.id.aboutus://关于我们
-			Tools.Notic(this, "珠宝易购卖家版", null);
+			Tools.Notic(this, "南京达尔蒙特网络科技有限公司在中国金陵古都南京成立，总部设立于鼓楼区江东软件城。是一家专注于互联网销售、推广、培训为一体的专业机构。旗下享拥“珠宝易购”和“饰美易购”两大电商交易平台，珠宝易购“是一个以珠宝黄金翡翠玉器水晶玛瑙等各种高中低档宝石半宝石为专业的珠宝电商交易平台。“饰美易购  ，是一个经营中低档珠宝和高中低档饰品工艺品的电商交易平台为全民创造最齐全、最丰富、最具性价比的珠宝及饰品。", null);
 			break;
 		case R.id.aboutapp://关于app
-			Tools.Notic(this, "珠宝易购卖家版app", null);
+			Tools.Notic(this, "公司本着以诚信第一，服务至上为原则的服务理念，努力打造中国最专业、诚信、齐全的珠宝电商交易平台，我们传递的是信任和价值，让消费者实现无忧购物，努力打造互联网珠宝电商行业的成功典范.", null);
 			break;
 		case R.id.updateapp://应用更新
 			Tools.Notic(this, "目前已经是最新版本，请留意各大应用市场，及时更新", null);

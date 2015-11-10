@@ -47,6 +47,7 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 	int ischeck=0;//1是全选，0是取消全选
 	String fhgoodsum;
 	int sumtiaoshu = 0;
+	private View viewa;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,8 +63,9 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 		tv_jiesuan = (TextView)findViewById(R.id.tv_jiesuan);
 		tv_sumgoods = (TextView)findViewById(R.id.tv_sumgoods);
 		im_checkall = (ImageView)findViewById(R.id.im_checkall);
+		viewa = (View)findViewById(R.id.viewa);
 		
-		setListener(tv_jiesuan,im_checkall);
+		setListener(tv_jiesuan,im_checkall,viewa);
 //		HttpUtils.getShoppingCarInfoList(res_ShoppingCarInfo,getSharedPreferenceValue("key"));
 		HttpUtils.getShoppingCarInfoList(res_ShoppingCarInfo,getSharedPreferenceValue("key"));
 		
@@ -96,6 +98,7 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 		case R.id.im_checkall:
 			if (ischeck==1) {
 				ischeck=0;
+				viewa.setVisibility(View.GONE);
 				tv_sumgoods.setText("0.00");
 				im_checkall.setImageResource(R.drawable.ck_unchecked);
 				adapter.setIschecked(0);
@@ -103,12 +106,17 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 				
 			}else {
 				ischeck=1;
+				viewa.setFocusable(true);
+				viewa.setVisibility(View.VISIBLE);
 				tv_sumgoods.setText(fhgoodsum);
 				im_checkall.setImageResource(R.drawable.ck_checked);
 				adapter.setIschecked(1);
 				adapter.notifyDataSetChanged();
 //				initData();
 			}
+			break;
+		case R.id.viewa:
+			
 			break;
 		default:
 			
