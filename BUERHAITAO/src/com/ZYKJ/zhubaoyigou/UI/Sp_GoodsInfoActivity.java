@@ -157,8 +157,10 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 				+ goods_id;
 		webView.loadUrl(url);
 		WebSettings webSettings = webView.getSettings();
+		webSettings.setUseWideViewPort(true);
+		webSettings.setLoadWithOverviewMode(true);
 		webSettings.setJavaScriptEnabled(true);
-		webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+//		webSettings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -172,7 +174,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 		viewPager = (AutoScrollViewPager) findViewById(R.id.index_viewpage);
 		LayoutParams pageParms = viewPager.getLayoutParams();
 		pageParms.width = Tools.M_SCREEN_WIDTH;
-		pageParms.height = Tools.M_SCREEN_WIDTH*2/3;
+		pageParms.height = Tools.M_SCREEN_WIDTH;
 
 		viewPager.setInterval(2000);
 		viewPager.startAutoScroll();

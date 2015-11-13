@@ -97,12 +97,12 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 			break;
 		case R.id.im_checkall:
 			if (ischeck==1) {
-				ischeck=0;
-				viewa.setVisibility(View.GONE);
-				tv_sumgoods.setText("0.00");
-				im_checkall.setImageResource(R.drawable.ck_unchecked);
-				adapter.setIschecked(0);
-				adapter.notifyDataSetChanged();
+//				ischeck=0;
+//				viewa.setVisibility(View.GONE);
+//				tv_sumgoods.setText("0.00");
+//				im_checkall.setImageResource(R.drawable.ck_unchecked);
+//				adapter.setIschecked(0);
+//				adapter.notifyDataSetChanged();
 				
 			}else {
 				ischeck=1;

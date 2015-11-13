@@ -38,6 +38,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="店铺名称"
+                    android:singleLine="true"
+                    android:layout_marginRight="60dp"
+                    android:ellipsize="end"
                     android:textColor="#000"
                     android:textSize="16sp" />
 

@@ -35,6 +35,7 @@ public class B5_11_PointsMall extends BaseActivity implements IXListViewListener
 	private TextView tv_totlePoints;
 	private ImageButton pointsmall_back;
 	private TextView tv_record;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -44,8 +45,6 @@ public class B5_11_PointsMall extends BaseActivity implements IXListViewListener
 		pointsmall_back=(ImageButton) findViewById(R.id.pointsmall_back);
 		tv_record=(TextView) findViewById(R.id.tv_record);
 		listview=(MyListView) findViewById(R.id.listview_pointsMall);
-		adapter = new B5_11_PointsMallAdapter(B5_11_PointsMall.this,data);
-		listview.setAdapter(adapter);
 		listview.setPullLoadEnable(true);
 		listview.setPullRefreshEnable(true);
 		listview.setXListViewListener(this, 0);
@@ -112,7 +111,8 @@ public class B5_11_PointsMall extends BaseActivity implements IXListViewListener
 						map.put("pgoods_image", jsonItem.getString("pgoods_image"));
 						data.add(map);
 					}
-					adapter.notifyDataSetChanged();
+					adapter = new B5_11_PointsMallAdapter(B5_11_PointsMall.this,data,tv_totlePoints.getText().toString());
+					listview.setAdapter(adapter);
 				} 
 				catch (org.json.JSONException e) {
 					// TODO Auto-generated catch block

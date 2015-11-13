@@ -10,12 +10,16 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.adapter.B5_10_MyCollectionAdapter;
@@ -71,6 +75,18 @@ public class B5_10_MyCollection extends BaseActivity implements IXListViewListen
 		listview.setXListViewListener(this, 0);
 		listview.setRefreshTime();
 		RequestDailog.showDialog(this, "正在加载数据，请稍后");
+		listview.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				String goodsid = data.get(arg2-1).get("goods_id");	
+				Intent intent = new Intent();
+				intent.putExtra("goods_id", goodsid);
+				intent.setClass(B5_10_MyCollection.this,Sp_GoodsInfoActivity.class);
+				startActivity(intent);				
+			}
+		});
 		HttpUtils.getFavoriteProduct(res_getFavoriteProduct, getSharedPreferenceValue("key"),String.valueOf(curpage));
 		tagProduct = "1";
 		tagStore   = "0";
@@ -124,6 +140,18 @@ public class B5_10_MyCollection extends BaseActivity implements IXListViewListen
 			listview = (MyListView) findViewById(R.id.listview_colllection);
 			adapter_store = new B5_10_MyCollectionAdapter(B5_10_MyCollection.this,data_store,isEdit,key);
 			listview.setAdapter(adapter_store);
+			listview.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+					String storeid = data_store.get(arg2-1).get("store_id");	
+					Intent intent = new Intent();
+					intent.putExtra("store_id", storeid);
+					intent.setClass(B5_10_MyCollection.this,BX_DianPuXiangQingActivity.class);
+					startActivity(intent);		
+				}
+			});
 			HttpUtils.getFavoriteStore(res_getFavoriteStore, getSharedPreferenceValue("key"),"1");
 			break;
 //		case R.id.rl_delete://删除

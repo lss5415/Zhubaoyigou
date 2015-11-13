@@ -42,6 +42,7 @@
          android:background="@drawable/shape_background"
          android:gravity="center_vertical"
          android:layout_marginLeft="5dp"
+         android:visibility="gone"
          android:layout_marginRight="5dp">
 
 
