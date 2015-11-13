@@ -18,10 +18,9 @@ import android.widget.Toast;
 
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.adapter.B3_ShpppingCartAdapter;
-import com.ZYKJ.zhubaoyigou.adapter.B3_ShpppingCartAdapter.ChangedPrice;
-import com.ZYKJ.zhubaoyigou.adapter.B3_ShpppingCartAdapter.IsAllChecked;
-import com.ZYKJ.zhubaoyigou.adapter.B3_ShpppingCartAdapter.JieSuanCount;
+import com.ZYKJ.zhubaoyigou.adapter.B3_ShpppingCartAdapter.RefreshExpandableList;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
+import com.ZYKJ.zhubaoyigou.data.ChildrenItem;
 import com.ZYKJ.zhubaoyigou.data.GroupItem;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
@@ -32,7 +31,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
  * @author lss 2015年7月1日 购物车
  *
  */
-public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPrice,IsAllChecked,JieSuanCount{
+public class B3_ShoppingCartActivity extends BaseActivity implements RefreshExpandableList{
 	//标题
 // 	private TextView tv_sp_title;
 	//购物车list
@@ -47,27 +46,27 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 	int ischeck=0;//1是全选，0是取消全选
 	String fhgoodsum;
 	int sumtiaoshu = 0;
-	private View viewa;
+	private String key;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui_b3_shoppingcart);
+		key = getSharedPreferenceValue("key");
 		initView();
 	}
 	
 	private void initView(){
 		/*tv_sp_title = (TextView)findViewById(R.id.tv_sp_title);
 		*/
-		expandableList = (ExpandableListView)findViewById(R.id.list_shoppingcar);
+		expandableList = (ExpandableListView)findViewById(R.id.list_shoppingcar);//购物列表
 		expandableList.setGroupIndicator(null);
-		tv_jiesuan = (TextView)findViewById(R.id.tv_jiesuan);
-		tv_sumgoods = (TextView)findViewById(R.id.tv_sumgoods);
-		im_checkall = (ImageView)findViewById(R.id.im_checkall);
-		viewa = (View)findViewById(R.id.viewa);
+		tv_jiesuan = (TextView)findViewById(R.id.tv_jiesuan);//结算
+		tv_sumgoods = (TextView)findViewById(R.id.tv_sumgoods);//总价
+		im_checkall = (ImageView)findViewById(R.id.im_checkall);//全选
 		
-		setListener(tv_jiesuan,im_checkall,viewa);
+		setListener(tv_jiesuan,im_checkall);
 //		HttpUtils.getShoppingCarInfoList(res_ShoppingCarInfo,getSharedPreferenceValue("key"));
-		HttpUtils.getShoppingCarInfoList(res_ShoppingCarInfo,getSharedPreferenceValue("key"));
+		HttpUtils.getShoppingCarInfoList(res_ShoppingCarInfo, key);
 		
 	}
 	
@@ -77,16 +76,22 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 	
 		switch (v.getId()) {
 		case R.id.tv_jiesuan:
+			/*结算*/
 			String a = tv_jiesuan.getText().toString();
 			if (a.equals("结算（0）")) {
 				Toast.makeText(getApplicationContext(), "您还没有选择商品哦！", Toast.LENGTH_LONG).show();
 			}else {
-				/*Intent itmrhd = new Intent();
-				itmrhd.setClass(B3_ShoppingCartActivity.this, B3_ShoppingJieSuan.class);
-				startActivity(itmrhd);*/
-				String allcheckinfo = showCheckedItems();
-//				HttpUtils.getBuyFirst(res_ShoppingCarInfo,"3ae653eb52824dbc4ba977de343e2e12",allcheckinfo,"1");
-				
+				String allcheckinfo = "";
+				for (int i = 0; i < dataList.size(); i++) {
+					List<ChildrenItem> childrenList = dataList.get(i).getStore_list();
+					for (int j = 0; j < childrenList.size(); j++) {
+						ChildrenItem childrenItem = childrenList.get(j);
+						if(childrenItem.isChecked()){
+							allcheckinfo = allcheckinfo+(childrenItem.getCart_id()+"|"+childrenItem.getGoods_num()+",");
+						}
+					}
+				}
+				allcheckinfo=allcheckinfo.substring(0, allcheckinfo.length()-1);
 				Intent itmrhd = new Intent();
 				itmrhd.setClass(B3_ShoppingCartActivity.this, JieSuanActivity.class);
 				itmrhd.putExtra("allpri", tv_sumgoods.getText().toString());
@@ -104,59 +109,43 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 //				adapter.setIschecked(0);
 //				adapter.notifyDataSetChanged();
 				
-			}else {
-				ischeck=1;
-				viewa.setFocusable(true);
-				viewa.setVisibility(View.VISIBLE);
-				tv_sumgoods.setText(fhgoodsum);
-				im_checkall.setImageResource(R.drawable.ck_checked);
-				adapter.setIschecked(1);
+			/*全选*/
+			if (im_checkall.isSelected()) {
+				im_checkall.setSelected(false);
+				tv_jiesuan.setText("结算（0）");
+				tv_sumgoods.setText("0.00");
+				for (int i = 0; i < dataList.size(); i++) {
+					dataList.get(i).setChecked(false);
+					List<ChildrenItem> childrenList = dataList.get(i).getStore_list();
+					for (int j = 0; j < childrenList.size(); j++) {
+						childrenList.get(j).setChecked(false);
+					}
+				}
 				adapter.notifyDataSetChanged();
-//				initData();
+			}else {
+				im_checkall.setSelected(true);
+				float allprice = 0f;sumtiaoshu = 0;
+				for (int i = 0; i < dataList.size(); i++) {
+					dataList.get(i).setChecked(true);
+					List<ChildrenItem> childrenList = dataList.get(i).getStore_list();
+					for (int j = 0; j < childrenList.size(); j++) {
+						childrenList.get(j).setChecked(true);
+						ChildrenItem childrenItem = childrenList.get(j);
+						sumtiaoshu += 1;
+						allprice += Float.valueOf(childrenItem.getGoods_price())*Integer.valueOf(childrenItem.getGoods_num());
+					}
+				}
+				tv_jiesuan.setText("结算（"+sumtiaoshu+"）");
+				tv_sumgoods.setText(allprice+"");
+				adapter.notifyDataSetChanged();
+				}
 			}
-			break;
-		case R.id.viewa:
-			
 			break;
 		default:
 			
 			break;
 		}
 
-	}
-
-	private String showCheckedItems() {
-//		String checkedItems = "";
-		String allcheckinfo = "";
-		List<String> checkedChildren = adapter.getCheckedChildren();
-		for (int i = 0; i < dataList.size(); i++) {
-			for (int j = 0; j < dataList.get(i).getStore_list().size(); j++) {
-				for (int j2 = 0; j2 < checkedChildren.size(); j2++) {
-					if (dataList.get(i).getStore_list().get(j).getCart_id()==checkedChildren.get(j2)) {
-						allcheckinfo = allcheckinfo+(checkedChildren.get(j2)+"|"+dataList.get(i).getStore_list().get(j).getGoods_num()+",");
-					}
-				}
-			}
-		}
-		allcheckinfo=allcheckinfo.substring(0, allcheckinfo.length()-1);
-//		Toast.makeText(getApplicationContext(), allcheckinfo.toString(), Toast.LENGTH_LONG).show();
-		return allcheckinfo;
-		/*if (checkedChildren != null && !checkedChildren.isEmpty()) {
-			for (String child : checkedChildren) {
-				if (checkedItems.length() > 0) {
-					checkedItems += "\n";
-				}
-
-				checkedItems += child;
-			}
-		}
-
-		final Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("已选中项(无排序)：");
-		builder.setMessage(allcheckinfo.toString());
-		builder.setPositiveButton("关闭", null);
-		builder.setCancelable(true);
-		builder.create().show();*/
 	}
 
 	/**
@@ -170,10 +159,10 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 	 */
 	private void initData() {
 		for (int i = 0; i < dataList.size(); i++) {
-			sumtiaoshu =  sumtiaoshu + dataList.get(i).getStore_list().size();
+			sumtiaoshu =  sumtiaoshu + dataList.get(i).getStore_list().size();//商品总条数
 		}
 //		Toast.makeText(getApplicationContext(), ""+sumtiaoshu, Toast.LENGTH_LONG).show();
-		adapter = new B3_ShpppingCartAdapter(this, dataList,ischeck,sumtiaoshu,this,this,this,getSharedPreferenceValue("key"));
+		adapter = new B3_ShpppingCartAdapter(this, dataList,ischeck,sumtiaoshu,this,getSharedPreferenceValue("key"));
 		expandableList.setAdapter(adapter);
 
 		groupCount = expandableList.getCount();
@@ -225,7 +214,6 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 				datas = response.getJSONObject("datas");
 				 error = response.getJSONObject("datas").getString("error");
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (error==null)//成功
@@ -276,7 +264,6 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 					adapter.notifyDataSetChanged();
 				} 
 				catch (org.json.JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -286,33 +273,25 @@ public class B3_ShoppingCartActivity extends BaseActivity implements ChangedPric
 				Tools.Log("res_Points_error="+error+"");
 //				Tools.Notic(B5_MyActivity.this, error+"", null);
 			}
-			
-			
 		};
-		
 	};
 
-	//价格的更改显示
 	@Override
-	public void ChangePr(Float totalprice) {
-		tv_sumgoods.setText(Float.toString(totalprice));
-	}
+	protected void onResume() {
+		super.onResume();
+		HttpUtils.getShoppingCarInfoList(res_ShoppingCarInfo, key);
+	};
 
-	//全选的更改显示
 	@Override
-	public void IsAllCheck(int allcheck) {
-		if (allcheck==1) {
+	public void refreshShopCarDate(float totalprice, boolean allcheck, int count) {
+		tv_sumgoods.setText(Float.toString(totalprice));
+		tv_jiesuan.setText("结算（"+count+"）");
+		if (allcheck) {
 			ischeck=1;
-			im_checkall.setImageResource(R.drawable.ck_checked);
+			im_checkall.setSelected(true);
 		}else {
 			ischeck=0;
-			im_checkall.setImageResource(R.drawable.ck_unchecked);
+			im_checkall.setSelected(false);
 		}
 	}
-	
-	//结算条数的显示
-	public void JieSuanCount(int count){
-		tv_jiesuan.setText("结算（"+count+"）");
-	}
-
 }

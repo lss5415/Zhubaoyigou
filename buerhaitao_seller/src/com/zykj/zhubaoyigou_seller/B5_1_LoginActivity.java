@@ -53,7 +53,7 @@ public class B5_1_LoginActivity extends BaseActivity {
 				RequestDailog.showDialog(this, "正在登录");
 				login_name=et_login_name.getText().toString().trim();
 				passWord=et_passWord.getText().toString().trim();
-				HttpUtils.login(res_login, login_name, passWord,"118.338510","35.063770");
+				HttpUtils.login(res_login, login_name, passWord);
 				break;
 			default:
 				break;

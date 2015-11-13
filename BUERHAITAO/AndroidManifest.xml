@@ -132,7 +132,8 @@
         </activity>
         <activity android:name="com.ZYKJ.zhubaoyigou.UI.B3_ShoppingJieSuan" >
         </activity>
-        <activity android:name="com.ZYKJ.zhubaoyigou.UI.JieSuanActivity" >
+        <activity android:name="com.ZYKJ.zhubaoyigou.UI.JieSuanActivity" 
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity android:name="com.ZYKJ.zhubaoyigou.UI.JieSuan1Activity" >
         </activity>

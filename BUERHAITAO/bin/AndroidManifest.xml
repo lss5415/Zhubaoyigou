@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ZYKJ.zhubaoyigou"
-    android:versionCode="3"
+    android:versionCode="5"
     android:versionName="1.0" >
 
     <uses-sdk
@@ -132,7 +132,8 @@
         </activity>
         <activity android:name="com.ZYKJ.zhubaoyigou.UI.B3_ShoppingJieSuan" >
         </activity>
-        <activity android:name="com.ZYKJ.zhubaoyigou.UI.JieSuanActivity" >
+        <activity android:name="com.ZYKJ.zhubaoyigou.UI.JieSuanActivity" 
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity android:name="com.ZYKJ.zhubaoyigou.UI.JieSuan1Activity" >
         </activity>
@@ -249,7 +250,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent101146365" />
+                <data android:scheme="tencent1104838121" />
             </intent-filter>
         </activity>
         <activity

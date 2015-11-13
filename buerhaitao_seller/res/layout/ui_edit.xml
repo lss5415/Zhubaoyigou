@@ -315,13 +315,19 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/TextView06"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="15dp"
                     android:background="@null"
                     android:ems="10"
                     android:gravity="right"
-                    android:hint="快递费用"
+                    android:hint="0.00"
                     android:textColor="@color/grey"
                     android:textSize="14sp" />
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="元"/>
             </RelativeLayout>
 
             <View
