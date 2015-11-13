@@ -23,8 +23,7 @@
                 android:layout_height="wrap_content" 
 	       		android:scaleX="0.55"
 	       		android:scaleY="0.55"
-	        	android:button="@drawable/checkbox_style1"
-                android:focusable="false"/>
+	        	android:button="@drawable/checkbox_style1"/>
         </LinearLayout>
 
         <LinearLayout
@@ -49,7 +48,7 @@
                     android:layout_height="fill_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical" >
 
                     <TextView
                         android:id="@+id/children_name"
@@ -106,7 +105,7 @@
                     android:id="@+id/ll_b3shopedit"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_marginLeft="5dp" 
+                    android:layout_marginLeft="5dp"
                     android:visibility="gone" >
 
                     <LinearLayout
@@ -135,15 +134,16 @@
                                     android:text="-" >
                                 </Button>
 
-                                <EditText
+                                <TextView
                                     android:id="@+id/editconunt"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
                                     android:layout_weight="1"
-                                    android:editable="false"
-                                    android:text="0" >
-                                </EditText>
+                                    android:textSize="16sp"
+                                    android:gravity="center_horizontal"
+                                    android:text="22" >
+                                </TextView>
 
                                 <Button
                                     android:id="@+id/jiabt"

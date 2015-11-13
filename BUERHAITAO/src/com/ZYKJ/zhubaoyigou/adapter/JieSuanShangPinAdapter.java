@@ -47,8 +47,7 @@ public class JieSuanShangPinAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup arg2) {
 		ViewHolder viewHolder = null;
-        if (null == convertView)
-        {
+        if (null == convertView){
             viewHolder = new ViewHolder();
             LayoutInflater mInflater = LayoutInflater.from(c);
             convertView = mInflater.inflate(R.layout.ui_goodsjiesuan_list_items, null);
