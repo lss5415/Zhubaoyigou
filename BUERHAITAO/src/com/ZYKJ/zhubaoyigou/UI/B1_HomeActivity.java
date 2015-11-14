@@ -155,7 +155,7 @@ public class B1_HomeActivity extends BaseActivity {
 								public void onItemClick(AdapterView<?> arg0,
 										View view, int i, long arg3) {
 									Intent intent = new Intent();
-									String storeid = data.get(i)
+									String storeid = datax.get(i)
 											.get("store_id");
 									intent.putExtra("store_id", storeid);
 									intent.setClass(B1_HomeActivity.this,

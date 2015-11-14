@@ -64,7 +64,7 @@ public class B_1_1_Edit extends BaseActivity {
 	private static final int IV_logo = 104;
 	 
 	int setImageTag = 0;
-	String slide = null; //轮播图多张逗号分隔
+	String slide = ""; //轮播图多张逗号分隔
 	String avatar  = null;//店铺图标
 	int first = 0; //第一次上传图片
 	Bitmap photo;

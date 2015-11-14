@@ -74,6 +74,13 @@ public class B4_StoreActivity extends BaseActivity implements IXListViewListener
 		initView();
         initPop();
 	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		cl_address.setText(getSharedPreferenceValue("cityname"));
+	}
 
 	/**
 	 * 初始化页面
