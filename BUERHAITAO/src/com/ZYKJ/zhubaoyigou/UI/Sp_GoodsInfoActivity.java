@@ -341,7 +341,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 		case R.id.ll_goods_fenxiang:
 			// 设置分享内容
 			String fxnr = "珠宝易购是一个以珠宝黄金翡翠玉器水晶玛瑙等各种高中低档宝石半宝石为专业的珠宝电商交易平台。";
-			String fxtp = "http://www.pgyer.com/mXdm";
+			String fxtp = "http://www.zbega.com/";
 			FenXiang fx = new FenXiang(getApplicationContext(),
 					Sp_GoodsInfoActivity.this, fxnr, fxtp);
 			break;

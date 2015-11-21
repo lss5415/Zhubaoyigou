@@ -77,6 +77,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 	private int ISLOGIN=0;
 	
 	public String usernameString=null;
+	private Button signIn;
     
 	@Override
 	protected void onResume() {
@@ -126,6 +127,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 		my_set_page=(RelativeLayout) findViewById(R.id.my_set_page);
 		tv_my_points=(TextView) findViewById(R.id.tv_my_points);
 		my_money=(TextView) findViewById(R.id.my_money);
+		signIn=(Button) findViewById(R.id.signIn);
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");    
+		String time=sdf.format(new java.util.Date());
+		String sds = getSharedPreferenceValue("shijian");
+		if (getSharedPreferenceValue("shijian").equals(time)) {
+			btn_chackInShape.setVisibility(View.GONE);
+			signIn.setText("今日已签到！");
+		}
 		
 		if (isLogin()) {
 			if (getSharedPreferenceValue("username")!="") {
@@ -256,8 +265,22 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 				startActivity(itshaidanquan);
 				break;
 			case R.id.btn_chackInShape://签到
-				RequestDailog.showDialog(this, "正在签到，请稍后");
+
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");    
+				String shijian=sdf.format(new java.util.Date());   
+				putSharedPreferenceValue("shijian", shijian);
+				btn_chackInShape.setVisibility(View.GONE);
+				signIn.setText("今日已签到！");
 				HttpUtils.chackIn(res_chackin, getSharedPreferenceValue("key"));
+//				String qiandao = getSharedPreferenceValue("qiandao");
+//				if (qiandao.equals("已签到")) {
+//					
+//				}
+//				
+//				RequestDailog.showDialog(this, "正在签到，请稍后");
+//				btn_chackInShape.setVisibility(View.GONE);
+//				signIn.setText("今日已签到！");
+//				HttpUtils.chackIn(res_chackin, getSharedPreferenceValue("key"));
 				break;
 			case R.id.ll_NoPay://待付款
 				Intent intent_daifukuan=new Intent();
@@ -625,8 +648,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 		// 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
 		intent.putExtra("crop", "true");
 		// aspectX aspectY 是宽高的比例
-		intent.putExtra("aspectX", 1);
-		intent.putExtra("aspectY", 1);
+//		intent.putExtra("aspectX", 1);
+//		intent.putExtra("aspectY", 1);
 		// outputX outputY 是裁剪图片宽高
 		intent.putExtra("outputX", 150);
 		intent.putExtra("outputY", 150);
