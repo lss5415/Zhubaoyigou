@@ -1552,7 +1552,7 @@ public class HttpUtils {
 		try {
 			params.put("key", key);
 			params.put("name", name);
-			params.put("avatar",file);
+			params.put("good_img",file);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

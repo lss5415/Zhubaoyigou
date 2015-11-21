@@ -68,13 +68,16 @@ public class B2_GoodsAdapter extends BaseAdapter {
         holder.good_name.setText(good.getGoods_name()+"");
         holder.good_juli.setText(good.getJuli()+"");
         holder.good_jingle.setText(good.getGoods_jingle()+"");
-        
-        holder.goods_price.setText(good.getGoods_price()+"");
-		if (good.getIs_special().equals("1")) {
-			holder.goods_price1.setVisibility(View.VISIBLE);
+//        goods_promotion_price
+        if (good.getIs_special().equals("1")) {
+            holder.goods_price.setText(good.getGoods_promotion_price()+"");
+        	holder.goods_price1.setVisibility(View.VISIBLE);
 			holder.goods_price1.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-			holder.goods_price1.setText("￥ "+good.getGoods_marketprice());
+			holder.goods_price1.setText("￥ "+good.getGoods_price());
+		}else {
+            holder.goods_price.setText(good.getGoods_price()+"");
 		}
+        
         holder.tv_dianpuming.setText(good.getStore_name()+"");
         holder.tv_kucun.setText(good.getGoods_storage()+"");
         holder.tv_xiaoliang.setText(good.getGoods_salenum()+"");

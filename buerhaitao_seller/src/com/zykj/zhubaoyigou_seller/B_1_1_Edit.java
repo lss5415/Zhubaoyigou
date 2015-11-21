@@ -99,7 +99,16 @@ public class B_1_1_Edit extends BaseActivity {
 //		Log.e("intent_getData", intent_getData.getStringExtra("store_name")+"");
 		logopath = intent_getData.getStringExtra("logopath");
 		et_name_c.setText(intent_getData.getStringExtra("store_name"));
-		tv_choseaddress.setText(intent_getData.getStringExtra("area_info")+"(点击此处进行地区选择)");
+		String a = intent_getData.getStringExtra("area_info");
+		et_freight.setText(intent_getData.getStringExtra("store_freight_price"));
+		if (intent_getData.getStringExtra("area_info")==null || intent_getData.getStringExtra("area_info").equals("null")) {
+			tv_choseaddress.setText("(点击此处进行地区选择)");
+			areaIsUpdated = false;
+		}else {
+			area_info = intent_getData.getStringExtra("area_info");
+			tv_choseaddress.setText(intent_getData.getStringExtra("area_info")+"(点击此处可进行地区选择)");
+			areaIsUpdated = true;
+		}
 		et_address.setText(intent_getData.getStringExtra("store_address"));
 		et_store_phone.setText(intent_getData.getStringExtra("store_phone"));
 		if (logopath!=null) {
@@ -295,9 +304,9 @@ public class B_1_1_Edit extends BaseActivity {
 			// 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
 			intent.putExtra("crop", "true");
 			// aspectX aspectY 是宽高的比例
-			intent.putExtra("aspectX", 1);
-			intent.putExtra("aspectY", 1);
-			// outputX outputY 是裁剪图片宽高
+//			intent.putExtra("aspectX", 1);
+//			intent.putExtra("aspectY", 1);
+//			// outputX outputY 是裁剪图片宽高
 			intent.putExtra("outputX", 150);
 			intent.putExtra("outputY", 150);
 			intent.putExtra("return-data", true);

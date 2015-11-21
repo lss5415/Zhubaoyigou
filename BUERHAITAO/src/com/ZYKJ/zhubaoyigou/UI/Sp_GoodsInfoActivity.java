@@ -341,7 +341,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 		case R.id.ll_goods_fenxiang:
 			// 设置分享内容
 			String fxnr = "珠宝易购是一个以珠宝黄金翡翠玉器水晶玛瑙等各种高中低档宝石半宝石为专业的珠宝电商交易平台。";
-			String fxtp = "http://www.pgyer.com/mXdm";
+			String fxtp = "http://www.zbega.com/";
 			FenXiang fx = new FenXiang(getApplicationContext(),
 					Sp_GoodsInfoActivity.this, fxnr, fxtp);
 			break;
@@ -394,7 +394,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			// JSONArray jsonarray = xuanxiang.getJSONArray("1");
 			JSONArray jsonarray = xuanxiang.getJSONArray(leixing1
 					.getJSONObject(0).getString("id").toString());
-			List<String> list = new ArrayList<String>();
+			/*List<String> list = new ArrayList<String>();
 			for (int i = 0; i < jsonarray.length(); i++) {
 				try {
 					list.add(jsonarray.getString(i));
@@ -402,9 +402,11 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			String[] stringArray = list.toArray(new String[list.size()]);
-			itaddcar1.putExtra("arry1", stringArray);
+			}*/
+			itaddcar1.putExtra("arry1", jsonarray.toString());
+			
+//			String[] stringArray = list.toArray(new String[list.size()]);
+//			itaddcar1.putExtra("arry1", stringArray);
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -656,4 +658,13 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			}
 		}
 	};
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		webView.destroy();
+	}
+	
+	
+	
 }
