@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ZYKJ.zhubaoyigou"
-    android:versionCode="5"
+    android:versionCode="7"
     android:versionName="1.0" >
 
     <uses-sdk
@@ -49,8 +49,11 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <!-- 高德题图 -->
+    <!-- 高德地图 -->
 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+
 
     <application
         android:name="com.ZYKJ.zhubaoyigou.base.BaseApp"
@@ -61,7 +64,7 @@
         <!-- 高德地图 -->
           <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="dd5f5ac1b31d77947fba914e969d596b"/>
+            android:value="a48cb46e760ecd6ed658bd80c098f846"/>
          <activity android:name="com.amap.demo.LocationManager" >
          </activity>
         <activity
