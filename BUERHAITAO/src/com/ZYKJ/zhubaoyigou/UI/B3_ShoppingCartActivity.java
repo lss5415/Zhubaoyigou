@@ -101,36 +101,34 @@ public class B3_ShoppingCartActivity extends BaseActivity implements RefreshExpa
 //			showCheckedItems();
 			break;
 		case R.id.im_checkall:
-			if (ischeck==1) {
-				if (im_checkall.isSelected()) {
-					im_checkall.setSelected(false);
-					tv_jiesuan.setText("结算（0）");
-					tv_sumgoods.setText("0.00");
-					for (int i = 0; i < dataList.size(); i++) {
-						dataList.get(i).setChecked(false);
-						List<ChildrenItem> childrenList = dataList.get(i).getStore_list();
-						for (int j = 0; j < childrenList.size(); j++) {
-							childrenList.get(j).setChecked(false);
-						}
+			if (im_checkall.isSelected()) {
+				im_checkall.setSelected(false);
+				tv_jiesuan.setText("结算（0）");
+				tv_sumgoods.setText("0.00");
+				for (int i = 0; i < dataList.size(); i++) {
+					dataList.get(i).setChecked(false);
+					List<ChildrenItem> childrenList = dataList.get(i).getStore_list();
+					for (int j = 0; j < childrenList.size(); j++) {
+						childrenList.get(j).setChecked(false);
 					}
-					adapter.notifyDataSetChanged();
-				}else {
-					im_checkall.setSelected(true);
-					float allprice = 0f;sumtiaoshu = 0;
-					for (int i = 0; i < dataList.size(); i++) {
-						dataList.get(i).setChecked(true);
-						List<ChildrenItem> childrenList = dataList.get(i).getStore_list();
-						for (int j = 0; j < childrenList.size(); j++) {
-							childrenList.get(j).setChecked(true);
-							ChildrenItem childrenItem = childrenList.get(j);
-							sumtiaoshu += 1;
-							allprice += Float.valueOf(childrenItem.getGoods_price())*Integer.valueOf(childrenItem.getGoods_num());
-						}
-					}
-					tv_jiesuan.setText("结算（"+sumtiaoshu+"）");
-					tv_sumgoods.setText(allprice+"");
-					adapter.notifyDataSetChanged();
 				}
+				adapter.notifyDataSetChanged();
+			}else {
+				im_checkall.setSelected(true);
+				float allprice = 0f;sumtiaoshu = 0;
+				for (int i = 0; i < dataList.size(); i++) {
+					dataList.get(i).setChecked(true);
+					List<ChildrenItem> childrenList = dataList.get(i).getStore_list();
+					for (int j = 0; j < childrenList.size(); j++) {
+						childrenList.get(j).setChecked(true);
+						ChildrenItem childrenItem = childrenList.get(j);
+						sumtiaoshu += 1;
+						allprice += Float.valueOf(childrenItem.getGoods_price())*Integer.valueOf(childrenItem.getGoods_num());
+					}
+				}
+				tv_jiesuan.setText("结算（"+sumtiaoshu+"）");
+				tv_sumgoods.setText(allprice+"");
+				adapter.notifyDataSetChanged();
 			}
 			break;
 		default:
