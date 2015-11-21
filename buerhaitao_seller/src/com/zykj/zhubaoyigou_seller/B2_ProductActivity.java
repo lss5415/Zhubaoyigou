@@ -487,7 +487,6 @@ public class B2_ProductActivity extends BaseActivity implements
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		
 
 	}
 

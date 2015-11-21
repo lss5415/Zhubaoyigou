@@ -17,25 +17,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.adapter.B1_a2_CaiNiLikeAdapter;
 import com.ZYKJ.zhubaoyigou.adapter.B1_a3_MeiRiHaoDianAdapter;
 import com.ZYKJ.zhubaoyigou.adapter.GoodSpecialAdapter;
 import com.ZYKJ.zhubaoyigou.adapter.HorizontalListViewAdapter;
+import com.ZYKJ.zhubaoyigou.adapter.RecyclingPagerAdapter;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
+import com.ZYKJ.zhubaoyigou.utils.CommonUtils;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
 import com.ZYKJ.zhubaoyigou.view.AutoGridView;
@@ -75,6 +83,12 @@ public class B1_HomeActivity extends BaseActivity {
 	private EditText a1_sousuofujin;
 	private AutoGridView gird_dayspecial;
 	private GoodSpecialAdapter gridspecial;
+	private AutoScrollViewPager viewPager;//轮播图
+	/** 当前的位置 */
+	private int now_pos = 0;
+    //自定义轮播图的资源
+//    private String[] imageUrls;
+	private org.json.JSONArray joba;
 //	private TextView tv_dianpuming, tv_kucun, tv_xiaoliang;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +97,17 @@ public class B1_HomeActivity extends BaseActivity {
 		initView();
 		tv_cityname = (TextView) findViewById(R.id.tv_cityname);
 		if (getIntent().getStringExtra("cityname") == null) {
-			putSharedPreferenceValue("lng", "118.338510");
-			putSharedPreferenceValue("lat", "35.063770");
-			putSharedPreferenceValue("cityid", "168");
-			putSharedPreferenceValue("cityname", "连云港");
-			HttpUtils.getFirstList(res_getSyList, "168", "118.338510",
-					"35.063770");
+//			putSharedPreferenceValue("lng", "118.338510");
+//			putSharedPreferenceValue("lat", "35.063770");
+//			putSharedPreferenceValue("cityid", "168");
+//			putSharedPreferenceValue("cityname", "连云港");
+			String lng = getSharedPreferenceValue("lng");
+			String lat = getSharedPreferenceValue("lat");
+			String cityid = getSharedPreferenceValue("cityid");
+			String cityname = getSharedPreferenceValue("cityname");
+			tv_cityname.setText(cityname);
+			
+			HttpUtils.getFirstList(res_getSyList, cityid, lng,lat);
 		} else {
 			cityname = getIntent().getStringExtra("cityname");
 			tv_cityname.setText(cityname);
@@ -106,7 +125,6 @@ public class B1_HomeActivity extends BaseActivity {
 	JsonHttpResponseHandler res_getSyList = new JsonHttpResponseHandler() {
 		public void onSuccess(int statusCode, Header[] headers,
 				JSONObject response) {
-			// TODO Auto-generated method stub
 			super.onSuccess(statusCode, headers, response);
 			RequestDailog.closeDialog();
 			Tools.Log("首页=" + response);
@@ -122,6 +140,52 @@ public class B1_HomeActivity extends BaseActivity {
 			if (error == null)// 成功
 			{
 				try {
+					joba = datas.getJSONArray("slide");
+//					imageUrls = new String[joba.length()];
+					// 设置轮播
+					viewPager.setAdapter(new RecyclingPagerAdapter() {
+						@Override
+						public int getCount() {
+							return joba.length();
+						}
+
+						@Override
+						public View getView(int position, View convertView,
+								ViewGroup container) {
+							ImageView imageView;
+							if (convertView == null) {
+								convertView = imageView = new ImageView(
+										B1_HomeActivity.this);
+								imageView.setScaleType(ScaleType.FIT_XY);
+								convertView.setTag(imageView);
+							} else {
+								imageView = (ImageView) convertView.getTag();
+							}
+							try {
+								String a = joba.getJSONObject(position+1).getString("pic_img");
+								CommonUtils.showPic(a,
+										imageView);
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							imageView.setOnClickListener(new OnClickListener() {
+								@Override
+								public void onClick(View arg0) {
+									// Intent detailIntent = new
+									// Intent(IndexActivity.this,
+									// MessageDetailActivity.class);
+									// detailIntent.putExtra("special_id",
+									// imageList.get(position));
+									// startActivity(new Intent(IndexActivity.this,
+									// MessageDetailActivity.class));
+								}
+							});
+							return convertView;
+						}
+					});
+					
+					
 					datax.clear();
 					// 附近店铺
 					final org.json.JSONArray arrayas = datas
@@ -381,6 +445,23 @@ public class B1_HomeActivity extends BaseActivity {
 		listviewHorizontal = (AutoListView) findViewById(R.id.horizon_listview);
 		a1_sousuofujin = (EditText) findViewById(R.id.a1_sousuofujin);
 		gird_dayspecial = (AutoGridView) findViewById(R.id.gird_dayspecial);
+		viewPager = (AutoScrollViewPager) findViewById(R.id.slideshowView);//轮播图
+		LayoutParams pageParms = viewPager.getLayoutParams();
+		pageParms.width = Tools.M_SCREEN_WIDTH;
+		pageParms.height = Tools.M_SCREEN_WIDTH*10/27;
+		
+		viewPager.setInterval(2000);
+		viewPager.startAutoScroll();
+		
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			public void onPageSelected(int arg0) {
+				// 回调view
+				uihandler.obtainMessage(0, arg0).sendToTarget();
+			}
+			public void onPageScrolled(int arg0, float arg1, int arg2) {}
+			public void onPageScrollStateChanged(int arg0) {}
+		});
+		
 		setListener(im_b1nvshi, im_b1nanshi, im_b1muying, im_b1huazhuang,
 				im_b1shouji, im_b1bangong, im_b1shenghuo, im_b1techan,
 				rl_b1_a1tttj, b5_3_shaidanquan, rl_b1_a2_cnxh, rl_b1_a3_mrhd,rl_fujin,
@@ -570,4 +651,50 @@ public class B1_HomeActivity extends BaseActivity {
 		}
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (viewPager != null) {
+			viewPager.startAutoScroll();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (viewPager != null) {
+			viewPager.stopAutoScroll();
+		}
+	}
+
+	Handler uihandler = new Handler() {
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case 0:// 滚动的回调
+				changePointView((Integer) msg.obj);
+				break;
+			}
+		}
+	};
+
+	/**
+	 * 轮播图自动播放
+	 * 
+	 * @param cur
+	 *            当前显示的图片
+	 */
+	public void changePointView(int cur) {
+		LinearLayout pointLinear = (LinearLayout) findViewById(R.id.gallery_point_linear1);
+		View view = pointLinear.getChildAt(now_pos);
+		View curView = pointLinear.getChildAt(cur);
+		if (view != null && curView != null) {
+			ImageView pointView = (ImageView) view;
+			ImageView curPointView = (ImageView) curView;
+			pointView.setBackgroundResource(R.drawable.feature_point);
+			curPointView.setBackgroundResource(R.drawable.feature_point_cur);
+			now_pos = cur;
+		}
+	}
+	
 }

@@ -77,6 +77,8 @@ public class Sp_a2_XingHao extends BaseActivity {
 		tv_qxzlx1_yincang = (TextView) findViewById(R.id.tv_qxzlx1_yincang);
 		tv_lijigoumai = (TextView) findViewById(R.id.tv_lijigoumai);
 		tiaomu = getIntent().getStringExtra("tiaomu");
+		String aa = getIntent().getStringExtra("fenlei1");
+//		String c = getIntent().getStringExtra("arry1").toString();
 		tv_addcar = (TextView) findViewById(R.id.tv_addcar);
 		im_gwtouxiang = (ImageView)findViewById(R.id.im_gwtouxiang);
 		try {
@@ -88,6 +90,8 @@ public class Sp_a2_XingHao extends BaseActivity {
 			tiaomu1.setVisibility(View.VISIBLE);
 			tiaomu1_zi.setVisibility(View.VISIBLE);
 			tiaomu1.setText(getIntent().getStringExtra("fenlei1"));
+			String a = getIntent().getStringExtra("fenlei1");
+			String b = getIntent().getStringExtra("arry1").toString();
 			String strarry = getIntent().getStringExtra("arry1");
 			final List<ChanPinCanShu> cpcs = JSONArray.parseArray(strarry,
 					ChanPinCanShu.class);

@@ -58,7 +58,7 @@ public class B1_HomeActivity extends BaseActivity {
 	private int now_pos = 0;
 	
 	String key;
-	String store_phone,store_name,store_address,area_info,logopath;
+	String store_phone,store_name,store_address,area_info,logopath,store_freight_price;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui_home);
@@ -116,6 +116,7 @@ public class B1_HomeActivity extends BaseActivity {
 			intent_edit.putExtra("area_info",area_info);
 			intent_edit.putExtra("store_phone",store_phone);
 			intent_edit.putExtra("logopath",logopath);
+			intent_edit.putExtra("store_freight_price",store_freight_price);
 			startActivity(intent_edit);
 			break;
 		case R.id.iv_phone:
@@ -161,6 +162,7 @@ public class B1_HomeActivity extends BaseActivity {
 					Tools.Log("store_phone="+store_phone);
 					store_address = store_info.getString("store_address");
 					area_info = store_info.getString("area_info");
+					store_freight_price = store_info.getString("store_freight_price");
 					
 					if (m_scroll.getVisibility() != View.VISIBLE) {
 						m_scroll.setVisibility(View.VISIBLE);

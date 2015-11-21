@@ -101,7 +101,7 @@ public class B3_ShoppingCartActivity extends BaseActivity implements RefreshExpa
 //			showCheckedItems();
 			break;
 		case R.id.im_checkall:
-			if (ischeck==1) {
+//			if (ischeck==1) {
 //				ischeck=0;
 //				viewa.setVisibility(View.GONE);
 //				tv_sumgoods.setText("0.00");
@@ -139,7 +139,7 @@ public class B3_ShoppingCartActivity extends BaseActivity implements RefreshExpa
 				tv_sumgoods.setText(allprice+"");
 				adapter.notifyDataSetChanged();
 				}
-			}
+//			}
 			break;
 		default:
 			
