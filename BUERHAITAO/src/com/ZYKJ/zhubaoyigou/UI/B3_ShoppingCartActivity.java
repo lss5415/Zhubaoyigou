@@ -101,15 +101,6 @@ public class B3_ShoppingCartActivity extends BaseActivity implements RefreshExpa
 //			showCheckedItems();
 			break;
 		case R.id.im_checkall:
-//			if (ischeck==1) {
-//				ischeck=0;
-//				viewa.setVisibility(View.GONE);
-//				tv_sumgoods.setText("0.00");
-//				im_checkall.setImageResource(R.drawable.ck_unchecked);
-//				adapter.setIschecked(0);
-//				adapter.notifyDataSetChanged();
-				
-			/*全选*/
 			if (im_checkall.isSelected()) {
 				im_checkall.setSelected(false);
 				tv_jiesuan.setText("结算（0）");
@@ -138,8 +129,7 @@ public class B3_ShoppingCartActivity extends BaseActivity implements RefreshExpa
 				tv_jiesuan.setText("结算（"+sumtiaoshu+"）");
 				tv_sumgoods.setText(allprice+"");
 				adapter.notifyDataSetChanged();
-				}
-//			}
+			}
 			break;
 		default:
 			
