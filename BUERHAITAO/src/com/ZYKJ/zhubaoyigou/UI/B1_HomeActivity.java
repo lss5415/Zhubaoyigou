@@ -208,7 +208,7 @@ public class B1_HomeActivity extends BaseActivity {
 								jsonItem.getString("store_desccredit"));
 						map.put("juli", jsonItem.getString("juli"));
 						datax.add(map);
-					}
+					} 
 					B1_a3_MeiRiHaoDianAdapter goodadapter1 = new B1_a3_MeiRiHaoDianAdapter(
 							B1_HomeActivity.this, datax);
 					fujindianp.setAdapter(goodadapter1);
