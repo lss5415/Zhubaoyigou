@@ -14,12 +14,16 @@ import android.widget.TextView;
 
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.data.Goods;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
 import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class B2_GoodsAdapter extends BaseAdapter {
 
 	private List<Goods> list;
     private LayoutInflater inflater;
+	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 	
 	
 	public B2_GoodsAdapter(Context context, List<Goods> list) {
@@ -63,8 +67,9 @@ public class B2_GoodsAdapter extends BaseAdapter {
             holder= (ViewHolder) convertView.getTag();
         }
         Goods good = list.get(position);
-        
-        ImageOptions.displayImage2Circle(holder.good_image, good.getGoods_image_url(), 10f);
+
+		ImageLoader.getInstance().displayImage(good.getGoods_image_url(), holder.good_image, ImageOptions.getOpstion(), animateFirstListener);
+//        ImageOptions.displayImage2Circle(holder.good_image, good.getGoods_image_url(), 10f);
         holder.good_name.setText(good.getGoods_name()+"");
         holder.good_juli.setText(good.getJuli()+"");
         holder.good_jingle.setText(good.getGoods_jingle()+"");

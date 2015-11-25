@@ -15,15 +15,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ZYKJ.zhubaoyigou.R;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class HorizontalListViewAdapter extends BaseAdapter {
 
 	private List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 	private Activity context;
-    Bitmap iconBitmap;  
+    Bitmap iconBitmap;  private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 //    private int selectIndex = -1;  
   
     public HorizontalListViewAdapter(Activity context, List<Map<String, String>> data){  
@@ -66,8 +69,8 @@ public class HorizontalListViewAdapter extends BaseAdapter {
         String urlString;
 		urlString = jsonObject.getString("0");
 		Log.e("urlString", urlString);
-		ImageLoader.getInstance().displayImage(urlString, holder.iv_image);
-        ImageLoader.getInstance().displayImage(data.get(position).get("avatar"), holder.iv_avatar);
+		ImageLoader.getInstance().displayImage(urlString, holder.iv_image, ImageOptions.getOpstion(), animateFirstListener);
+        ImageLoader.getInstance().displayImage(data.get(position).get("avatar"), holder.iv_avatar, ImageOptions.getOpstion(), animateFirstListener);
         holder.tv_nickname.setText(data.get(position).get("member_name"));
         holder.tv_content.setText(data.get(position).get("description"));
         holder.tv_zannumber.setText("("+data.get(position).get("praise")+")");

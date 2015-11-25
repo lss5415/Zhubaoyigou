@@ -13,12 +13,16 @@ import android.widget.TextView;
 
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.data.Shop;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class B2_ShopsAdapter extends BaseAdapter {
 
 	private List<Shop> list;
     private LayoutInflater inflater;
+	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 	
 	public B2_ShopsAdapter(Context context, List<Shop> list) {
         inflater = LayoutInflater.from(context);
@@ -61,7 +65,7 @@ public class B2_ShopsAdapter extends BaseAdapter {
         if (a==null) {
 			
 		}else {
-			ImageLoader.getInstance().displayImage(shop.getStore_avatar(), ViewHolder.im_a3_pic);
+			ImageLoader.getInstance().displayImage(shop.getStore_avatar(), ViewHolder.im_a3_pic, ImageOptions.getOpstion(), animateFirstListener);
 		}		
 		ViewHolder.tv_a3_storename.setText(shop.getStore_name());
 		ViewHolder.tv_a3_juli.setText(shop.getJuli());

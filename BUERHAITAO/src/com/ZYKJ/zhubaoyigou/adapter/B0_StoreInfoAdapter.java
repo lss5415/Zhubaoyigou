@@ -14,12 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ZYKJ.zhubaoyigou.R;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class B0_StoreInfoAdapter extends BaseAdapter {
 	private Activity context;
 	List<Map<String, Object>> data;
 	String dianpuming;
+	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+
 
 	public B0_StoreInfoAdapter(Activity context, List<Map<String, Object>> data1,String dianpuming) {
 		this.context = context;
@@ -66,7 +71,8 @@ public class B0_StoreInfoAdapter extends BaseAdapter {
 		}else{
 			ViewHolder=(ViewHolder) convertView.getTag();
 		}
-		ImageLoader.getInstance().displayImage((String)data.get(position).get("goods_image_url"), ViewHolder.im_a3_pic1);
+		ImageLoader.getInstance().displayImage((String)data.get(position).get("goods_image_url"), ViewHolder.im_a3_pic1, ImageOptions.getOpstion(), animateFirstListener);
+//		ImageLoader.getInstance().displayImage((String)data.get(position).get("goods_image_url"), ViewHolder.im_a3_pic1);
 		ViewHolder.tv_a3_storename1.setText(data.get(position).get("goods_name").toString());
 		ViewHolder.tv_chanpinjianjie.setText(data.get(position).get("goods_jingle").toString());
 //		ViewHolder.comment_rating_bar1.setRating(Float.parseFloat(data.get(position).get("evaluation_good_star")));

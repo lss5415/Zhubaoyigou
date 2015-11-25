@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -26,10 +25,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,14 +33,17 @@ import android.widget.Toast;
 
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
 import com.ZYKJ.zhubaoyigou.utils.CircularImage;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
 import com.ZYKJ.zhubaoyigou.view.RequestDailog;
 import com.ZYKJ.zhubaoyigou.view.ToastView;
 import com.ZYKJ.zhubaoyigou.view.UIDialog;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 @SuppressLint("NewApi") public class B5_MyActivity extends BaseActivity implements OnClickListener {
 
@@ -78,6 +77,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 	
 	public String usernameString=null;
 	private Button signIn;
+	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     
 	@Override
 	protected void onResume() {
@@ -95,7 +95,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 //			    
 //			}
 			//网络加载头像
-			ImageLoader.getInstance().displayImage(getSharedPreferenceValue("avatar"), img_head);
+			ImageLoader.getInstance().displayImage(getSharedPreferenceValue("avatar"), img_head, ImageOptions.getOpstion(), animateFirstListener);
+
 		}else if (FirstLog==0) {//第一次进来，如果没有登录，跳转到登录页面
 			Intent intent_login1=new Intent();
 			intent_login1.setClass(this, B5_1_LoginActivity.class);
