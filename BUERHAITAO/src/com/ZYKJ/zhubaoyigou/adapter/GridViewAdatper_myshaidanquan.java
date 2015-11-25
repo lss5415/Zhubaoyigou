@@ -11,15 +11,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.ZYKJ.zhubaoyigou.R;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
 import com.ZYKJ.zhubaoyigou.view.UIDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class GridViewAdatper_myshaidanquan extends BaseAdapter {
 
 	private Activity c;
 	private JSONObject obj;
-	ViewHolder viewHolder = null;
+	ViewHolder viewHolder = null;private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 	public GridViewAdatper_myshaidanquan(Activity c, JSONObject obj) {
 		this.c = c;
 		this.obj = obj;
@@ -67,7 +70,7 @@ public class GridViewAdatper_myshaidanquan extends BaseAdapter {
 		
 			pathString = obj.getString(position+"");
 			Tools.Log("pathString="+pathString);
-			ImageLoader.getInstance().displayImage(pathString, viewHolder.photo);
+			ImageLoader.getInstance().displayImage(pathString, viewHolder.photo, ImageOptions.getOpstion(), animateFirstListener);
 			viewHolder.photo.setOnClickListener(new ShowPhoto(position,pathString));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

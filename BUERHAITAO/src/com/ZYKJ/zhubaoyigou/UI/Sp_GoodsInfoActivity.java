@@ -1,8 +1,5 @@
 package com.ZYKJ.zhubaoyigou.UI;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +14,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebSettings;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -32,11 +28,14 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.adapter.IndexPageAdapter1;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
 import com.ZYKJ.zhubaoyigou.view.RequestDailog;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
  * @author lss 2015年7月1日 商品详情
@@ -112,6 +111,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 	/** 当前的位置 */
 	private int now_pos = 0;
 	private WebView webView;
+	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -504,7 +504,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 						// 用户头像
 						ImageLoader.getInstance().displayImage(
 								(String) jsonitemz.getString("geval_avatar"),
-								im_userimage);
+								im_userimage, ImageOptions.getOpstion(), animateFirstListener);
 						// 用户名称
 						tv_username.setText(jsonitemz
 								.getString("geval_frommembername"));

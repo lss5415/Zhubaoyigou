@@ -13,11 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ZYKJ.zhubaoyigou.R;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class GoodSpecialAdapter extends BaseAdapter {
 	private Activity context;
-	List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+	List<Map<String, String>> data = new ArrayList<Map<String, String>>();private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
 	public GoodSpecialAdapter(Activity context, List<Map<String, String>> data) {
 		this.context = context;
@@ -55,7 +58,7 @@ public class GoodSpecialAdapter extends BaseAdapter {
 		}else{
 			ViewHolder=(ViewHolder) convertView.getTag();
 		}
-		ImageLoader.getInstance().displayImage((String)data.get(position).get("goods_image"), ViewHolder.im_b1_a1_pic);
+		ImageLoader.getInstance().displayImage((String)data.get(position).get("goods_image"), ViewHolder.im_b1_a1_pic, ImageOptions.getOpstion(), animateFirstListener);
 		ViewHolder.goods_id.setText(data.get(position).get("goods_id"));
 		return convertView;
 	}

@@ -18,12 +18,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ZYKJ.zhubaoyigou.R;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
 import com.ZYKJ.zhubaoyigou.view.RequestDailog;
 import com.activeandroid.util.Log;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class B5_10_MyCollectionAdapter extends BaseAdapter {
 
@@ -32,6 +35,7 @@ public class B5_10_MyCollectionAdapter extends BaseAdapter {
 	private LayoutInflater listContainer;
 	String goods_name,goods_image_url,goods_price,fav_time,fav_id,key;
 	Boolean  isEdit = false;
+	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 //	public static String [] idStrings;
 	
 	
@@ -95,14 +99,14 @@ public class B5_10_MyCollectionAdapter extends BaseAdapter {
 			goods_image_url = data.get(position).get("goods_image_url");
 			goods_price = data.get(position).get("goods_price");
 			fav_time = data.get(position).get("fav_time");
-			ImageLoader.getInstance().displayImage(goods_image_url, iv_product_collection);
+			ImageLoader.getInstance().displayImage(goods_image_url, iv_product_collection, ImageOptions.getOpstion(), animateFirstListener);
 			tv_productName.setText(goods_name);
 			tv_productPoints.setText("￥"+goods_price);
 			tv_collectiondate.setText(fav_time+"的收藏");
 			iv_delete.setOnClickListener(new DeleteProduct(data.get(position).get("fav_id"),key,position));
 		}else if (data.get(position).get("tag").equals("Store")) {
 			tv_productPoints.setText("");
-			ImageLoader.getInstance().displayImage(data.get(position).get("store_avatar_url"), iv_product_collection);
+			ImageLoader.getInstance().displayImage(data.get(position).get("store_avatar_url"), iv_product_collection, ImageOptions.getOpstion(), animateFirstListener);
 			tv_productName.setText(data.get(position).get("store_name"));
 			tv_collectiondate.setText(data.get(position).get("fav_time_text")+"的收藏");
 			iv_delete.setOnClickListener(new DeleteStore(data.get(position).get("store_id"),key,position));

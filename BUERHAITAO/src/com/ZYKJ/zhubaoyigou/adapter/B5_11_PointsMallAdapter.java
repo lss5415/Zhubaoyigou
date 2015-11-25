@@ -21,7 +21,10 @@ import android.widget.Toast;
 
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.UI.B5_11_1_ExchangeDetail;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class B5_11_PointsMallAdapter extends BaseAdapter {
 
@@ -33,6 +36,7 @@ public class B5_11_PointsMallAdapter extends BaseAdapter {
 	private String pgoods_body = null;// 产品介绍
 	private String pgoods_points = null;// 产品积分
 	private String allpoint;
+	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
 	public B5_11_PointsMallAdapter(Activity c, List<Map<String, String>> data,
 			String allpoint) {
@@ -88,7 +92,7 @@ public class B5_11_PointsMallAdapter extends BaseAdapter {
 		tv_productPoints.setText(pgoods_points);
 		btn_exchange.setOnClickListener(new ExchangeListener(position));// 立即兑换按钮绑定监听
 		ImageLoader.getInstance().displayImage(
-				data.get(position).get("pgoods_image"), iv_product);
+				data.get(position).get("pgoods_image"), iv_product, ImageOptions.getOpstion(), animateFirstListener);
 		return cellView;
 	}
 
