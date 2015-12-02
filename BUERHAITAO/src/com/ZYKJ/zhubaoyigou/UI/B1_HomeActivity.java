@@ -713,6 +713,41 @@ public class B1_HomeActivity extends BaseActivity {
 			putSharedPreferenceValue("lng", lng);
 			putSharedPreferenceValue("lat", lat);
 			putSharedPreferenceValue("cityid", cityid);
+			if (getSharedPreferenceValue("tv_zj1").equals("")) {
+				putSharedPreferenceValue("tv_zj1", cityname);
+				putSharedPreferenceValue("tv_zj11", cityid);
+			}else {
+				if (getSharedPreferenceValue("tv_zj2").equals("")){
+					if (getSharedPreferenceValue("tv_zj1").equals(cityname)) {
+						
+					}else {
+						putSharedPreferenceValue("tv_zj2", cityname);
+						putSharedPreferenceValue("tv_zj22", cityid);
+					}
+				}else {
+					if (getSharedPreferenceValue("tv_zj3").equals("")){
+						if (getSharedPreferenceValue("tv_zj1").equals(cityname)) {
+							
+						}else if (getSharedPreferenceValue("tv_zj2").equals(cityname)) {
+							
+						}else {
+							putSharedPreferenceValue("tv_zj3", cityname);
+							putSharedPreferenceValue("tv_zj33", cityid);
+						}
+					}else {
+						if (getSharedPreferenceValue("tv_zj1").equals(cityname)) {
+							
+						}else if (getSharedPreferenceValue("tv_zj2").equals(cityname)) {
+							
+						}else if (getSharedPreferenceValue("tv_zj3").equals(cityname)) {
+							
+						}else {
+							putSharedPreferenceValue("tv_zj1", cityname);
+							putSharedPreferenceValue("tv_zj11", cityid);
+						}
+					}
+				}
+			}
 			HttpUtils.getFirstList(res_getSyList, cityid, lng, lat);
 			super.onActivityResult(requestCode, resultCode, data);
 		} catch (Exception e) {
