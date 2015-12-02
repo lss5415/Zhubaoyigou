@@ -72,7 +72,7 @@ public class B4_StoreActivity extends BaseActivity implements IXListViewListener
 		lng = getSharedPreferenceValue("lng");
 		lat = getSharedPreferenceValue("lat");
 		initView();
-        initPop();
+	    initPop();
 	}
 	
 	@Override
@@ -145,26 +145,38 @@ public class B4_StoreActivity extends BaseActivity implements IXListViewListener
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.rl_sousuokuang:
-			B1_a4_SearchActivity.CHANNEL=1;
-			startActivity(new Intent().setClass(B4_StoreActivity.this, B1_a4_SearchActivity.class));
+			if (isLogin()) {
+				B1_a4_SearchActivity.CHANNEL=1;
+				startActivity(new Intent().setClass(B4_StoreActivity.this, B1_a4_SearchActivity.class));
+			}else {
+				Intent intent_login=new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		case R.id.ly_a4_category:
-            //全部分类
-			b4tsa = new B4_TextSizeAdapter(B4_StoreActivity.this, shopClass);
-			pList.setAdapter(b4tsa);
-            pList.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long viewId) {
-					order = 1;curpage = 1;keyword = "";
-	                if(popupWindow.isShowing()){
-	                    popupWindow.dismiss();
-	                }
-	                sc_id = shopClass.get(position).get("sc_id");
-	                tv_a4_category.setText(shopClass.get(position).get("sc_name").toString());
-	    			requestData();
-				}
-			});
-            popupWindow.showAsDropDown(v);
+			if (isLogin()) {
+	            //全部分类
+				b4tsa = new B4_TextSizeAdapter(B4_StoreActivity.this, shopClass);
+				pList.setAdapter(b4tsa);
+	            pList.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view, int position, long viewId) {
+						order = 1;curpage = 1;keyword = "";
+		                if(popupWindow.isShowing()){
+		                    popupWindow.dismiss();
+		                }
+		                sc_id = shopClass.get(position).get("sc_id");
+		                tv_a4_category.setText(shopClass.get(position).get("sc_name").toString());
+		    			requestData();
+					}
+				});
+	            popupWindow.showAsDropDown(v);
+			}else {
+				Intent intent_login=new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		case R.id.ly_a4_assess:
             //智能排序
@@ -277,14 +289,20 @@ public class B4_StoreActivity extends BaseActivity implements IXListViewListener
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		/*店铺、宝贝详情*/
-		Shop shop = shops.get(position-1);
-//		Toast.makeText(B4_StoreActivity.this, shop.getSc_name(), Toast.LENGTH_LONG).show();
-		Intent intent = new Intent();
-		String storeid = shops.get(position-1).getStore_id();
-		intent.putExtra("store_id", storeid);
-		intent.setClass(B4_StoreActivity.this,BX_DianPuXiangQingActivity.class);
-		startActivity(intent);
+		if (isLogin()) {
+			/*店铺、宝贝详情*/
+			Shop shop = shops.get(position-1);
+//			Toast.makeText(B4_StoreActivity.this, shop.getSc_name(), Toast.LENGTH_LONG).show();
+			Intent intent = new Intent();
+			String storeid = shops.get(position-1).getStore_id();
+			intent.putExtra("store_id", storeid);
+			intent.setClass(B4_StoreActivity.this,BX_DianPuXiangQingActivity.class);
+			startActivity(intent);
+		}else {
+			Intent intent_login=new Intent();
+			intent_login.setClass(this, B5_1_LoginActivity.class);
+			startActivity(intent_login);
+		}
 	}
 
 	@Override
@@ -299,5 +317,13 @@ public class B4_StoreActivity extends BaseActivity implements IXListViewListener
 		/*上拉刷新*/
 		curpage += 1;
 		requestData();
+	}
+	public boolean isLogin()
+	{
+		if (getSharedPreferenceValue("userid").equals("")) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 }

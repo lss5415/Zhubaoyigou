@@ -218,13 +218,21 @@ public class B1_HomeActivity extends BaseActivity {
 								@Override
 								public void onItemClick(AdapterView<?> arg0,
 										View view, int i, long arg3) {
-									Intent intent = new Intent();
-									String storeid = datax.get(i)
-											.get("store_id");
-									intent.putExtra("store_id", storeid);
-									intent.setClass(B1_HomeActivity.this,
-											BX_DianPuXiangQingActivity.class);
-									startActivity(intent);
+									
+									if (isLogin()) {
+										Intent intent = new Intent();
+										String storeid = datax.get(i)
+												.get("store_id");
+										intent.putExtra("store_id", storeid);
+										intent.setClass(B1_HomeActivity.this,
+												BX_DianPuXiangQingActivity.class);
+										startActivity(intent);
+									}else {
+										Intent intent_login=new Intent();
+										intent_login.setClass(B1_HomeActivity.this, B5_1_LoginActivity.class);
+										startActivity(intent_login);
+									}
+									
 								}
 							});
 					
@@ -260,13 +268,20 @@ public class B1_HomeActivity extends BaseActivity {
 								@Override
 								public void onItemClick(AdapterView<?> arg0,
 										View view, int i, long arg3) {
-									Intent intent = new Intent();
-									String storeid = data.get(i)
-											.get("store_id");
-									intent.putExtra("store_id", storeid);
-									intent.setClass(B1_HomeActivity.this,
-											BX_DianPuXiangQingActivity.class);
-									startActivity(intent);
+									
+									if (isLogin()) {
+										Intent intent = new Intent();
+										String storeid = data.get(i)
+												.get("store_id");
+										intent.putExtra("store_id", storeid);
+										intent.setClass(B1_HomeActivity.this,
+												BX_DianPuXiangQingActivity.class);
+										startActivity(intent);
+									}else {
+										Intent intent_login=new Intent();
+										intent_login.setClass(B1_HomeActivity.this, B5_1_LoginActivity.class);
+										startActivity(intent_login);
+									}
 								}
 							});
 
@@ -311,13 +326,19 @@ public class B1_HomeActivity extends BaseActivity {
 								public void onItemClick(AdapterView<?> arg0,
 										View arg1, int arg2, long arg3) {
 									// TODO Auto-generated method stub
-									Intent intent = new Intent();
-									String goid = data1.get(arg2).get(
-											"goods_id");
-									intent.putExtra("goods_id", goid);
-									intent.setClass(B1_HomeActivity.this,
-											Sp_GoodsInfoActivity.class);
-									startActivity(intent);
+									if (isLogin()) {
+										Intent intent = new Intent();
+										String goid = data1.get(arg2).get(
+												"goods_id");
+										intent.putExtra("goods_id", goid);
+										intent.setClass(B1_HomeActivity.this,
+												Sp_GoodsInfoActivity.class);
+										startActivity(intent);
+									}else {
+										Intent intent_login=new Intent();
+										intent_login.setClass(B1_HomeActivity.this, B5_1_LoginActivity.class);
+										startActivity(intent_login);
+									}
 								}
 							});
 
@@ -339,12 +360,18 @@ public class B1_HomeActivity extends BaseActivity {
 								@Override
 								public void onItemClick(AdapterView<?> arg0,
 										View arg1, int arg2, long arg3) {
-									// TODO Auto-generated method stub									
-									Intent itdayspec = new Intent();
-									String goid = datagoodsspecial.get(arg2).get("goods_id");
-									itdayspec.putExtra("goods_id", goid);
-									itdayspec.setClass(B1_HomeActivity.this, Sp_GoodsInfoActivity.class);
-									startActivity(itdayspec);
+									// TODO Auto-generated method stub			
+									if (isLogin()) {
+										Intent itdayspec = new Intent();
+										String goid = datagoodsspecial.get(arg2).get("goods_id");
+										itdayspec.putExtra("goods_id", goid);
+										itdayspec.setClass(B1_HomeActivity.this, Sp_GoodsInfoActivity.class);
+										startActivity(itdayspec);
+									}else {
+										Intent intent_login=new Intent();
+										intent_login.setClass(B1_HomeActivity.this, B5_1_LoginActivity.class);
+										startActivity(intent_login);
+									}
 								}
 							});
 					
@@ -511,36 +538,66 @@ public class B1_HomeActivity extends BaseActivity {
 			break;
 		// 天天特价
 		case R.id.rl_b1_a1tttj:
-			Intent ittttj = new Intent();
-			ittttj.setClass(B1_HomeActivity.this, B1_a1_TianTianTeJia.class);
-			startActivity(ittttj);
+			if (isLogin()) {
+				Intent ittttj = new Intent();
+				ittttj.setClass(B1_HomeActivity.this, B1_a1_TianTianTeJia.class);
+				startActivity(ittttj);
+			}else {
+				Intent intent_login=new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		// 晒单圈
 		case R.id.b5_3_shaidanquan:
-			Intent itshaidanquan = new Intent();
-			itshaidanquan
-					.setClass(B1_HomeActivity.this, B5_3_ShaiDanQuan.class);
-			startActivity(itshaidanquan);
+			if (isLogin()) {
+				Intent itshaidanquan = new Intent();
+				itshaidanquan
+						.setClass(B1_HomeActivity.this, B5_3_ShaiDanQuan.class);
+				startActivity(itshaidanquan);
+			}else {
+				Intent intent_login=new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		// 猜你喜欢
 		case R.id.rl_b1_a2_cnxh:
-			Intent itcnxh = new Intent();
-			itcnxh.setClass(B1_HomeActivity.this, B1_a2_CaiNiXiHuan.class);
-			startActivity(itcnxh);
+			if (isLogin()) {
+				Intent itcnxh = new Intent();
+				itcnxh.setClass(B1_HomeActivity.this, B1_a2_CaiNiXiHuan.class);
+				startActivity(itcnxh);
+			}else {
+				Intent intent_login=new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 
 		// 每日好店
 		case R.id.rl_b1_a3_mrhd:
-			Intent itmrhd = new Intent();
-			itmrhd.setClass(B1_HomeActivity.this, B1_a3_MeiRiHaoDian.class);
-			startActivity(itmrhd);
+			if (isLogin()) {
+				Intent itmrhd = new Intent();
+				itmrhd.setClass(B1_HomeActivity.this, B1_a3_MeiRiHaoDian.class);
+				startActivity(itmrhd);
+			}else {
+				Intent intent_login=new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 
-		// 每日好店
+		// 附近店铺
 		case R.id.rl_fujin:
-			Intent asd = new Intent();
-			asd.setClass(B1_HomeActivity.this, B1_a3_MeiRiHaoDian.class);
-			startActivity(asd);
+			if (isLogin()) {
+				Intent asd = new Intent();
+				asd.setClass(B1_HomeActivity.this, B1_a3_FuJinDianPu.class);
+				startActivity(asd);
+			}else {
+				Intent intent_login=new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		// 宝贝
 		// case R.id.tv_baobei:
@@ -550,14 +607,26 @@ public class B1_HomeActivity extends BaseActivity {
 		// // addPopWindow.showPopupWindow(tv_baobei);
 		// break;
 		case R.id.rl_sousuokuang:
-			Intent itsydps = new Intent();
-			itsydps.setClass(B1_HomeActivity.this, B1_a4_SearchActivity.class);
-			startActivity(itsydps);
+			if (isLogin()) {
+				Intent itsydps = new Intent();
+				itsydps.setClass(B1_HomeActivity.this, B1_a4_SearchActivity.class);
+				startActivity(itsydps);
+			}else {
+				Intent intent_login=new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		case R.id.a1_sousuofujin:
-			Intent itsydps1 = new Intent();
-			itsydps1.setClass(B1_HomeActivity.this, B1_a4_SearchActivity.class);
-			startActivity(itsydps1);
+			if (isLogin()) {
+				Intent itsydps1 = new Intent();
+				itsydps1.setClass(B1_HomeActivity.this, B1_a4_SearchActivity.class);
+				startActivity(itsydps1);
+			}else {
+				Intent intent_login=new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		// 首页天天特价
 	/*	case R.id.ll_dayspecial:
@@ -696,5 +765,13 @@ public class B1_HomeActivity extends BaseActivity {
 			now_pos = cur;
 		}
 	}
-	
+
+	public boolean isLogin()
+	{
+		if (getSharedPreferenceValue("userid").equals("")) {
+			return false;
+		}else {
+			return true;
+		}
+	}
 }

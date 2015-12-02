@@ -101,7 +101,11 @@ public class B1_a1_TianTianTeJia extends BaseActivity implements IXListViewListe
 				try {
 					org.json.JSONArray array = datas.getJSONArray("day_special");
 					Tools.Log("res_Points_array="+array);
-					data.clear();
+					if (curpage>1) {
+						
+					}else {
+						data.clear();
+					}
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject jsonItem = array.getJSONObject(i);
 						Map<String, String> map = new HashMap();

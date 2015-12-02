@@ -13,6 +13,7 @@
         <include layout="@layout/layout_head" />
 
         <TextView
+            android:id="@+id/title_head"
             style="@style/title_head"
             android:text="每日好店"
             android:textSize="18sp" />
