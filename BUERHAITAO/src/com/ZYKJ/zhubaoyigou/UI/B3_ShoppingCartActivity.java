@@ -256,7 +256,6 @@ public class B3_ShoppingCartActivity extends BaseActivity implements RefreshExpa
 				catch (org.json.JSONException e) {
 					e.printStackTrace();
 				}
-				
 			}
 			else//失败 
 			{
@@ -265,11 +264,14 @@ public class B3_ShoppingCartActivity extends BaseActivity implements RefreshExpa
 			}
 		};
 	};
-
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		HttpUtils.getShoppingCarInfoList(res_ShoppingCarInfo, key);
+		im_checkall.setSelected(false);
+		tv_jiesuan.setText("结算（0）");
+		tv_sumgoods.setText("0.00");
 	};
 
 	@Override

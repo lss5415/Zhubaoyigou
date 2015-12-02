@@ -47,7 +47,7 @@ public class B5_5_OrderStatusAdapter extends BaseAdapter {
     private static final int DAISHOUHUO = 30;
     private static final int YISHOUHUO  = 40;
 	
-	String price,pay_sn,store_phone,canBeComment;                                     //订单金额
+	String price,pay_sn,store_phone,canBeComment;//订单金额
     private static final String CHANNEL_WECHAT = "wx";//通过微信支付
     private static final String CHANNEL_ALIPAY = "alipay";//通过支付宝支付
     private static final int REQUEST_CODE_PAYMENT = 1;
@@ -144,7 +144,7 @@ public class B5_5_OrderStatusAdapter extends BaseAdapter {
 					viewHolder.btn_tocomment.setVisibility(View.VISIBLE);//待评价根据服务器取出的数据进行判断，判断订单是否已经被评价过
 				}else {
 					canBeComment = "cannot";
-					viewHolder.btn_tocomment.setVisibility(View.INVISIBLE);//待评价根据服务器取出的数据进行判断，判断订单是否已经被评价过
+					viewHolder.btn_tocomment.setVisibility(View.GONE);//待评价根据服务器取出的数据进行判断，判断订单是否已经被评价过
 				}
 				viewHolder.btn_delete_this.setVisibility(View.VISIBLE);
 				viewHolder.btn_tuihuanhuo.setVisibility(View.VISIBLE);
@@ -402,7 +402,7 @@ public class B5_5_OrderStatusAdapter extends BaseAdapter {
 			intent_comment.putExtra("extend_order_goods",extend_order_goods.toString());
 			intent_comment.putExtra("price",price);
 			intent_comment.putExtra("order_id",order_id);
-			c.startActivity(intent_comment);
+			c.startActivityForResult(intent_comment, 99);
 		}
 		
 	}
