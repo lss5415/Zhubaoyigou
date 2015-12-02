@@ -56,7 +56,6 @@ public class B2_ClassifyActivity extends BaseActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		initView(R.layout.ui_b2_classifyactivity);
-		
 		initView();
 		requestData();
 	}
@@ -273,12 +272,18 @@ public class B2_ClassifyActivity extends BaseActivity{
 	                product_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 						@Override
 						public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-							String gc_id = list.get(position).get("gc_id");
-//							Toast.makeText(B2_ClassifyActivity.this, gc_id, Toast.LENGTH_LONG).show();
-			    			B1_a4_SearchActivity.CHANNEL=0;
-							Intent intent = new Intent(B2_ClassifyActivity.this,B1_a4_SearchActivity.class);
-							intent.putExtra("gc_id", gc_id);
-							startActivity(intent);
+							if (isLogin()) {
+								String gc_id = list.get(position).get("gc_id");
+//								Toast.makeText(B2_ClassifyActivity.this, gc_id, Toast.LENGTH_LONG).show();
+				    			B1_a4_SearchActivity.CHANNEL=0;
+								Intent intent = new Intent(B2_ClassifyActivity.this,B1_a4_SearchActivity.class);
+								intent.putExtra("gc_id", gc_id);
+								startActivity(intent);
+							}else {
+								Intent intent_login=new Intent();
+								intent_login.setClass(B2_ClassifyActivity.this, B5_1_LoginActivity.class);
+								startActivity(intent_login);
+							}
 						}
 					});
 				} catch (JSONException e) {
@@ -312,5 +317,13 @@ public class B2_ClassifyActivity extends BaseActivity{
     			break;
         }
 	}
-	
+
+	public boolean isLogin()
+	{
+		if (getSharedPreferenceValue("userid").equals("")) {
+			return false;
+		}else {
+			return true;
+		}
+	}
 }

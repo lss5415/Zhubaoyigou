@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.adapter.B1_a3_MeiRiHaoDianAdapter;
@@ -28,10 +29,10 @@ import com.external.maxwin.view.XListView.IXListViewListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 /**
- * @author lss 2015年6月17日 每日好店
+ * @author lss 2015年6月17日 附近店铺
  *
  */
-public class B1_a3_MeiRiHaoDian extends BaseActivity implements IXListViewListener  {
+public class B1_a3_FuJinDianPu extends BaseActivity implements IXListViewListener  {
 	//返回
 	private ImageButton b1_a3_goodstoreback;
 	private MyListView listview_b1_a3_goodstore;
@@ -39,22 +40,25 @@ public class B1_a3_MeiRiHaoDian extends BaseActivity implements IXListViewListen
 	private B1_a3_MeiRiHaoDianAdapter goodstoredapter;
 	int curpage=1;
 	private Handler mHandler = new Handler();//异步加载或刷新
+	private TextView title_head;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		initView(R.layout.ui_b1_a3_meirihaodian);
-
+		
+		title_head = (TextView)findViewById(R.id.title_head);
+		title_head.setText("附近店铺");
 		b1_a3_goodstoreback = (ImageButton)findViewById(R.id.b1_a3_goodstoreback);
 		listview_b1_a3_goodstore = (MyListView)findViewById(R.id.listview_b1_a3_goodstore);
-		goodstoredapter = new B1_a3_MeiRiHaoDianAdapter(B1_a3_MeiRiHaoDian.this,data);
+		goodstoredapter = new B1_a3_MeiRiHaoDianAdapter(B1_a3_FuJinDianPu.this,data);
 		listview_b1_a3_goodstore.setAdapter(goodstoredapter);
 		listview_b1_a3_goodstore.setPullLoadEnable(true);
 		listview_b1_a3_goodstore.setPullRefreshEnable(true);
 		listview_b1_a3_goodstore.setXListViewListener(this, 0);
 		listview_b1_a3_goodstore.setRefreshTime();
 		RequestDailog.showDialog(this, "正在加载数据，请稍后");
-//		HttpUtils.getGoodStore(res_goodstore, "5","0","88","80", "100");
-		HttpUtils.getGoodStore(res_goodstore, "5",String.valueOf(curpage),getSharedPreferenceValue("cityid"),getSharedPreferenceValue("lng"),getSharedPreferenceValue("lat"));
+//		HttpUtils.getNearStore(res_goodstore, "5","0","88","80", "100");
+		HttpUtils.getNearStore(res_goodstore, "5",String.valueOf(curpage),getSharedPreferenceValue("cityid"),getSharedPreferenceValue("lng"),getSharedPreferenceValue("lat"));
 		listview_b1_a3_goodstore.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -64,7 +68,7 @@ public class B1_a3_MeiRiHaoDian extends BaseActivity implements IXListViewListen
 				Intent intent = new Intent();
 				String storeid = data.get(arg2-1).get("store_id");
 				intent.putExtra("store_id", storeid);
-				intent.setClass(B1_a3_MeiRiHaoDian.this,BX_DianPuXiangQingActivity.class);
+				intent.setClass(B1_a3_FuJinDianPu.this,BX_DianPuXiangQingActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -140,7 +144,7 @@ public class B1_a3_MeiRiHaoDian extends BaseActivity implements IXListViewListen
 		super.onClick(v);
 		switch (v.getId()) {
 		case R.id.b1_a3_goodstoreback:
-			B1_a3_MeiRiHaoDian.this.finish();
+			B1_a3_FuJinDianPu.this.finish();
 			break;
 			
 		}
@@ -152,7 +156,7 @@ public class B1_a3_MeiRiHaoDian extends BaseActivity implements IXListViewListen
 			@Override
 			public void run() {
 					curpage = 1;
-					HttpUtils.getGoodStore(res_goodstore, "5",String.valueOf(curpage),getSharedPreferenceValue("cityid"),getSharedPreferenceValue("lng"),getSharedPreferenceValue("lat"));
+					HttpUtils.getNearStore(res_goodstore, "5",String.valueOf(curpage),getSharedPreferenceValue("cityid"),getSharedPreferenceValue("lng"),getSharedPreferenceValue("lat"));
 					onLoad();
 			}
 		}, 1000);
@@ -165,7 +169,7 @@ public class B1_a3_MeiRiHaoDian extends BaseActivity implements IXListViewListen
 			@Override
 			public void run() {
 					curpage += 1;
-					HttpUtils.getGoodStore(res_goodstore, "5",String.valueOf(curpage),getSharedPreferenceValue("cityid"),getSharedPreferenceValue("lng"),getSharedPreferenceValue("lat"));
+					HttpUtils.getNearStore(res_goodstore, "5",String.valueOf(curpage),getSharedPreferenceValue("cityid"),getSharedPreferenceValue("lng"),getSharedPreferenceValue("lat"));
 					onLoad();
 			}
 		}, 1000);		

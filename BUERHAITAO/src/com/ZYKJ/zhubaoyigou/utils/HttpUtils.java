@@ -1108,6 +1108,19 @@ public class HttpUtils {
 		client.get(url, res);
 		
 	}
+	/**
+	 * 55 附近店铺
+	 * @param page 每页数量
+	 * @param curpage 当前页码
+	 * @param city_id 城市id
+	 * @param lng 经度
+	 * @param lat 纬度
+	 */
+	public static void getNearStore(AsyncHttpResponseHandler res,String page,String curpage,String city_id,String lng,String lat) {
+		String url = base_url + "index.php?act=store&op=near_store"+"&page="+page+"&curpage="+curpage+"&city_id="+city_id+"&lng="+lng+"&lat="+lat;
+		client.get(url, res);
+		
+	}
 	
 	/**
 	 * 上传晒单圈图片

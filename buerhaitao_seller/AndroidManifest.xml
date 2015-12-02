@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zykj.zhubaoyigou_seller"
-    android:versionCode="1"
+    android:versionCode="2"
     android:versionName="1.0" >
 
     <uses-sdk
@@ -42,6 +42,7 @@
         <activity android:name="com.zykj.zhubaoyigou_seller.B1_HomeActivity"></activity>
         <activity android:name="com.zykj.zhubaoyigou_seller.B2_ProductActivity"></activity>
         <activity android:name="com.zykj.zhubaoyigou_seller.B3_AddActivity"></activity>
+        <activity android:name="com.zykj.zhubaoyigou_seller.B3_Add1Activity"></activity>
         <activity android:name="com.zykj.zhubaoyigou_seller.B4_OrderActivity"></activity>
         <activity android:name="com.zykj.zhubaoyigou_seller.B5_SetActivity"></activity>
         <activity android:name="com.zykj.zhubaoyigou_seller.B5_1_LoginActivity"></activity>
