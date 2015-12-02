@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.adapter.JieSuanAdapter;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
+import com.ZYKJ.zhubaoyigou.base.BaseApp;
 import com.ZYKJ.zhubaoyigou.data.CarJieSuan;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
@@ -266,8 +267,7 @@ public class JieSuanActivity extends BaseActivity {
 				if(StringUtils.isEmpty(error)){
 					if (jsonData.getFloat("order_amount") <= 0) {
 						Toast.makeText(getApplicationContext(), "用钱包支付成功！", Toast.LENGTH_SHORT).show();
-						Intent itgou = new Intent(JieSuanActivity.this,B3_ShoppingCartActivity.class);
-						startActivity(itgou);
+						startActivity(new Intent(JieSuanActivity.this, B5_5_OrderStatus.class).putExtra("STATUS", 20));
 						finish();
 					}else {
 						pay_sn = jsonData.getString("pay_sn");
@@ -276,8 +276,7 @@ public class JieSuanActivity extends BaseActivity {
 						} else if (tv_zffs.getText().toString().equals("支付宝支付")) {
 							HttpUtils.payTheOrder(res_payTheOrder, key, pay_sn, CHANNEL_ALIPAY);
 						} else if (tv_zffs.getText().toString().equals("货到付款")) {
-							Intent intent_toMy = new Intent(JieSuanActivity.this, B5_MyActivity.class);
-							startActivity(intent_toMy);
+							startActivity(new Intent(JieSuanActivity.this, B5_5_OrderStatus.class).putExtra("STATUS", 20));
 							finish();
 						}
 					}
@@ -318,7 +317,9 @@ public class JieSuanActivity extends BaseActivity {
 					startActivityForResult(intent, REQUEST_CODE_PAYMENT);
 				}else{
 					Toast.makeText(getApplicationContext(), "请求失败", Toast.LENGTH_LONG).show();
-					Tools.Log("res_Points_error=" + datas.toString() + "");
+//					Tools.Log("res_Points_error=" + datas.toString() + "");
+					startActivity(new Intent(JieSuanActivity.this, B5_5_OrderStatus.class).putExtra("STATUS", 10));
+					finish();
 				}
 			}catch(UnsupportedEncodingException e){
 				e.printStackTrace();
@@ -351,20 +352,27 @@ public class JieSuanActivity extends BaseActivity {
 					Tools.Notic(this, "您已经付款成功", new OnClickListener() {
 						@Override
 						public void onClick(View arg0) {
-							Intent intent_toMy = new Intent(JieSuanActivity.this, B5_MyActivity.class);
-							startActivity(intent_toMy);
+							startActivity(new Intent(JieSuanActivity.this, B5_5_OrderStatus.class).putExtra("STATUS", 20));
 							finish();
 						}
 					});
 				} else if (result.equals("fail")) {
 					Tools.Notic(this, "支付失败，请重试", null);
+					startActivity(new Intent(JieSuanActivity.this, B5_5_OrderStatus.class).putExtra("STATUS", 10));
+					finish();
 				} else if (result.equals("cancel")) {
 					Tools.Notic(this, "支付取消", null);
+					startActivity(new Intent(JieSuanActivity.this, B5_5_OrderStatus.class).putExtra("STATUS", 10));
+					finish();
 				} else if (result.equals("invalid")) {
 					Tools.Notic(this, "支付失败，请重新支付", null);
+					startActivity(new Intent(JieSuanActivity.this, B5_5_OrderStatus.class).putExtra("STATUS", 10));
+					finish();
 				}
 			} else if (resultCode == Activity.RESULT_CANCELED) {
 				Tools.Notic(this, "支付取消", null);
+				startActivity(new Intent(JieSuanActivity.this, B5_5_OrderStatus.class).putExtra("STATUS", 10));
+				finish();
 			}else if (resultCode==GetAddress) {
 				address_id=data.getStringExtra("address_id");
 				tv_buyer_name.setText("姓名:"+data.getStringExtra("true_name"));

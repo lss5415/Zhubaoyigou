@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -54,11 +55,11 @@ public class B5_5_OrderStatus extends BaseActivity implements IXListViewListener
 	
 	String key;
 	@Override
-		protected void onResume() {
-			// TODO Auto-generated method stub
-			super.onResume();
-			HttpUtils.getOrderList(res_getOrderList, key, status);
-		}
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		HttpUtils.getOrderList(res_getOrderList, key, status);
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -200,6 +201,15 @@ public class B5_5_OrderStatus extends BaseActivity implements IXListViewListener
 //		RequestDailog.showDialog(this, "正在加载数据，请稍后");
 		HttpUtils.getOrderList(res_getOrderList, key, status);
 	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, android.content.Intent data) {
+		if (requestCode == 99 && resultCode == Activity.RESULT_OK) {
+			RequestDailog.showDialog(this, "正在加载数据，请稍后");
+			HttpUtils.getOrderList(res_getOrderList, key, status);
+			adapter = new B5_5_OrderStatusAdapter(this,dataList,status,key);
+			listview.setAdapter(adapter);
+		}
+	};
 	/**
 	 * 获得订单列表
 	 */
