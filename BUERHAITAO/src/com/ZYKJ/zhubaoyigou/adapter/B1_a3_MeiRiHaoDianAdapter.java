@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
 import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
+import com.ZYKJ.zhubaoyigou.utils.StringUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -76,7 +77,11 @@ public class B1_a3_MeiRiHaoDianAdapter  extends BaseAdapter {
 		ViewHolder.tv_a3_juli.setText(data.get(position).get("juli"));
 		ViewHolder.comment_rating_bar.setRating(Float.parseFloat(data.get(position).get("store_desccredit")));
 		ViewHolder.tv_a3_pinglunsum.setText(data.get(position).get("store_evaluate_count"));
-		ViewHolder.tv_a3_dpfl.setText(data.get(position).get("sc_name"));
+		if (data.get(position).get("sc_name").equals("null")) {
+			ViewHolder.tv_a3_dpfl.setText("");
+		}else {
+			ViewHolder.tv_a3_dpfl.setText(StringUtil.toString(data.get(position).get("sc_name"), ""));
+		}
 		ViewHolder.tv_a3_address.setText(data.get(position).get("store_address"));
 		return convertView;
 	}

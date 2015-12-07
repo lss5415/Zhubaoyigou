@@ -14,6 +14,7 @@ import android.os.StatFs;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 /**
  * 工具类
@@ -29,6 +30,8 @@ public class Tools {
 	public static int M_SCREEN_WIDTH;
 
 	public static int M_SCREEN_HEIGHT;
+	
+	static private Toast mToast = null;
 
 	/**
 	 * log输出
@@ -171,6 +174,21 @@ public class Tools {
 		// return freeBlocks * blockSize; //单位Byte
 		// return (freeBlocks * blockSize)/1024; //单位KB
 		return (freeBlocks * blockSize) / 1024 / 1024; // 单位MB
+	}
+	
+	/**
+	 * Toast提醒
+	 * @param msg
+	 */
+	public static void toast (Context context,String msg) {
+		// 防止Toast重复显示
+		if (mToast == null) {  
+            mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);  
+        } else {  
+            mToast.setText(msg);  
+            mToast.setDuration(Toast.LENGTH_SHORT);  
+        }  
+        mToast.show(); 
 	}
 
 }

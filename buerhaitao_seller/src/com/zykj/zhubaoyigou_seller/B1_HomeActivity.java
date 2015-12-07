@@ -58,7 +58,10 @@ public class B1_HomeActivity extends BaseActivity {
 	private int now_pos = 0;
 	
 	String key;
-	String store_phone,store_name,store_address,area_info,logopath,store_freight_price;
+	String store_phone,store_name,store_address,area_info,logopath,store_freight_price,location;
+	Double geoLat;// 经度
+	Double geoLng;// 纬度
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui_home);
@@ -114,9 +117,12 @@ public class B1_HomeActivity extends BaseActivity {
 			intent_edit.putExtra("store_name", store_name);
 			intent_edit.putExtra("store_address",store_address);
 			intent_edit.putExtra("area_info",area_info);
+			intent_edit.putExtra("location",location);
 			intent_edit.putExtra("store_phone",store_phone);
 			intent_edit.putExtra("logopath",logopath);
 			intent_edit.putExtra("store_freight_price",store_freight_price);
+			intent_edit.putExtra("geoLat",geoLat+"");
+			intent_edit.putExtra("geoLng",geoLng+"");
 			startActivity(intent_edit);
 			break;
 		case R.id.iv_phone:
@@ -161,7 +167,10 @@ public class B1_HomeActivity extends BaseActivity {
 					store_phone = store_info.getString("store_phone");
 					Tools.Log("store_phone="+store_phone);
 					store_address = store_info.getString("store_address");
+					location = store_info.getString("location");
 					area_info = store_info.getString("area_info");
+					geoLat = Double.valueOf(store_info.getString("lat"));
+					geoLng = Double.valueOf(store_info.getString("lng"));
 					store_freight_price = store_info.getString("store_freight_price");
 					
 					if (m_scroll.getVisibility() != View.VISIBLE) {
@@ -204,7 +213,7 @@ public class B1_HomeActivity extends BaseActivity {
 					
 					tv_storename.setText(store_name);
 					tv_address.setText(store_address);
-					tv_storeaddress.setText(area_info);
+					tv_storeaddress.setText(location);
 					
 					ImageLoader.getInstance().displayImage(logopath, iv_logo);
 //					ImageLoader.getInstance().displayImage(array.getString(0), iv_bg);

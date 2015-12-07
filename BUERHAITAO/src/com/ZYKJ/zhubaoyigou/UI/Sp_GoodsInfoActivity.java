@@ -62,7 +62,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 	// 已售件数
 	private TextView tv_yishoujian;
 	// 浏览量
-//	private TextView tv_liulancount;
+	// private TextView tv_liulancount;
 	// 选择规格类型
 	private RelativeLayout rl_chooseleixing;
 	// 宝贝评价(1731)
@@ -90,7 +90,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 	// 商品分享
 	private LinearLayout ll_goods_fenxiang;
 	private String chanpinprice, kucun, xsprice;
-	private JSONArray leixing1=null;
+	private JSONArray leixing1 = null;
 	private int pj = 0;
 	private JSONObject jsonitemz, xuanxiang;
 	private String choosejiage, choosexinghao;
@@ -104,7 +104,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 	private String price;
 	private Intent itaddcar1;
 	private LinearLayout ll_shoucang, ll_dianpu, ll_pinglun;// 收藏,店铺,评论
-	private String store_id,aaa="";//店铺ID，选择规格的头像
+	private String store_id, aaa = "";// 店铺ID，选择规格的头像
 	/** 滚动层 */
 	private ScrollView m_scroll;
 	private AutoScrollViewPager viewPager;
@@ -130,7 +130,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 		tv_shichangjia = (TextView) findViewById(R.id.tv_shichangjia);
 		tv_sp_ssejfl = (TextView) findViewById(R.id.tv_sp_ssejfl);
 		tv_yishoujian = (TextView) findViewById(R.id.tv_yishoujian);
-//		tv_liulancount = (TextView) findViewById(R.id.tv_liulancount);
+		// tv_liulancount = (TextView) findViewById(R.id.tv_liulancount);
 		rl_chooseleixing = (RelativeLayout) findViewById(R.id.rl_chooseleixing);
 		tv_sp_babypingjia = (TextView) findViewById(R.id.tv_sp_babypingjia);
 		tv_zongpinfen = (TextView) findViewById(R.id.tv_zongpinfen);
@@ -160,7 +160,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 		webSettings.setUseWideViewPort(true);
 		webSettings.setLoadWithOverviewMode(true);
 		webSettings.setJavaScriptEnabled(true);
-//		webSettings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+		// webSettings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -262,9 +262,15 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			Sp_GoodsInfoActivity.this.finish();
 			break;
 		case R.id.im_sp_gouwuche:
-			Intent itgwc = new Intent(Sp_GoodsInfoActivity.this,
-					B3_ShoppingCartActivity.class);
-			startActivity(itgwc);
+			if (isLogin()) {
+				Intent itgwc = new Intent(Sp_GoodsInfoActivity.this,
+						B3_ShoppingCartActivity.class);
+				startActivity(itgwc);
+			} else {
+				Intent intent_login = new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		case R.id.ll_ckgdpj:
 			Intent iteckpj = new Intent(Sp_GoodsInfoActivity.this,
@@ -274,49 +280,38 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			startActivity(iteckpj);
 			break;
 		case R.id.ll_sp_addincar:
-			if (leixing1==null) {
-				HttpUtils.getAddGouWu(res_addgouwu, getSharedPreferenceValue("key"),goods_id,"1");
-			}else {
-				XuanZeLeiXing();
-			}
-			break;
-		case R.id.ll_ljgm:// 立即购买
-			if (tv_xzgglx.getText().equals("选择规格类型")
-					|| tv_xzgglx.getText().equals("")) {
-				if (leixing1==null) {
-					Intent itmrhd = new Intent();
-					itmrhd.setClass(Sp_GoodsInfoActivity.this, JieSuan1Activity.class);
-					itmrhd.putExtra("allpri",xsprice);
-					itmrhd.putExtra("xzhdgg", goods_id);
-					startActivity(itmrhd);
-				}else {
+			if (isLogin()) {
+				if (leixing1 == null) {
+					HttpUtils.getAddGouWu(res_addgouwu,
+							getSharedPreferenceValue("key"), goods_id, "1");
+				} else {
 					XuanZeLeiXing();
 				}
 			} else {
-				if (leixing1.length() == 1) {
-					try {
-						String a = tv_qxzlx_yincang.substring(0,
-								tv_qxzlx_yincang.length() - 1);
-						JSONObject jso = new JSONObject(choosexinghao);
-						goodsid = jso.getString(a);
+				Intent intent_login = new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
+			break;
+		case R.id.ll_ljgm:// 立即购买
+			if (isLogin()) {
+				if (tv_xzgglx.getText().equals("选择规格类型")
+						|| tv_xzgglx.getText().equals("")) {
+					if (leixing1 == null) {
 						Intent itmrhd = new Intent();
 						itmrhd.setClass(Sp_GoodsInfoActivity.this,
 								JieSuan1Activity.class);
-						itmrhd.putExtra("allpri",
-								price.substring(1, price.length() - 1));
-						itmrhd.putExtra("xzhdgg", xzhdgg);
+						itmrhd.putExtra("allpri", xsprice);
+						itmrhd.putExtra("xzhdgg", goods_id);
 						startActivity(itmrhd);
-					} catch (Exception e) {
-					}
-				}
-				if (leixing1.length() == 2) {
-					if (tv_qxzlx1 == null || tv_qxzlx1 == ""
-							|| tv_qxzlx2 == null || tv_qxzlx2 == "") {
-						XuanZeLeiXing();
 					} else {
-						// 立即购买
+						XuanZeLeiXing();
+					}
+				} else {
+					if (leixing1.length() == 1) {
 						try {
-							String a = tv_qxzlx_yincang;
+							String a = tv_qxzlx_yincang.substring(0,
+									tv_qxzlx_yincang.length() - 1);
 							JSONObject jso = new JSONObject(choosexinghao);
 							goodsid = jso.getString(a);
 							Intent itmrhd = new Intent();
@@ -324,19 +319,50 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 									JieSuan1Activity.class);
 							itmrhd.putExtra("allpri",
 									price.substring(1, price.length() - 1));
-							itmrhd.putExtra("xzhdgg", goodsid);
+							itmrhd.putExtra("xzhdgg", xzhdgg);
 							startActivity(itmrhd);
+						} catch (Exception e) {
+						}
+					}
+					if (leixing1.length() == 2) {
+						if (tv_qxzlx1 == null || tv_qxzlx1 == ""
+								|| tv_qxzlx2 == null || tv_qxzlx2 == "") {
+							XuanZeLeiXing();
+						} else {
+							// 立即购买
+							try {
+								String a = tv_qxzlx_yincang;
+								JSONObject jso = new JSONObject(choosexinghao);
+								goodsid = jso.getString(a);
+								Intent itmrhd = new Intent();
+								itmrhd.setClass(Sp_GoodsInfoActivity.this,
+										JieSuan1Activity.class);
+								itmrhd.putExtra("allpri",
+										price.substring(1, price.length() - 1));
+								itmrhd.putExtra("xzhdgg", goodsid);
+								startActivity(itmrhd);
 
-						} catch (org.json.JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							} catch (org.json.JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
 				}
+			} else {
+				Intent intent_login = new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
 			}
 			break;
 		case R.id.rl_chooseleixing:
-			XuanZeLeiXing();
+			if (isLogin()) {
+				XuanZeLeiXing();
+			} else {
+				Intent intent_login = new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		case R.id.ll_goods_fenxiang:
 			// 设置分享内容
@@ -346,8 +372,14 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 					Sp_GoodsInfoActivity.this, fxnr, fxtp);
 			break;
 		case R.id.ll_shoucang:
-			// getShouCang
-			HttpUtils.getShouCang(res_shoucang,getSharedPreferenceValue("key"), goods_id);
+			if (isLogin()) {
+				HttpUtils.getShouCang(res_shoucang,
+						getSharedPreferenceValue("key"), goods_id);
+			} else {
+				Intent intent_login = new Intent();
+				intent_login.setClass(this, B5_1_LoginActivity.class);
+				startActivity(intent_login);
+			}
 			break;
 		case R.id.ll_dianpu:
 			Intent intent = new Intent();
@@ -363,9 +395,10 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 
 	public void XuanZeLeiXing() {
 		itaddcar1 = new Intent(Sp_GoodsInfoActivity.this, Sp_a2_XingHao.class);
-		if (leixing1==null) {
-			Toast.makeText(Sp_GoodsInfoActivity.this,"此产品没有规格，无需选择", Toast.LENGTH_LONG).show();
-		}else {
+		if (leixing1 == null) {
+			Toast.makeText(Sp_GoodsInfoActivity.this, "此产品没有规格，无需选择",
+					Toast.LENGTH_LONG).show();
+		} else {
 			if (leixing1.length() == 1) {
 				LeiXing1();
 			}
@@ -373,15 +406,15 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 				LeiXing2();
 			}
 
-		itaddcar1.putExtra("chanpinprice", chanpinprice);
-		itaddcar1.putExtra("kucun", kucun);
-		itaddcar1.putExtra("goodsid", goodsid);
-		itaddcar1.putExtra("choosejiage", choosejiage);
-		itaddcar1.putExtra("choosexinghao", choosexinghao);
-		itaddcar1.putExtra("aaa", aaa);
-		Sp_GoodsInfoActivity.this.startActivityForResult(itaddcar1, 0);
-		Sp_GoodsInfoActivity.this.overridePendingTransition(
-				R.anim.activity_open, 0);
+			itaddcar1.putExtra("chanpinprice", chanpinprice);
+			itaddcar1.putExtra("kucun", kucun);
+			itaddcar1.putExtra("goodsid", goodsid);
+			itaddcar1.putExtra("choosejiage", choosejiage);
+			itaddcar1.putExtra("choosexinghao", choosexinghao);
+			itaddcar1.putExtra("aaa", aaa);
+			Sp_GoodsInfoActivity.this.startActivityForResult(itaddcar1, 0);
+			Sp_GoodsInfoActivity.this.overridePendingTransition(
+					R.anim.activity_open, 0);
 		}
 	}
 
@@ -394,19 +427,16 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			// JSONArray jsonarray = xuanxiang.getJSONArray("1");
 			JSONArray jsonarray = xuanxiang.getJSONArray(leixing1
 					.getJSONObject(0).getString("id").toString());
-			/*List<String> list = new ArrayList<String>();
-			for (int i = 0; i < jsonarray.length(); i++) {
-				try {
-					list.add(jsonarray.getString(i));
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}*/
+			/*
+			 * List<String> list = new ArrayList<String>(); for (int i = 0; i <
+			 * jsonarray.length(); i++) { try {
+			 * list.add(jsonarray.getString(i)); } catch (JSONException e) { //
+			 * TODO Auto-generated catch block e.printStackTrace(); } }
+			 */
 			itaddcar1.putExtra("arry1", jsonarray.toString());
-			
-//			String[] stringArray = list.toArray(new String[list.size()]);
-//			itaddcar1.putExtra("arry1", stringArray);
+
+			// String[] stringArray = list.toArray(new String[list.size()]);
+			// itaddcar1.putExtra("arry1", stringArray);
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -471,8 +501,8 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 					// 商品名称
 					tv_sp_spname.setText(jsonItem.getString("goods_name"));
 					// 销售价
-					xsprice =jsonItem.getString("goods_promotion_price");
-					tv_xiaoshoujia.setText( "￥" + xsprice);
+					xsprice = jsonItem.getString("goods_promotion_price");
+					tv_xiaoshoujia.setText("￥" + xsprice);
 					store_id = jsonItem.getString("store_id");
 					// 库存
 					kucun = "库存：" + jsonItem.getString("goods_storage") + "件";
@@ -485,8 +515,8 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 					tv_yishoujian.setText("已售"
 							+ jsonItem.getString("goods_salenum") + "件");
 					// 浏览量
-//					tv_liulancount.setText("浏览 "
-//							+ jsonItem.getString("goods_click"));
+					// tv_liulancount.setText("浏览 "
+					// + jsonItem.getString("goods_click"));
 					// 选择规格类型
 					// rl_chooseleixing
 					// 宝贝评价(1731)
@@ -504,7 +534,8 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 						// 用户头像
 						ImageLoader.getInstance().displayImage(
 								(String) jsonitemz.getString("geval_avatar"),
-								im_userimage, ImageOptions.getOpstion(), animateFirstListener);
+								im_userimage, ImageOptions.getOpstion(),
+								animateFirstListener);
 						// 用户名称
 						tv_username.setText(jsonitemz
 								.getString("geval_frommembername"));
@@ -524,7 +555,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 						leixing1 = jsonItem.getJSONArray("spec_name");
 						xuanxiang = jsonItem.getJSONObject("spec_value");
 					} catch (Exception e) {
-						
+
 					}
 					choosexinghao = datas.getJSONObject("spec_list").toString();
 					choosejiage = datas.getJSONObject("spec_list_goods")
@@ -542,7 +573,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 						try {
 							aaa = datsj.getString("0").toString();
 						} catch (Exception e) {
-							
+
 						}
 						// 设置选中的标识
 						LinearLayout pointLinear = (LinearLayout) findViewById(R.id.gallery_point_linear);
@@ -627,34 +658,34 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 		}
 	}
 
-	JsonHttpResponseHandler res_addgouwu = new JsonHttpResponseHandler()
-	{
+	JsonHttpResponseHandler res_addgouwu = new JsonHttpResponseHandler() {
 		@Override
 		public void onSuccess(int statusCode, Header[] headers,
 				JSONObject response) {
 			// TODO Auto-generated method stub
 			super.onSuccess(statusCode, headers, response);
 			RequestDailog.closeDialog();
-			
-			String error=null;
-			JSONObject datas=null;
+
+			String error = null;
+			JSONObject datas = null;
 			try {
-				 datas = response.getJSONObject("datas");
-				 error = datas.getString("error");
+				datas = response.getJSONObject("datas");
+				error = datas.getString("error");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (error==null)//成功
+			if (error == null)// 成功
 			{
-				Toast.makeText(getApplicationContext(), "添加成功", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "添加成功",
+						Toast.LENGTH_LONG).show();
 				Intent itgwc = new Intent(Sp_GoodsInfoActivity.this,
 						B3_ShoppingCartActivity.class);
-				startActivity(itgwc);				
-			}
-			else//失败 
+				startActivity(itgwc);
+			} else// 失败
 			{
-				Toast.makeText(getApplicationContext(), "添加失败，"+error, Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "添加失败，" + error,
+						Toast.LENGTH_LONG).show();
 			}
 		}
 	};
@@ -664,7 +695,13 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 		super.onDestroy();
 		webView.destroy();
 	}
-	
-	
-	
+
+	public boolean isLogin() {
+		if (getSharedPreferenceValue("userid").equals("")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 }

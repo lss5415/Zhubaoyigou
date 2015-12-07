@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ZYKJ.zhubaoyigou.R;
+import com.ZYKJ.zhubaoyigou.UI.B1_a1_TianTianTeJia;
+import com.ZYKJ.zhubaoyigou.UI.B1_a3_FuJinDianPu;
+import com.ZYKJ.zhubaoyigou.UI.BX_DianPuXiangQingActivity;
+import com.ZYKJ.zhubaoyigou.UI.Sp_GoodsInfoActivity;
 import com.ZYKJ.zhubaoyigou.data.ChildrenItem;
 import com.ZYKJ.zhubaoyigou.data.GroupItem;
 import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
@@ -99,6 +104,7 @@ public class B3_ShpppingCartAdapter extends BaseExpandableListAdapter{
 			viewHolder.jianbt = (Button)convertView.findViewById(R.id.jianbt);//减商品
 			viewHolder.ll_b3shopmoren = (LinearLayout)convertView.findViewById(R.id.ll_b3shopmoren);//默认
 			viewHolder.ll_b3shopedit = (LinearLayout)convertView.findViewById(R.id.ll_b3shopedit);//编辑
+			viewHolder.ll_goodtiaozhuan = (LinearLayout)convertView.findViewById(R.id.ll_goodtiaozhuan);//编辑
 			viewHolder.childrenCB = (CheckBox) convertView.findViewById(R.id.children_cb);//选择
 			viewHolder.tv_del = (TextView)convertView.findViewById(R.id.tv_del);//删除
 			convertView.setTag(viewHolder);
@@ -125,6 +131,7 @@ public class B3_ShpppingCartAdapter extends BaseExpandableListAdapter{
 		viewHolder.jianbt.setOnClickListener(new MyOnClickListener(groupItem,childrenItem));//减商品
 		viewHolder.childrenCB.setOnClickListener(new MyOnClickListener(groupItem,childrenItem));
 		viewHolder.tv_del.setOnClickListener(new MyOnClickListener(groupItem,childrenItem));
+		viewHolder.ll_goodtiaozhuan.setOnClickListener(new MyOnClickListener(groupItem,childrenItem));
 		return convertView;
 	}
 
@@ -232,6 +239,20 @@ public class B3_ShpppingCartAdapter extends BaseExpandableListAdapter{
 				}
 				B3_ShpppingCartAdapter.this.notifyDataSetChanged();
 				break;
+			case R.id.group_name:
+				Intent intent = new Intent();
+				String storeid = groupItem.getStore_id();
+				intent.putExtra("store_id", storeid);
+				intent.setClass(context,BX_DianPuXiangQingActivity.class);
+				context.startActivity(intent);
+				break;
+			case R.id.ll_goodtiaozhuan:
+				Intent itdayspec = new Intent();
+				String goid = childrenItem.getGoods_id();
+				itdayspec.putExtra("goods_id",goid);
+				itdayspec.setClass(context, Sp_GoodsInfoActivity.class);
+				context.startActivity(itdayspec);
+				break;
 			default:
 				break;
 			}
@@ -313,6 +334,7 @@ public class B3_ShpppingCartAdapter extends BaseExpandableListAdapter{
 			viewHolder.groupNameTV.setText(groupItem.getStore_name());
 			viewHolder.groupCBImg.setSelected(groupItem.isChecked());//设置选中状态
 			viewHolder.groupCBLayout.setOnClickListener(new MyOnClickListener(groupItem, null));
+			viewHolder.groupNameTV.setOnClickListener(new MyOnClickListener(groupItem, null));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -367,7 +389,7 @@ public class B3_ShpppingCartAdapter extends BaseExpandableListAdapter{
 		//加减数量
 		Button jiabt,jianbt;
 		//默认layout，编辑layout
-		LinearLayout ll_b3shopmoren,ll_b3shopedit;
+		LinearLayout ll_b3shopmoren,ll_b3shopedit,ll_goodtiaozhuan;
 		CheckBox childrenCB;
 		TextView tv_del;
 	}

@@ -13,7 +13,9 @@
             android:id="@+id/im_b1_a1_pic1"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/buerhaitao" />
 
         <LinearLayout

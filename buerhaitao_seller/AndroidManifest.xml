@@ -51,11 +51,12 @@
         <activity android:name="com.zykj.zhubaoyigou_seller.B_1_1_Edit"></activity>
         <activity android:name="com.zykj.zhubaoyigou_seller.B2_FenLeiActivity"></activity>
         <activity android:name="com.zykj.zhubaoyigou_seller.B5_9_1_getArea"></activity>
-        <activity android:name="com.zykj.zhubaoyigou_seller.MultyLocationActivity"></activity>
+        <activity android:name="com.zykj.zhubaoyigou_seller.B3_23_LocationActivity"></activity>
+        <!-- <activity android:name="com.zykj.zhubaoyigou_seller.MultyLocationActivity"></activity> -->
 <!--         高德定位 -->
    <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="6bc7d3d714f7be3cd736ce3b4bd2f70d" />
+            android:value="11459b0d4f44356d6e72ffc8da4136c2" />
     </application>
 
 </manifest>
