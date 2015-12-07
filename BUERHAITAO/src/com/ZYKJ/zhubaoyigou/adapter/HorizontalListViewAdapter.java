@@ -85,7 +85,7 @@ public class HorizontalListViewAdapter extends BaseAdapter {
     	public TextView tv_nickname ;  
     	public TextView tv_content ;  
     	public TextView tv_zannumber ;  
-    	public TextView tv_commentnumber ;  
+    	public TextView tv_commentnumber;  
     }  
 
 }

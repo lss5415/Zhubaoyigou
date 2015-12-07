@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
 import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
+import com.ZYKJ.zhubaoyigou.utils.StringUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
@@ -77,7 +78,11 @@ public class B1_a2_CaiNiLikeAdapter extends BaseAdapter {
 //		ImageLoader.getInstance().displayImage((String)data.get(position).get("goods_image"), ViewHolder.im_a2_pic);
 		ViewHolder.tv_a2_chanpinname.setText(data.get(position).get("goods_name"));
 		ViewHolder.tv_a2_juli.setText(data.get(position).get("juli"));
-		ViewHolder.tv_a2_chanpinjianjie.setText(data.get(position).get("goods_jingle"));
+		if (data.get(position).get("goods_jingle").equals("null")) {
+			ViewHolder.tv_a2_chanpinjianjie.setText("");
+		}else {
+			ViewHolder.tv_a2_chanpinjianjie.setText(StringUtil.toString(data.get(position).get("goods_jingle"), ""));
+		}
 		ViewHolder.tv_a2_jiage.setText(data.get(position).get("goods_promotion_price"));
 		
 		if (data.get(position).get("is_special").equals("1")) {

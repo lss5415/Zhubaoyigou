@@ -102,8 +102,15 @@ public class B_1_1_Edit extends BaseActivity {
 		logopath = intent_getData.getStringExtra("logopath");
 		et_name_c.setText(intent_getData.getStringExtra("store_name"));
 		String a = intent_getData.getStringExtra("area_info");
-		et_freight
-				.setText(intent_getData.getStringExtra("store_freight_price"));
+		tv_location = (TextView) findViewById(R.id.tv_location);
+		try {
+			tv_location.setText(intent_getData.getStringExtra("location"));
+			geoLat = Double.valueOf(intent_getData.getStringExtra("geoLat"));
+			geoLng = Double.valueOf(intent_getData.getStringExtra("geoLng"));
+		} catch (Exception e) {
+			
+		}
+		et_freight.setText(intent_getData.getStringExtra("store_freight_price"));
 		if (intent_getData.getStringExtra("area_info") == null
 				|| intent_getData.getStringExtra("area_info").equals("null")) {
 			tv_choseaddress.setText("(点击此处进行地区选择)");
@@ -138,7 +145,6 @@ public class B_1_1_Edit extends BaseActivity {
 		et_address = (EditText) findViewById(R.id.et_address);
 		et_store_phone = (EditText) findViewById(R.id.et_store_phone);
 		et_freight = (EditText) findViewById(R.id.et_freight);
-		tv_location = (TextView) findViewById(R.id.tv_location);
 	}
 
 	@Override
@@ -149,9 +155,14 @@ public class B_1_1_Edit extends BaseActivity {
 			this.finish();
 			break;
 		case R.id.iv_getLocation:// 跳转到地图界面
-			Intent intent_getlocation = new Intent(B_1_1_Edit.this,
-					MultyLocationActivity.class);
-			startActivityForResult(intent_getlocation, GetLocation);
+//			Intent intent_getlocation = new Intent(B_1_1_Edit.this,
+//					MultyLocationActivity.class);
+//			startActivityForResult(intent_getlocation, GetLocation);
+			/*设置位置*/
+			Intent intent_getlocation = new Intent(B_1_1_Edit.this,B3_23_LocationActivity.class);
+			intent_getlocation.putExtra("geoLat", geoLat);
+			intent_getlocation.putExtra("geoLng", geoLng);
+			startActivityForResult(intent_getlocation, 23);
 			break;
 		case R.id.tv_choseaddress:
 			areaIsUpdated = true;
@@ -217,7 +228,7 @@ public class B_1_1_Edit extends BaseActivity {
 
 				HttpUtils.editHomePage(res_editHomePage, key, slide, avatar,
 						store_name, province_id, city_id, area_info,
-						store_address, geoLat + "", geoLng + "", addressByGPS,
+						store_address, geoLng + "",geoLat + "", addressByGPS,
 						store_phone, store_freight_price);
 			}
 			break;
@@ -288,6 +299,15 @@ public class B_1_1_Edit extends BaseActivity {
 				// Log.e("addressByGPS", addressByGPS+"");
 			}
 
+			break;
+		case 23:// 定位
+			if (data != null) {
+				//address, lat, lng
+				geoLat = Double.valueOf(data.getStringExtra("latitude"));//经度
+				geoLng = Double.valueOf(data.getStringExtra("longitude"));//纬度
+				addressByGPS = data.getStringExtra("address");//地址
+				tv_location.setText(addressByGPS);;
+			}
 			break;
 		}
 

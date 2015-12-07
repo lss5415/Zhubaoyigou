@@ -225,7 +225,6 @@ public class B5_5_Comment_order extends BaseActivity implements
 	// *****************************onActivityResult操作
 	// begin******************************************
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
 		case XIANGCE:
 			try {
@@ -253,6 +252,7 @@ public class B5_5_Comment_order extends BaseActivity implements
 			}
 			break;
 		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	// *****************************onActivityResult操作
@@ -277,8 +277,8 @@ public class B5_5_Comment_order extends BaseActivity implements
 		// 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
 		intent.putExtra("crop", "true");
 		// aspectX aspectY 是宽高的比例
-		intent.putExtra("aspectX", 1);
-		intent.putExtra("aspectY", 1);
+//		intent.putExtra("aspectX", 1);
+//		intent.putExtra("aspectY", 1);
 		// outputX outputY 是裁剪图片宽高
 		intent.putExtra("outputX", 150);
 		intent.putExtra("outputY", 150);
@@ -352,7 +352,8 @@ public class B5_5_Comment_order extends BaseActivity implements
 	 */
 
 	@Override
-	public void addPhoto(String goodid) {
+	public void addPhoto(String goodid,String timeString) {
 		this.goods_id = goodid;
+		this.timeString = timeString;
 	}
 }

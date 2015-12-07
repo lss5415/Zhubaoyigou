@@ -168,7 +168,11 @@ public class B5_5_OrderCommentAdapter extends BaseAdapter {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.iv_takePhoto:
-				B5_5_OrderCommentAdapter.this.listener.addPhoto(goods_id);
+				Date date = new Date(System.currentTimeMillis());
+				SimpleDateFormat dateFormat = new SimpleDateFormat(
+						"'IMG'_yyyyMMddHHmmss");
+				timeString = dateFormat.format(date);
+				B5_5_OrderCommentAdapter.this.listener.addPhoto(goods_id,timeString);
 				UIDialog.ForThreeBtn(c, new String[] { "相册", "拍照","取消" }, this);
 			break;
 			case R.id.dialog_modif_1:// 相册
@@ -200,10 +204,6 @@ public class B5_5_OrderCommentAdapter extends BaseAdapter {
 				 * 我刚看的时候因为太长就认真看，其实是错的，这个里面有用的太多了，所以大家不要认为
 				 * 官方文档太长了就不看了，其实是错的，这个地方小马也错了，必须改正
 				 */
-				Date date = new Date(System.currentTimeMillis());
-				SimpleDateFormat dateFormat = new SimpleDateFormat(
-						"'IMG'_yyyyMMddHHmmss");
-				timeString = dateFormat.format(date);
 				createSDCardDir();
 				Intent intent_PAIZHAO = new Intent(
 						MediaStore.ACTION_IMAGE_CAPTURE);
@@ -249,6 +249,6 @@ public class B5_5_OrderCommentAdapter extends BaseAdapter {
 	}
 	
 	public interface OnItemPhotoListener{
-		void addPhoto(String goodid);//上传图片
+		void addPhoto(String goodid,String timeString);//上传图片
 	}
 }

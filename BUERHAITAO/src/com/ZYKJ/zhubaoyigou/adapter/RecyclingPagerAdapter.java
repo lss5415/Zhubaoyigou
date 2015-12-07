@@ -1,5 +1,8 @@
 package com.ZYKJ.zhubaoyigou.adapter;
 
+import java.util.List;
+import java.util.Map;
+
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;

@@ -122,6 +122,7 @@
                         android:id="@+id/rb_dpxiangqing_rating_bar"
                         style="@style/coupon_Rating_Bar"
                         android:layout_width="wrap_content"
+                        android:isIndicator="true"
                         android:layout_height="20dp"
                         android:layout_marginTop="5dp"
                         android:stepSize="0.5" />

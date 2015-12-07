@@ -19,7 +19,7 @@
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp" >
+            android:layout_marginLeft="10dp" >
 
             <TextView
                 android:id="@+id/tv_cityname"
@@ -45,7 +45,7 @@
             android:layout_width="fill_parent"
             android:layout_height="35dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="50dp"
             android:layout_toRightOf="@id/rl_ditu"
             android:background="@drawable/shape_corner_down" >
@@ -117,14 +117,14 @@
 			        android:layout_width="match_parent"
 			        android:layout_height="match_parent"
 			        android:background="@drawable/buerhaitao"/>
-                <LinearLayout
+                <!-- <LinearLayout
                     android:id="@+id/gallery_point_linear1"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:background="#00f0eff4"
                     android:gravity="center"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal"/> -->
                 <!--  <com.ZYKJ.zhubaoyigou.customview.B1_HomeShowView
                     android:id="@+id/slideshowView"
                     android:layout_width="fill_parent"
@@ -342,7 +342,7 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
                         android:text="天天特价"
                         android:textColor="#000"
@@ -369,7 +369,8 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="#d6d6d6" />
 
                 <com.ZYKJ.zhubaoyigou.view.AutoGridView
@@ -397,7 +398,7 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
                         android:text="每日好店"
                         android:textColor="#000"
@@ -424,7 +425,8 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="#d6d6d6" />
 
                 <com.ZYKJ.zhubaoyigou.view.AutoGridView
@@ -455,7 +457,7 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
                         android:text="猜你喜欢"
                         android:textColor="#000"
@@ -482,7 +484,8 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="#d6d6d6" />
 
                 <com.ZYKJ.zhubaoyigou.view.AutoGridView
@@ -512,7 +515,7 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
                         android:text="附近店铺"
                         android:textColor="#000"
@@ -539,7 +542,8 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="#d6d6d6" />
 
                 <com.ZYKJ.zhubaoyigou.view.AutoGridView
@@ -569,7 +573,7 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
                         android:text="晒单圈"
                         android:textColor="#000"
@@ -597,13 +601,17 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="10dp"
                     android:background="#d6d6d6" />
 
-                <com.ZYKJ.zhubaoyigou.view.AutoListView
+                <!-- <com.ZYKJ.zhubaoyigou.view.AutoListView
                     android:id="@+id/horizon_listview"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content" /> -->
+			    <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
+			        android:id="@+id/slideshowViewx"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

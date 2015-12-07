@@ -14,10 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -43,14 +45,19 @@ import com.ZYKJ.zhubaoyigou.adapter.GoodSpecialAdapter;
 import com.ZYKJ.zhubaoyigou.adapter.HorizontalListViewAdapter;
 import com.ZYKJ.zhubaoyigou.adapter.RecyclingPagerAdapter;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
+import com.ZYKJ.zhubaoyigou.utils.AnimateFirstDisplayListener;
 import com.ZYKJ.zhubaoyigou.utils.CommonUtils;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
+import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
 import com.ZYKJ.zhubaoyigou.view.AutoGridView;
 import com.ZYKJ.zhubaoyigou.view.AutoListView;
 import com.ZYKJ.zhubaoyigou.view.RequestDailog;
 import com.ZYKJ.zhubaoyigou.view.ToastView;
+import com.alibaba.fastjson.JSON;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class B1_HomeActivity extends BaseActivity {
 	// 首页中间八个大分类
@@ -58,21 +65,21 @@ public class B1_HomeActivity extends BaseActivity {
 			im_b1shouji, im_b1bangong, im_b1shenghuo, im_b1techan;
 	// 天天特价,晒单圈,猜你喜欢，每日好店
 	private RelativeLayout rl_b1_a1tttj, b5_3_shaidanquan, rl_b1_a2_cnxh,
-			rl_b1_a3_mrhd,rl_fujin;
+			rl_b1_a3_mrhd, rl_fujin;
 	// 搜索选择
 	private RelativeLayout rl_sousuokuang;
 	// 每日好店
-	private AutoGridView list_meirihaodian, list_cainilike,fujindianp;
-	private AutoListView listviewHorizontal;
+	private AutoGridView list_meirihaodian, list_cainilike, fujindianp;
+	// private AutoListView listviewHorizontal;
 	private List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 	private List<Map<String, String>> data1 = new ArrayList<Map<String, String>>();
 	private List<Map<String, String>> datax = new ArrayList<Map<String, String>>();
 	private List<Map<String, String>> datagoodsspecial = new ArrayList<Map<String, String>>();
 	// 天天特价
 	private ImageView im_moreinfo;
-//	private ImageView im_b1_a1_pic;
-//	private TextView tv_b1_a1_chanpinname, tv_b1_a1_chanpinjianjie,
-//			tv_b1_a1_zhehoujia, tv_b1_a1_yuanjia;
+	// private ImageView im_b1_a1_pic;
+	// private TextView tv_b1_a1_chanpinname, tv_b1_a1_chanpinjianjie,
+	// tv_b1_a1_zhehoujia, tv_b1_a1_yuanjia;
 	private LinearLayout ll_moreinfolayout;
 	private RelativeLayout ll_dayspecial;
 	private RelativeLayout rl_ditu;
@@ -83,13 +90,15 @@ public class B1_HomeActivity extends BaseActivity {
 	private EditText a1_sousuofujin;
 	private AutoGridView gird_dayspecial;
 	private GoodSpecialAdapter gridspecial;
-	private AutoScrollViewPager viewPager;//轮播图
+	private AutoScrollViewPager viewPager, viewPagerx;// 轮播图
 	/** 当前的位置 */
 	private int now_pos = 0;
-    //自定义轮播图的资源
-//    private String[] imageUrls;
+	// 自定义轮播图的资源
+	// private String[] imageUrls;
 	private org.json.JSONArray joba;
-//	private TextView tv_dianpuming, tv_kucun, tv_xiaoliang;
+	private org.json.JSONArray array3;
+
+	// private TextView tv_dianpuming, tv_kucun, tv_xiaoliang;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -97,17 +106,17 @@ public class B1_HomeActivity extends BaseActivity {
 		initView();
 		tv_cityname = (TextView) findViewById(R.id.tv_cityname);
 		if (getIntent().getStringExtra("cityname") == null) {
-//			putSharedPreferenceValue("lng", "118.338510");
-//			putSharedPreferenceValue("lat", "35.063770");
-//			putSharedPreferenceValue("cityid", "168");
-//			putSharedPreferenceValue("cityname", "连云港");
+			// putSharedPreferenceValue("lng", "118.338510");
+			// putSharedPreferenceValue("lat", "35.063770");
+			// putSharedPreferenceValue("cityid", "168");
+			// putSharedPreferenceValue("cityname", "连云港");
 			String lng = getSharedPreferenceValue("lng");
 			String lat = getSharedPreferenceValue("lat");
 			String cityid = getSharedPreferenceValue("cityid");
 			String cityname = getSharedPreferenceValue("cityname");
 			tv_cityname.setText(cityname);
-			
-			HttpUtils.getFirstList(res_getSyList, cityid, lng,lat);
+
+			HttpUtils.getFirstList(res_getSyList, cityid, lng, lat);
 		} else {
 			cityname = getIntent().getStringExtra("cityname");
 			tv_cityname.setText(cityname);
@@ -141,7 +150,7 @@ public class B1_HomeActivity extends BaseActivity {
 			{
 				try {
 					joba = datas.getJSONArray("slide");
-//					imageUrls = new String[joba.length()];
+					// imageUrls = new String[joba.length()];
 					// 设置轮播
 					viewPager.setAdapter(new RecyclingPagerAdapter() {
 						@Override
@@ -162,9 +171,9 @@ public class B1_HomeActivity extends BaseActivity {
 								imageView = (ImageView) convertView.getTag();
 							}
 							try {
-								String a = joba.getJSONObject(position+1).getString("pic_img");
-								CommonUtils.showPic(a,
-										imageView);
+								String a = joba.getJSONObject(position + 1)
+										.getString("pic_img");
+								CommonUtils.showPic(a, imageView);
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -177,15 +186,15 @@ public class B1_HomeActivity extends BaseActivity {
 									// MessageDetailActivity.class);
 									// detailIntent.putExtra("special_id",
 									// imageList.get(position));
-									// startActivity(new Intent(IndexActivity.this,
+									// startActivity(new
+									// Intent(IndexActivity.this,
 									// MessageDetailActivity.class));
 								}
 							});
 							return convertView;
 						}
 					});
-					
-					
+
 					datax.clear();
 					// 附近店铺
 					final org.json.JSONArray arrayas = datas
@@ -208,7 +217,7 @@ public class B1_HomeActivity extends BaseActivity {
 								jsonItem.getString("store_desccredit"));
 						map.put("juli", jsonItem.getString("juli"));
 						datax.add(map);
-					} 
+					}
 					B1_a3_MeiRiHaoDianAdapter goodadapter1 = new B1_a3_MeiRiHaoDianAdapter(
 							B1_HomeActivity.this, datax);
 					fujindianp.setAdapter(goodadapter1);
@@ -218,24 +227,16 @@ public class B1_HomeActivity extends BaseActivity {
 								@Override
 								public void onItemClick(AdapterView<?> arg0,
 										View view, int i, long arg3) {
-									
-									if (isLogin()) {
-										Intent intent = new Intent();
-										String storeid = datax.get(i)
-												.get("store_id");
-										intent.putExtra("store_id", storeid);
-										intent.setClass(B1_HomeActivity.this,
-												BX_DianPuXiangQingActivity.class);
-										startActivity(intent);
-									}else {
-										Intent intent_login=new Intent();
-										intent_login.setClass(B1_HomeActivity.this, B5_1_LoginActivity.class);
-										startActivity(intent_login);
-									}
-									
+									Intent intent = new Intent();
+									String storeid = datax.get(i).get(
+											"store_id");
+									intent.putExtra("store_id", storeid);
+									intent.setClass(B1_HomeActivity.this,
+											BX_DianPuXiangQingActivity.class);
+									startActivity(intent);
 								}
 							});
-					
+
 					data.clear();
 					// 每日好店
 					final org.json.JSONArray array = datas
@@ -268,20 +269,14 @@ public class B1_HomeActivity extends BaseActivity {
 								@Override
 								public void onItemClick(AdapterView<?> arg0,
 										View view, int i, long arg3) {
-									
-									if (isLogin()) {
-										Intent intent = new Intent();
-										String storeid = data.get(i)
-												.get("store_id");
-										intent.putExtra("store_id", storeid);
-										intent.setClass(B1_HomeActivity.this,
-												BX_DianPuXiangQingActivity.class);
-										startActivity(intent);
-									}else {
-										Intent intent_login=new Intent();
-										intent_login.setClass(B1_HomeActivity.this, B5_1_LoginActivity.class);
-										startActivity(intent_login);
-									}
+
+									Intent intent = new Intent();
+									String storeid = data.get(i)
+											.get("store_id");
+									intent.putExtra("store_id", storeid);
+									intent.setClass(B1_HomeActivity.this,
+											BX_DianPuXiangQingActivity.class);
+									startActivity(intent);
 								}
 							});
 
@@ -296,8 +291,10 @@ public class B1_HomeActivity extends BaseActivity {
 								jsonItem1.getString("goods_jingle"));
 						map1.put("goods_name",
 								jsonItem1.getString("goods_name"));
-					/*	map1.put("nc_distinct",
-								jsonItem1.getString("nc_distinct"))*/;
+						/*
+						 * map1.put("nc_distinct",
+						 * jsonItem1.getString("nc_distinct"))
+						 */;
 						map1.put("juli", jsonItem1.getString("juli"));
 						map1.put("goods_price",
 								jsonItem1.getString("goods_price"));
@@ -326,77 +323,70 @@ public class B1_HomeActivity extends BaseActivity {
 								public void onItemClick(AdapterView<?> arg0,
 										View arg1, int arg2, long arg3) {
 									// TODO Auto-generated method stub
-									if (isLogin()) {
-										Intent intent = new Intent();
-										String goid = data1.get(arg2).get(
-												"goods_id");
-										intent.putExtra("goods_id", goid);
-										intent.setClass(B1_HomeActivity.this,
-												Sp_GoodsInfoActivity.class);
-										startActivity(intent);
-									}else {
-										Intent intent_login=new Intent();
-										intent_login.setClass(B1_HomeActivity.this, B5_1_LoginActivity.class);
-										startActivity(intent_login);
-									}
+									Intent intent = new Intent();
+									String goid = data1.get(arg2).get(
+											"goods_id");
+									intent.putExtra("goods_id", goid);
+									intent.setClass(B1_HomeActivity.this,
+											Sp_GoodsInfoActivity.class);
+									startActivity(intent);
 								}
 							});
 
 					// 天天特价
 					datagoodsspecial.clear();
 					org.json.JSONArray arr = datas.getJSONArray("day_special");
-//					JSONObject jsonIt = arr.getJSONObject(0);
+					// JSONObject jsonIt = arr.getJSONObject(0);
 					for (int i = 0; i < arr.length(); i++) {
 						JSONObject jsondayspecial = arr.getJSONObject(i);
 						Map<String, String> map1 = new HashMap<String, String>();
-						map1.put("goods_id",jsondayspecial.getString("goods_id"));
-						map1.put("goods_image",jsondayspecial.getString("goods_image"));
+						map1.put("goods_id",
+								jsondayspecial.getString("goods_id"));
+						map1.put("goods_image",
+								jsondayspecial.getString("goods_image"));
 						datagoodsspecial.add(map1);
 					}
-					gridspecial = new GoodSpecialAdapter(B1_HomeActivity.this, datagoodsspecial);
+					gridspecial = new GoodSpecialAdapter(B1_HomeActivity.this,
+							datagoodsspecial);
 					gird_dayspecial.setAdapter(gridspecial);
-					gird_dayspecial.setOnItemClickListener(new OnItemClickListener() {
+					gird_dayspecial
+							.setOnItemClickListener(new OnItemClickListener() {
 
 								@Override
 								public void onItemClick(AdapterView<?> arg0,
 										View arg1, int arg2, long arg3) {
-									// TODO Auto-generated method stub			
-									if (isLogin()) {
-										Intent itdayspec = new Intent();
-										String goid = datagoodsspecial.get(arg2).get("goods_id");
-										itdayspec.putExtra("goods_id", goid);
-										itdayspec.setClass(B1_HomeActivity.this, Sp_GoodsInfoActivity.class);
-										startActivity(itdayspec);
-									}else {
-										Intent intent_login=new Intent();
-										intent_login.setClass(B1_HomeActivity.this, B5_1_LoginActivity.class);
-										startActivity(intent_login);
-									}
+									Intent itdayspec = new Intent();
+									String goid = datagoodsspecial.get(arg2)
+											.get("goods_id");
+									itdayspec.putExtra("goods_id", goid);
+									itdayspec.setClass(B1_HomeActivity.this,
+											Sp_GoodsInfoActivity.class);
+									startActivity(itdayspec);
 								}
 							});
-					
-//					ImageLoader.getInstance().displayImage(
-//							jsonIt.getString("goods_image"), im_b1_a1_pic);
-//					tv_b1_a1_chanpinname
-//							.setText(jsonIt.getString("goods_name"));
-//					tv_b1_a1_chanpinjianjie.setText(jsonIt
-//							.getString("goods_jingle"));
-//					tv_b1_a1_zhehoujia.setText(jsonIt
-//							.getString("goods_promotion_price"));
-//					tv_b1_a1_yuanjia.setText(jsonIt.getString("goods_price"));
-//					tv_b1_a1_yuanjia.getPaint().setFlags(
-//							Paint.STRIKE_THRU_TEXT_FLAG);
-//					tv_goodsid.setText(jsonIt.getString("goods_id").toString());
-//					tv_dianpuming.setText(jsonIt.getString("store_name")
-//							.toString());
-//					tv_kucun.setText(jsonIt.getString("goods_storage")
-//							.toString());
-//					tv_xiaoliang.setText(jsonIt.getString("goods_salenum")
-//							.toString());
+
+					// ImageLoader.getInstance().displayImage(
+					// jsonIt.getString("goods_image"), im_b1_a1_pic);
+					// tv_b1_a1_chanpinname
+					// .setText(jsonIt.getString("goods_name"));
+					// tv_b1_a1_chanpinjianjie.setText(jsonIt
+					// .getString("goods_jingle"));
+					// tv_b1_a1_zhehoujia.setText(jsonIt
+					// .getString("goods_promotion_price"));
+					// tv_b1_a1_yuanjia.setText(jsonIt.getString("goods_price"));
+					// tv_b1_a1_yuanjia.getPaint().setFlags(
+					// Paint.STRIKE_THRU_TEXT_FLAG);
+					// tv_goodsid.setText(jsonIt.getString("goods_id").toString());
+					// tv_dianpuming.setText(jsonIt.getString("store_name")
+					// .toString());
+					// tv_kucun.setText(jsonIt.getString("goods_storage")
+					// .toString());
+					// tv_xiaoliang.setText(jsonIt.getString("goods_salenum")
+					// .toString());
 
 					// 晒单圈
 					data2.clear();
-					org.json.JSONArray array3 = datas.getJSONArray("circle");
+					array3 = datas.getJSONArray("circle");
 					tv_updateNumber.setText(array3.length() + "条新内容更新");
 					for (int i = 0; i < array3.length(); i++) {
 						JSONObject jsonItem1 = array3.getJSONObject(i);
@@ -411,9 +401,189 @@ public class B1_HomeActivity extends BaseActivity {
 						map1.put("avatar", jsonItem1.getString("avatar"));
 						data2.add(map1);
 					}
-					HorizontalListViewAdapter horizontalListViewAdapter = new HorizontalListViewAdapter(
-							B1_HomeActivity.this, data2);
-					listviewHorizontal.setAdapter(horizontalListViewAdapter);
+					// HorizontalListViewAdapter horizontalListViewAdapter = new
+					// HorizontalListViewAdapter(
+					// B1_HomeActivity.this, data2);
+					// listviewHorizontal.setAdapter(horizontalListViewAdapter);
+
+					// imageUrls = new String[joba.length()];
+					// 设置轮播
+					viewPagerx.setAdapter(new RecyclingPagerAdapter() {
+						@Override
+						public int getCount() {
+							return data2 == null ? 0 : data2.size();
+						}
+
+						@Override
+						public View getView(int position, View convertView,
+								ViewGroup container) {
+							ViewHolder holder;
+							ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+							if (convertView == null) {
+								holder = new ViewHolder();
+								convertView = LinearLayout.inflate(
+										getBaseContext(),
+										R.layout.horizontal_list_item, null);
+								holder.iv_avatar = (ImageView) convertView
+										.findViewById(R.id.iv_avatar);
+								holder.iv_image = (ImageView) convertView
+										.findViewById(R.id.iv_image);
+								holder.tv_nickname = (TextView) convertView
+										.findViewById(R.id.tv_nickname);
+								holder.tv_content = (TextView) convertView
+										.findViewById(R.id.tv_content);
+								holder.tv_zannumber = (TextView) convertView
+										.findViewById(R.id.tv_zannumber);
+								holder.tv_commentnumber = (TextView) convertView
+										.findViewById(R.id.tv_commentnumber);
+								convertView.setTag(holder);
+							} else {
+								holder = (ViewHolder) convertView.getTag();
+							}
+
+							/*
+							 * JSONObject jsonObject =
+							 * ((JSONObject)JSON.parse(data2
+							 * .get(position).get("image"))); String urlString;
+							 * 
+							 * try { urlString = jsonObject.getString("0");
+							 * Log.e("urlString", urlString);
+							 * ImageLoader.getInstance().displayImage(urlString,
+							 * holder.iv_image, ImageOptions.getOpstion()); }
+							 * catch (JSONException e) { // TODO Auto-generated
+							 * catch block e.printStackTrace(); }
+							 */
+
+							try {
+								JSONObject jsonObject = new JSONObject(data2
+										.get(position).get("image"));
+								String urlString;
+								urlString = jsonObject.getString("0");
+								ImageLoader.getInstance().displayImage(
+										urlString, holder.iv_image,
+										ImageOptions.getOpstion(),
+										animateFirstListener);
+							} catch (JSONException e) {
+							}
+							// {"0":"http:\/\/www.zbega.com\/data\/upload\/circle\/420\/05024718704056503.jpg"}
+							String a = data2.get(position).get("image");
+							ImageLoader.getInstance().displayImage(
+									data2.get(position).get("avatar"),
+									holder.iv_avatar,
+									ImageOptions.getOpstion(),
+									animateFirstListener);
+							holder.tv_nickname.setText(data2.get(position).get(
+									"member_name"));
+							holder.tv_content.setText(data2.get(position).get(
+									"description"));
+							holder.tv_zannumber.setText("("
+									+ data2.get(position).get("praise") + ")");
+							holder.tv_commentnumber.setText("("
+									+ data2.get(position).get("replys") + ")");
+							/*
+							 * try {
+							 * holder.tv_nickname.setText(data2.get(position
+							 * ).get("member_name")); // String a =
+							 * joba.getJSONObject
+							 * (position+1).getString("pic_img"); //
+							 * CommonUtils.showPic(a, // imageView); } catch
+							 * (JSONException e) { // TODO Auto-generated catch
+							 * block e.printStackTrace(); }
+							 */
+							/*
+							 * imageView.setOnClickListener(new
+							 * OnClickListener() {
+							 * 
+							 * @Override public void onClick(View arg0) { //
+							 * Intent detailIntent = new //
+							 * Intent(IndexActivity.this, //
+							 * MessageDetailActivity.class); //
+							 * detailIntent.putExtra("special_id", //
+							 * imageList.get(position)); // startActivity(new
+							 * Intent(IndexActivity.this, //
+							 * MessageDetailActivity.class)); } });
+							 */
+							return convertView;
+						}
+
+						class ViewHolder {
+							public ImageView iv_avatar;
+							public ImageView iv_image;
+							public TextView tv_nickname;
+							public TextView tv_content;
+							public TextView tv_zannumber;
+							public TextView tv_commentnumber;
+						}
+					});
+
+					// HorizontalListViewAdapter ss = new
+					// HorizontalListViewAdapter(
+					// B1_HomeActivity.this, data2);
+					// viewPagerx.setAdapter(ss);
+
+					// 设置轮播
+					/*
+					 * viewPagerx.setAdapter(new RecyclingPagerAdapter1(data2) {
+					 * Bitmap iconBitmap; private ImageLoadingListener
+					 * animateFirstListener = new AnimateFirstDisplayListener();
+					 * 
+					 * @Override public int getCount() { return data2 == null ?
+					 * 0 : data2.size(); }
+					 * 
+					 * @Override public View getView(int position, View
+					 * convertView, ViewGroup parent) {
+					 * 
+					 * ViewHolder holder; if(convertView==null){ holder = new
+					 * ViewHolder();
+					 * convertView=LinearLayout.inflate(getBaseContext(),
+					 * R.layout.horizontal_list_item, null);
+					 * holder.iv_avatar=(ImageView
+					 * )convertView.findViewById(R.id.iv_avatar);
+					 * holder.iv_image
+					 * =(ImageView)convertView.findViewById(R.id.iv_image);
+					 * holder
+					 * .tv_nickname=(TextView)convertView.findViewById(R.id
+					 * .tv_nickname);
+					 * holder.tv_content=(TextView)convertView.findViewById
+					 * (R.id.tv_content);
+					 * holder.tv_zannumber=(TextView)convertView
+					 * .findViewById(R.id.tv_zannumber);
+					 * holder.tv_commentnumber=
+					 * (TextView)convertView.findViewById
+					 * (R.id.tv_commentnumber); convertView.setTag(holder);
+					 * }else{ holder=(ViewHolder)convertView.getTag(); }
+					 * JSONObject jsonObject =
+					 * ((JSONObject)JSON.parse(data2.get(
+					 * position).get("image"))); String urlString; try {
+					 * urlString = jsonObject.getString("0"); Log.e("urlString",
+					 * urlString);
+					 * ImageLoader.getInstance().displayImage(urlString,
+					 * holder.iv_image, ImageOptions.getOpstion(),
+					 * animateFirstListener); } catch (JSONException e) { //
+					 * TODO Auto-generated catch block e.printStackTrace(); }
+					 * ImageLoader
+					 * .getInstance().displayImage(data2.get(position)
+					 * .get("avatar"), holder.iv_avatar,
+					 * ImageOptions.getOpstion(), animateFirstListener);
+					 * holder.tv_nickname
+					 * .setText(data2.get(position).get("member_name"));
+					 * holder.tv_content
+					 * .setText(data2.get(position).get("description"));
+					 * holder.tv_zannumber
+					 * .setText("("+data2.get(position).get("praise")+")");
+					 * holder
+					 * .tv_commentnumber.setText("("+data2.get(position).get
+					 * ("replys")+")");
+					 * 
+					 * return convertView; }
+					 */
+
+					/*
+					 * class ViewHolder{ public ImageView iv_avatar; public
+					 * ImageView iv_image; public TextView tv_nickname ; public
+					 * TextView tv_content ; public TextView tv_zannumber ;
+					 * public TextView tv_commentnumber; } });
+					 */
 				} catch (org.json.JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -438,7 +608,7 @@ public class B1_HomeActivity extends BaseActivity {
 	};
 
 	private void initView() {
-//		tv_goodsid = (TextView) findViewById(R.id.tv_goodsid);
+		// tv_goodsid = (TextView) findViewById(R.id.tv_goodsid);
 		im_b1nvshi = (ImageView) findViewById(R.id.im_b1nvshi);
 		im_b1nanshi = (ImageView) findViewById(R.id.im_b1nanshi);
 		im_b1muying = (ImageView) findViewById(R.id.im_b1muying);
@@ -456,48 +626,78 @@ public class B1_HomeActivity extends BaseActivity {
 		list_meirihaodian = (AutoGridView) findViewById(R.id.list_meirihaodian);
 		fujindianp = (AutoGridView) findViewById(R.id.fujindianp);
 		list_cainilike = (AutoGridView) findViewById(R.id.list_cainilike);
-//		im_b1_a1_pic = (ImageView) findViewById(R.id.im_b1_a1_pic);
-//		tv_b1_a1_chanpinname = (TextView) findViewById(R.id.tv_b1_a1_chanpinname);
-//		tv_b1_a1_chanpinjianjie = (TextView) findViewById(R.id.tv_b1_a1_chanpinjianjie);
-//		tv_b1_a1_zhehoujia = (TextView) findViewById(R.id.tv_b1_a1_zhehoujia);
-//		tv_b1_a1_yuanjia = (TextView) findViewById(R.id.tv_b1_a1_yuanjia);
+		// im_b1_a1_pic = (ImageView) findViewById(R.id.im_b1_a1_pic);
+		// tv_b1_a1_chanpinname = (TextView)
+		// findViewById(R.id.tv_b1_a1_chanpinname);
+		// tv_b1_a1_chanpinjianjie = (TextView)
+		// findViewById(R.id.tv_b1_a1_chanpinjianjie);
+		// tv_b1_a1_zhehoujia = (TextView)
+		// findViewById(R.id.tv_b1_a1_zhehoujia);
+		// tv_b1_a1_yuanjia = (TextView) findViewById(R.id.tv_b1_a1_yuanjia);
 		tv_updateNumber = (TextView) findViewById(R.id.tv_updateNumber);
-//		tv_dianpuming = (TextView) findViewById(R.id.tv_dianpuming);
-//		tv_kucun = (TextView) findViewById(R.id.tv_kucun);
-//		tv_xiaoliang = (TextView) findViewById(R.id.tv_xiaoliang);
-//		ll_dayspecial = (RelativeLayout) findViewById(R.id.ll_dayspecial);
+		// tv_dianpuming = (TextView) findViewById(R.id.tv_dianpuming);
+		// tv_kucun = (TextView) findViewById(R.id.tv_kucun);
+		// tv_xiaoliang = (TextView) findViewById(R.id.tv_xiaoliang);
+		// ll_dayspecial = (RelativeLayout) findViewById(R.id.ll_dayspecial);
 		rl_ditu = (RelativeLayout) findViewById(R.id.rl_ditu);
-//		im_moreinfo = (ImageView) findViewById(R.id.im_moreinfo);
-//		ll_moreinfolayout = (LinearLayout) findViewById(R.id.ll_moreinfolayout);
-		listviewHorizontal = (AutoListView) findViewById(R.id.horizon_listview);
+		// im_moreinfo = (ImageView) findViewById(R.id.im_moreinfo);
+		// ll_moreinfolayout = (LinearLayout)
+		// findViewById(R.id.ll_moreinfolayout);
+		// listviewHorizontal = (AutoListView)
+		// findViewById(R.id.horizon_listview);
 		a1_sousuofujin = (EditText) findViewById(R.id.a1_sousuofujin);
 		gird_dayspecial = (AutoGridView) findViewById(R.id.gird_dayspecial);
-		viewPager = (AutoScrollViewPager) findViewById(R.id.slideshowView);//轮播图
+		viewPager = (AutoScrollViewPager) findViewById(R.id.slideshowView);// 轮播图
 		LayoutParams pageParms = viewPager.getLayoutParams();
 		pageParms.width = Tools.M_SCREEN_WIDTH;
-		pageParms.height = Tools.M_SCREEN_WIDTH*10/27;
-		
+		pageParms.height = Tools.M_SCREEN_WIDTH * 10 / 22;
+
 		viewPager.setInterval(2000);
 		viewPager.startAutoScroll();
-		
+
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			public void onPageSelected(int arg0) {
 				// 回调view
 				uihandler.obtainMessage(0, arg0).sendToTarget();
 			}
-			public void onPageScrolled(int arg0, float arg1, int arg2) {}
-			public void onPageScrollStateChanged(int arg0) {}
+
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			}
+
+			public void onPageScrollStateChanged(int arg0) {
+			}
 		});
-		
+
+		viewPagerx = (AutoScrollViewPager) findViewById(R.id.slideshowViewx);// 晒单圈
+		LayoutParams pageParmsx = viewPagerx.getLayoutParams();
+		pageParmsx.width = Tools.M_SCREEN_WIDTH;
+		pageParmsx.height = Tools.M_SCREEN_WIDTH * 10 / 22;
+
+		viewPagerx.setInterval(2000);
+		viewPagerx.startAutoScroll();
+
+		viewPagerx.setOnPageChangeListener(new OnPageChangeListener() {
+			public void onPageSelected(int arg0) {
+				// 回调view
+				uihandler.obtainMessage(0, arg0).sendToTarget();
+			}
+
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			}
+
+			public void onPageScrollStateChanged(int arg0) {
+			}
+		});
+
 		setListener(im_b1nvshi, im_b1nanshi, im_b1muying, im_b1huazhuang,
 				im_b1shouji, im_b1bangong, im_b1shenghuo, im_b1techan,
-				rl_b1_a1tttj, b5_3_shaidanquan, rl_b1_a2_cnxh, rl_b1_a3_mrhd,rl_fujin,
-				rl_sousuokuang, rl_ditu, a1_sousuofujin);
-//		setListener(im_b1nvshi, im_b1nanshi, im_b1muying, im_b1huazhuang,
-//				im_b1shouji, im_b1bangong, im_b1shenghuo, im_b1techan,
-//				rl_b1_a1tttj, b5_3_shaidanquan, rl_b1_a2_cnxh, rl_b1_a3_mrhd,
-//				rl_sousuokuang, ll_dayspecial, rl_ditu, im_moreinfo,
-//				ll_moreinfolayout, a1_sousuofujin);
+				rl_b1_a1tttj, b5_3_shaidanquan, rl_b1_a2_cnxh, rl_b1_a3_mrhd,
+				rl_fujin, rl_sousuokuang, rl_ditu, a1_sousuofujin);
+		// setListener(im_b1nvshi, im_b1nanshi, im_b1muying, im_b1huazhuang,
+		// im_b1shouji, im_b1bangong, im_b1shenghuo, im_b1techan,
+		// rl_b1_a1tttj, b5_3_shaidanquan, rl_b1_a2_cnxh, rl_b1_a3_mrhd,
+		// rl_sousuokuang, ll_dayspecial, rl_ditu, im_moreinfo,
+		// ll_moreinfolayout, a1_sousuofujin);
 	}
 
 	@Override
@@ -538,66 +738,42 @@ public class B1_HomeActivity extends BaseActivity {
 			break;
 		// 天天特价
 		case R.id.rl_b1_a1tttj:
-			if (isLogin()) {
-				Intent ittttj = new Intent();
-				ittttj.setClass(B1_HomeActivity.this, B1_a1_TianTianTeJia.class);
-				startActivity(ittttj);
-			}else {
-				Intent intent_login=new Intent();
-				intent_login.setClass(this, B5_1_LoginActivity.class);
-				startActivity(intent_login);
-			}
+			Intent ittttj = new Intent();
+			ittttj.setClass(B1_HomeActivity.this, B1_a1_TianTianTeJia.class);
+			startActivity(ittttj);
 			break;
 		// 晒单圈
 		case R.id.b5_3_shaidanquan:
 			if (isLogin()) {
 				Intent itshaidanquan = new Intent();
-				itshaidanquan
-						.setClass(B1_HomeActivity.this, B5_3_ShaiDanQuan.class);
+				itshaidanquan.setClass(B1_HomeActivity.this,
+						B5_3_ShaiDanQuan.class);
 				startActivity(itshaidanquan);
-			}else {
-				Intent intent_login=new Intent();
+			} else {
+				Intent intent_login = new Intent();
 				intent_login.setClass(this, B5_1_LoginActivity.class);
 				startActivity(intent_login);
 			}
 			break;
 		// 猜你喜欢
 		case R.id.rl_b1_a2_cnxh:
-			if (isLogin()) {
-				Intent itcnxh = new Intent();
-				itcnxh.setClass(B1_HomeActivity.this, B1_a2_CaiNiXiHuan.class);
-				startActivity(itcnxh);
-			}else {
-				Intent intent_login=new Intent();
-				intent_login.setClass(this, B5_1_LoginActivity.class);
-				startActivity(intent_login);
-			}
+			Intent itcnxh = new Intent();
+			itcnxh.setClass(B1_HomeActivity.this, B1_a2_CaiNiXiHuan.class);
+			startActivity(itcnxh);
 			break;
 
 		// 每日好店
 		case R.id.rl_b1_a3_mrhd:
-			if (isLogin()) {
-				Intent itmrhd = new Intent();
-				itmrhd.setClass(B1_HomeActivity.this, B1_a3_MeiRiHaoDian.class);
-				startActivity(itmrhd);
-			}else {
-				Intent intent_login=new Intent();
-				intent_login.setClass(this, B5_1_LoginActivity.class);
-				startActivity(intent_login);
-			}
+			Intent itmrhd = new Intent();
+			itmrhd.setClass(B1_HomeActivity.this, B1_a3_MeiRiHaoDian.class);
+			startActivity(itmrhd);
 			break;
 
 		// 附近店铺
 		case R.id.rl_fujin:
-			if (isLogin()) {
-				Intent asd = new Intent();
-				asd.setClass(B1_HomeActivity.this, B1_a3_FuJinDianPu.class);
-				startActivity(asd);
-			}else {
-				Intent intent_login=new Intent();
-				intent_login.setClass(this, B5_1_LoginActivity.class);
-				startActivity(intent_login);
-			}
+			Intent asd = new Intent();
+			asd.setClass(B1_HomeActivity.this, B1_a3_FuJinDianPu.class);
+			startActivity(asd);
 			break;
 		// 宝贝
 		// case R.id.tv_baobei:
@@ -607,47 +783,33 @@ public class B1_HomeActivity extends BaseActivity {
 		// // addPopWindow.showPopupWindow(tv_baobei);
 		// break;
 		case R.id.rl_sousuokuang:
-			if (isLogin()) {
-				Intent itsydps = new Intent();
-				itsydps.setClass(B1_HomeActivity.this, B1_a4_SearchActivity.class);
-				startActivity(itsydps);
-			}else {
-				Intent intent_login=new Intent();
-				intent_login.setClass(this, B5_1_LoginActivity.class);
-				startActivity(intent_login);
-			}
+			Intent itsydps = new Intent();
+			itsydps.setClass(B1_HomeActivity.this, B1_a4_SearchActivity.class);
+			startActivity(itsydps);
 			break;
 		case R.id.a1_sousuofujin:
-			if (isLogin()) {
-				Intent itsydps1 = new Intent();
-				itsydps1.setClass(B1_HomeActivity.this, B1_a4_SearchActivity.class);
-				startActivity(itsydps1);
-			}else {
-				Intent intent_login=new Intent();
-				intent_login.setClass(this, B5_1_LoginActivity.class);
-				startActivity(intent_login);
-			}
+			Intent itsydps1 = new Intent();
+			itsydps1.setClass(B1_HomeActivity.this, B1_a4_SearchActivity.class);
+			startActivity(itsydps1);
 			break;
 		// 首页天天特价
-	/*	case R.id.ll_dayspecial:
-			Intent itdayspec = new Intent();
-			String goid = tv_goodsid.getText().toString();
-			itdayspec.putExtra("goods_id", goid);
-			itdayspec.setClass(B1_HomeActivity.this, Sp_GoodsInfoActivity.class);
-			startActivity(itdayspec);
-			break;*/
+		/*
+		 * case R.id.ll_dayspecial: Intent itdayspec = new Intent(); String goid
+		 * = tv_goodsid.getText().toString(); itdayspec.putExtra("goods_id",
+		 * goid); itdayspec.setClass(B1_HomeActivity.this,
+		 * Sp_GoodsInfoActivity.class); startActivity(itdayspec); break;
+		 */
 		// 城市选择
 		case R.id.rl_ditu:
 			Intent itmap = new Intent();
 			itmap.setClass(B1_HomeActivity.this, B1_01_MapActivity.class);
 			startActivityForResult(itmap, 0);
 			break;
-		/*case R.id.im_moreinfo:
-			ll_moreinfolayout.setVisibility(View.VISIBLE);
-			break;
-		case R.id.ll_moreinfolayout:
-			ll_moreinfolayout.setVisibility(View.GONE);
-			break;*/
+		/*
+		 * case R.id.im_moreinfo: ll_moreinfolayout.setVisibility(View.VISIBLE);
+		 * break; case R.id.ll_moreinfolayout:
+		 * ll_moreinfolayout.setVisibility(View.GONE); break;
+		 */
 		case R.id.error_layout:// 错误页面的点击
 			// http请求
 			break;
@@ -716,32 +878,35 @@ public class B1_HomeActivity extends BaseActivity {
 			if (getSharedPreferenceValue("tv_zj1").equals("")) {
 				putSharedPreferenceValue("tv_zj1", cityname);
 				putSharedPreferenceValue("tv_zj11", cityid);
-			}else {
-				if (getSharedPreferenceValue("tv_zj2").equals("")){
+			} else {
+				if (getSharedPreferenceValue("tv_zj2").equals("")) {
 					if (getSharedPreferenceValue("tv_zj1").equals(cityname)) {
-						
-					}else {
+
+					} else {
 						putSharedPreferenceValue("tv_zj2", cityname);
 						putSharedPreferenceValue("tv_zj22", cityid);
 					}
-				}else {
-					if (getSharedPreferenceValue("tv_zj3").equals("")){
+				} else {
+					if (getSharedPreferenceValue("tv_zj3").equals("")) {
 						if (getSharedPreferenceValue("tv_zj1").equals(cityname)) {
-							
-						}else if (getSharedPreferenceValue("tv_zj2").equals(cityname)) {
-							
-						}else {
+
+						} else if (getSharedPreferenceValue("tv_zj2").equals(
+								cityname)) {
+
+						} else {
 							putSharedPreferenceValue("tv_zj3", cityname);
 							putSharedPreferenceValue("tv_zj33", cityid);
 						}
-					}else {
+					} else {
 						if (getSharedPreferenceValue("tv_zj1").equals(cityname)) {
-							
-						}else if (getSharedPreferenceValue("tv_zj2").equals(cityname)) {
-							
-						}else if (getSharedPreferenceValue("tv_zj3").equals(cityname)) {
-							
-						}else {
+
+						} else if (getSharedPreferenceValue("tv_zj2").equals(
+								cityname)) {
+
+						} else if (getSharedPreferenceValue("tv_zj3").equals(
+								cityname)) {
+
+						} else {
 							putSharedPreferenceValue("tv_zj1", cityname);
 							putSharedPreferenceValue("tv_zj11", cityid);
 						}
@@ -751,7 +916,7 @@ public class B1_HomeActivity extends BaseActivity {
 			HttpUtils.getFirstList(res_getSyList, cityid, lng, lat);
 			super.onActivityResult(requestCode, resultCode, data);
 		} catch (Exception e) {
-			
+
 		}
 	}
 
@@ -761,6 +926,9 @@ public class B1_HomeActivity extends BaseActivity {
 		if (viewPager != null) {
 			viewPager.startAutoScroll();
 		}
+		if (viewPagerx != null) {
+			viewPagerx.startAutoScroll();
+		}
 	}
 
 	@Override
@@ -769,6 +937,9 @@ public class B1_HomeActivity extends BaseActivity {
 		if (viewPager != null) {
 			viewPager.stopAutoScroll();
 		}
+		if (viewPagerx != null) {
+			viewPagerx.stopAutoScroll();
+		}
 	}
 
 	Handler uihandler = new Handler() {
@@ -776,7 +947,7 @@ public class B1_HomeActivity extends BaseActivity {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case 0:// 滚动的回调
-				changePointView((Integer) msg.obj);
+				// changePointView((Integer) msg.obj);
 				break;
 			}
 		}
@@ -788,24 +959,22 @@ public class B1_HomeActivity extends BaseActivity {
 	 * @param cur
 	 *            当前显示的图片
 	 */
-	public void changePointView(int cur) {
-		LinearLayout pointLinear = (LinearLayout) findViewById(R.id.gallery_point_linear1);
-		View view = pointLinear.getChildAt(now_pos);
-		View curView = pointLinear.getChildAt(cur);
-		if (view != null && curView != null) {
-			ImageView pointView = (ImageView) view;
-			ImageView curPointView = (ImageView) curView;
-			pointView.setBackgroundResource(R.drawable.feature_point);
-			curPointView.setBackgroundResource(R.drawable.feature_point_cur);
-			now_pos = cur;
-		}
-	}
+	/*
+	 * public void changePointView(int cur) { LinearLayout pointLinear =
+	 * (LinearLayout) findViewById(R.id.gallery_point_linear1); View view =
+	 * pointLinear.getChildAt(now_pos); View curView =
+	 * pointLinear.getChildAt(cur); if (view != null && curView != null) {
+	 * ImageView pointView = (ImageView) view; ImageView curPointView =
+	 * (ImageView) curView;
+	 * pointView.setBackgroundResource(R.drawable.feature_point);
+	 * curPointView.setBackgroundResource(R.drawable.feature_point_cur); now_pos
+	 * = cur; } }
+	 */
 
-	public boolean isLogin()
-	{
+	public boolean isLogin() {
 		if (getSharedPreferenceValue("userid").equals("")) {
 			return false;
-		}else {
+		} else {
 			return true;
 		}
 	}
