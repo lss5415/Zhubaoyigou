@@ -25,10 +25,11 @@ import android.widget.Toast;
 
 import com.ZYKJ.zhubaoyigou.R;
 import com.ZYKJ.zhubaoyigou.adapter.JieSuanAdapter;
+import com.ZYKJ.zhubaoyigou.adapter.JieSuanAdapter.OnSelectedFreightListener;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
-import com.ZYKJ.zhubaoyigou.base.BaseApp;
 import com.ZYKJ.zhubaoyigou.data.CarJieSuan;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
+import com.ZYKJ.zhubaoyigou.utils.StringUtil;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
 import com.ZYKJ.zhubaoyigou.view.MyExpandableListView;
 import com.ZYKJ.zhubaoyigou.view.RequestDailog;
@@ -40,7 +41,7 @@ import com.loopj.android.http.RequestParams;
 import com.pingplusplus.android.PaymentActivity;
 import com.ta.utdid2.android.utils.StringUtils;
 
-public class JieSuanActivity extends BaseActivity {
+public class JieSuanActivity extends BaseActivity implements OnSelectedFreightListener{
 	// 返回
 	private ImageButton im_jiesuan_back;
 	// 列表
@@ -48,14 +49,15 @@ public class JieSuanActivity extends BaseActivity {
 	private JieSuanAdapter adapter;
 	private String key;
 	// 地址
+	private LinearLayout order_show_address,order_add_address;
 	private TextView tv_buyer_name, tv_buyer_number, tv_buyer_address;
 	// 结算
-	private RelativeLayout rl_zhifufangshi;
+	private RelativeLayout rl_zhifufangshi,et_buy_address;
 	private TextView tv_zffs;
 	// 是否支持货到付款
 	private String ifshow_offpay;
 	private String allcheckinfo;
-	private String allpri;
+	private float allpri;
 	private TextView tv_sumgoods1;
 	private TextView tv_jiesuanqueren;
 	private String address_id;
@@ -73,7 +75,7 @@ public class JieSuanActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui_b3_jiesuaninfo);
-		allpri = getIntent().getStringExtra("allpri");
+		allpri = Float.valueOf(getIntent().getStringExtra("allpri"));
 		allcheckinfo = getIntent().getStringExtra("allcheckinfo");
 		Log.e("key--------------------------", getSharedPreferenceValue("key"));
 		
@@ -84,6 +86,9 @@ public class JieSuanActivity extends BaseActivity {
 		im_jiesuan_back = (ImageButton) findViewById(R.id.im_jiesuan_back);
 		listview = (MyExpandableListView) findViewById(R.id.list_shoppingcar1);
 		listview.setGroupIndicator(null);
+		et_buy_address = (RelativeLayout) findViewById(R.id.et_buy_address);// 收货人姓名
+		order_show_address = (LinearLayout) findViewById(R.id.order_show_address);// 收货人姓名
+		order_add_address = (LinearLayout) findViewById(R.id.order_add_address);// 收货人姓名
 		tv_buyer_name = (TextView) findViewById(R.id.tv_buyer_name);// 收货人姓名
 		tv_buyer_number = (TextView) findViewById(R.id.tv_buyer_number);// 收货人电话
 		tv_buyer_address = (TextView) findViewById(R.id.tv_buyer_address);// 收货地址
@@ -95,8 +100,8 @@ public class JieSuanActivity extends BaseActivity {
 		tv_zffs = (TextView) findViewById(R.id.tv_zffs);
 		key = getSharedPreferenceValue("key");
 		ll_dizhi = (LinearLayout)findViewById(R.id.ll_dizhi);
-		tv_sumgoods1.setText(allpri);
-		setListener(im_jiesuan_back, rl_zhifufangshi, tv_jiesuanqueren, im_uncheck, im_check,ll_dizhi);
+//		tv_sumgoods1.setText(allpri);
+		setListener(im_jiesuan_back, rl_zhifufangshi, tv_jiesuanqueren, im_uncheck, im_check,et_buy_address);
 
 		HttpUtils.getBuyFirst(res_ShoppingCarInfo, key, allcheckinfo, "1");
 	}
@@ -113,14 +118,24 @@ public class JieSuanActivity extends BaseActivity {
 				JSONObject jsonData = datas.getJSONObject("datas");
 				String error = jsonData.getString("error");
 				if(StringUtils.isEmpty(error)){
-					JSONObject address_object = jsonData.getJSONObject("address_info");//收货地址信息
-					tv_buyer_name.setText("收货人：" + address_object.getString("true_name"));//收货人
-					tv_buyer_number.setText(address_object.getString("mob_phone"));//收货人电话
-					tv_buyer_address.setText("收货地址：" + address_object.getString("address"));//收货地址
-					address_id = address_object.getString("address_id");//地址ID
+					Object requestAdd = jsonData.get("address_info");//收货地址信息
+					if(requestAdd instanceof JSONObject){
+						JSONObject address_object = (JSONObject)requestAdd;
+						tv_buyer_name.setText("收货人：" + address_object.getString("true_name"));//收货人
+						tv_buyer_number.setText(address_object.getString("mob_phone"));//收货人电话
+						tv_buyer_address.setText("收货地址：" + address_object.getString("address"));//收货地址
+						address_id = address_object.getString("address_id");//地址ID
+						order_show_address.setVisibility(View.VISIBLE);
+						order_add_address.setVisibility(View.GONE);
+					}else{
+						order_show_address.setVisibility(View.GONE);
+						order_add_address.setVisibility(View.VISIBLE);
+					}
 					ifshow_offpay = jsonData.getString("ifshow_offpay");//支持货到付款时为true
 					JSONArray store_cart_list = jsonData.getJSONArray("store_cart_list");//商品列表
 					for (int i = 0; i < store_cart_list.size(); i++) {
+						String freight = store_cart_list.getJSONObject(i).getString("store_freight_price");
+						allpri += Float.valueOf(StringUtil.toString(freight, "0"));
 						JSONObject good = store_cart_list.getJSONObject(i).getJSONArray("goods_list").getJSONObject(0);
 						CarJieSuan jiesuan = new CarJieSuan();
 						jiesuan.setStore_id(good.getString("store_id"));
@@ -128,7 +143,8 @@ public class JieSuanActivity extends BaseActivity {
 						jiesuan.setDlyoPickupType("物流配送");
 						object.add(jiesuan);
 					}
-					adapter = new JieSuanAdapter(JieSuanActivity.this, store_cart_list, object);
+					tv_sumgoods1.setText(allpri+"");
+					adapter = new JieSuanAdapter(JieSuanActivity.this, store_cart_list, object, JieSuanActivity.this);
 					listview.setAdapter(adapter);
 					//默认展开
 					for (int i = 0; i < store_cart_list.size(); i++) {
@@ -240,7 +256,7 @@ public class JieSuanActivity extends BaseActivity {
 			im_check.setVisibility(View.GONE);
 			check = 0;
 			break;
-		case R.id.ll_dizhi:
+		case R.id.et_buy_address:
 			Intent i_tochoseAddress = new Intent(JieSuanActivity.this,B5_9_MyAddressManagement.class);
 			i_tochoseAddress.putExtra("ChoseAddress", true);
 			startActivityForResult(i_tochoseAddress, GetAddress);
@@ -373,7 +389,9 @@ public class JieSuanActivity extends BaseActivity {
 				Tools.Notic(this, "支付取消", null);
 				startActivity(new Intent(JieSuanActivity.this, B5_5_OrderStatus.class).putExtra("STATUS", 10));
 				finish();
-			}else if (resultCode==GetAddress) {
+			}else if (resultCode==GetAddress && resultCode == Activity.RESULT_OK) {
+				order_show_address.setVisibility(View.VISIBLE);
+				order_add_address.setVisibility(View.GONE);
 				address_id=data.getStringExtra("address_id");
 				tv_buyer_name.setText("姓名:"+data.getStringExtra("true_name"));
 				tv_buyer_number.setText("  电话:"+data.getStringExtra("mob_phone"));
@@ -381,5 +399,15 @@ public class JieSuanActivity extends BaseActivity {
 //				tv_address.setText("姓名:"+data.getStringExtra("true_name")+"  电话:"+data.getStringExtra("mob_phone")+"\n"+data.getStringExtra("area_info")+data.getStringExtra("address"));
 			}
 		}
+	}
+
+	@Override
+	public void setOrderPrice(int type, float price) {
+		if(type == 0){
+			allpri -= price;
+		}else{
+			allpri += price;
+		}
+		tv_sumgoods1.setText(allpri+"");
 	}
 }
