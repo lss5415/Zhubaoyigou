@@ -119,7 +119,15 @@ public class A0_Welcome extends BaseActivity {
 				// Tools.toast(A0_Welcome.this,
 				// "城市="+location.getCity()+"lat="+location.getLatitude()+"long="+location.getLongitude());
 			} else {
-				Toast.makeText(A0_Welcome.this, "定位出现异常", Toast.LENGTH_LONG)
+				String lng = "118.7528";
+				String lat = "34.5421";
+				putSharedPreferenceValue("lng", lng);
+				putSharedPreferenceValue("lat", lat);
+				String cityname = "连云港";
+				String cityid = "168";
+				putSharedPreferenceValue("cityname", cityname);
+				putSharedPreferenceValue("cityid", cityid);
+				Toast.makeText(A0_Welcome.this, "定位失败，默认切换到连云港", Toast.LENGTH_LONG)
 						.show();
 			}
 		}
