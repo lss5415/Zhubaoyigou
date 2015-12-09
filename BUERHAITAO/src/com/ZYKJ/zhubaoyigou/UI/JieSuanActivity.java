@@ -67,7 +67,6 @@ public class JieSuanActivity extends BaseActivity implements OnSelectedFreightLi
 	private String pay_sn;
 	private int check = 0;
 	private ImageView im_uncheck, im_check;
-	private LinearLayout ll_dizhi;
 	private int GetAddress=1;
 	private List<CarJieSuan> object = new ArrayList<CarJieSuan>();
 
@@ -99,7 +98,6 @@ public class JieSuanActivity extends BaseActivity implements OnSelectedFreightLi
 		im_check = (ImageView) findViewById(R.id.im_check);
 		tv_zffs = (TextView) findViewById(R.id.tv_zffs);
 		key = getSharedPreferenceValue("key");
-		ll_dizhi = (LinearLayout)findViewById(R.id.ll_dizhi);
 //		tv_sumgoods1.setText(allpri);
 		setListener(im_jiesuan_back, rl_zhifufangshi, tv_jiesuanqueren, im_uncheck, im_check,et_buy_address);
 
