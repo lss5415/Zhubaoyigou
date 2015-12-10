@@ -169,8 +169,17 @@ public class B1_HomeActivity extends BaseActivity {
 					store_address = store_info.getString("store_address");
 					location = store_info.getString("location");
 					area_info = store_info.getString("area_info");
-					geoLat = Double.valueOf(store_info.getString("lat"));
-					geoLng = Double.valueOf(store_info.getString("lng"));
+					try {
+						geoLat = Double.valueOf(store_info.getString("lat"));
+					} catch (Exception e) {
+						geoLat=0.00;
+					}
+					try {
+						geoLng = Double.valueOf(store_info.getString("lng"));
+					} catch (Exception e) {
+						geoLng=0.00;
+					}
+					
 					store_freight_price = store_info.getString("store_freight_price");
 					
 					if (m_scroll.getVisibility() != View.VISIBLE) {

@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -25,7 +23,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.zykj.zhubaoyigou_seller.R;
 import com.zykj.zhubaoyigou_seller.adapter.GridAdapter;
 import com.zykj.zhubaoyigou_seller.adapter.GridAdapter.SaveModel;
 import com.zykj.zhubaoyigou_seller.base.BaseActivity;
@@ -194,8 +190,8 @@ public class B3_AddActivity extends BaseActivity implements SaveModel {
 			}
 			break;
 		case R.id.tv_scbg:
-			if (tv_xinghao1.getText().toString().equals("型号")
-					&& tv_xinghao2.getText().toString().equals("型号")) {
+			if (tv_xinghao1.getText().toString().equals("型 号")
+					&& tv_xinghao2.getText().toString().equals("型 号")) {
 				data.clear();
 				XingHaoModel model = new XingHaoModel();
 				model.setXinghao1("");
@@ -207,7 +203,7 @@ public class B3_AddActivity extends BaseActivity implements SaveModel {
 				GridAdapter listAdapter = new GridAdapter(this, data, this);
 				state = 0;
 				lv_grid.setAdapter(listAdapter);
-			} else if (tv_xinghao1.getText().toString().equals("型号")) {
+			} else if (tv_xinghao1.getText().toString().equals("型 号")) {
 				if (TextUtils.isEmpty(et_xh2.getText())) {
 					Toast.makeText(getApplicationContext(), "请填写第二条内的型号",
 							Toast.LENGTH_LONG).show();
@@ -230,7 +226,7 @@ public class B3_AddActivity extends BaseActivity implements SaveModel {
 				}
 			}
 
-			else if (tv_xinghao2.getText().toString().equals("型号")) {
+			else if (tv_xinghao2.getText().toString().equals("型 号")) {
 				if (TextUtils.isEmpty(et_xh1.getText())) {
 					Toast.makeText(getApplicationContext(), "请填写第一条内的型号",
 							Toast.LENGTH_LONG).show();
@@ -616,6 +612,11 @@ public class B3_AddActivity extends BaseActivity implements SaveModel {
 			if (error == null) {
 				Toast.makeText(getApplicationContext(), "发布成功",
 						Toast.LENGTH_LONG).show();
+				B3_AddActivity.this.finish();
+				Intent itpro = new Intent();
+				itpro.setClass(B3_AddActivity.this, B0_MainActivity.class);
+				startActivity(itpro);
+				B0_MainActivity.TiaoZhuan(3);
 				// todo清数据
 			} else {
 				Tools.Notic(B3_AddActivity.this, error + "", null);

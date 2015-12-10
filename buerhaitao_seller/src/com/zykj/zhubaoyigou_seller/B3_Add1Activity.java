@@ -376,8 +376,8 @@ public class B3_Add1Activity extends BaseActivity implements SaveModel {
 			}
 			break;
 		case R.id.tv_scbg:
-			if (tv_xinghao1.getText().toString().equals("型号")
-					&& tv_xinghao2.getText().toString().equals("型号")) {
+			if (tv_xinghao1.getText().toString().equals("型 号")
+					&& tv_xinghao2.getText().toString().equals("型 号")) {
 				data.clear();
 				XingHaoModel model = new XingHaoModel();
 				model.setXinghao1("");
@@ -389,7 +389,7 @@ public class B3_Add1Activity extends BaseActivity implements SaveModel {
 				GridAdapter listAdapter = new GridAdapter(this, data, this);
 				state = 0;
 				lv_grid.setAdapter(listAdapter);
-			} else if (tv_xinghao1.getText().toString().equals("型号")) {
+			} else if (tv_xinghao1.getText().toString().equals("型 号")) {
 				if (TextUtils.isEmpty(et_xh2.getText())) {
 					Toast.makeText(getApplicationContext(), "请填写第二条内的型号",
 							Toast.LENGTH_LONG).show();
@@ -412,7 +412,7 @@ public class B3_Add1Activity extends BaseActivity implements SaveModel {
 				}
 			}
 
-			else if (tv_xinghao2.getText().toString().equals("型号")) {
+			else if (tv_xinghao2.getText().toString().equals("型 号")) {
 				if (TextUtils.isEmpty(et_xh1.getText())) {
 					Toast.makeText(getApplicationContext(), "请填写第一条内的型号",
 							Toast.LENGTH_LONG).show();

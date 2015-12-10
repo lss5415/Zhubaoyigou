@@ -63,7 +63,9 @@ public class B2_ProductActivity extends BaseActivity implements
 	String tagProduct, tagStore;
 	int page = 10;// 每页数量
 	int curpage = 1;// 当前页码
+	int curpage1 = 1;// 当前页码
 	TextView tv_chushouzhong, tv_yixiajia;
+	private Handler mHandler = new Handler();//异步加载或刷新
 
 	public static String commonid = "";// 商品公共编号(多个逗号分隔)
 
@@ -217,7 +219,7 @@ public class B2_ProductActivity extends BaseActivity implements
 					data, isEdit, key, this);
 			listview.setAdapter(adapter);
 			HttpUtils.getFavoriteStore(res_getFavoriteStore,
-					getSharedPreferenceValue("key"), page + "", curpage + "");
+					getSharedPreferenceValue("key"), page + "", curpage1 + "");
 			break;
 		case R.id.btn_xiajia:// 点击下架or上架
 			RequestDailog.showDialog(this, "正在处理，请稍后");
@@ -264,33 +266,53 @@ public class B2_ProductActivity extends BaseActivity implements
 
 	@Override
 	public void onRefresh(int id) {
-		// TODO Auto-generated method stub
-		if (tagProduct.equals("1")) // 获取出售中的产品信息
-		{
-			curpage = 1;
-			HttpUtils.getFavoriteProduct(res_getFavoriteProduct,
-					getSharedPreferenceValue("key"), page + "", curpage + "");
-		} else if (tagStore.equals("1")) {// 获取已下架的产品信息
-			HttpUtils.getFavoriteStore(res_getFavoriteStore,
-					getSharedPreferenceValue("key"), page + "", curpage + "");
-		}
+		/**下拉刷新 重建*/
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (tagProduct.equals("1")) // 获取出售中的产品信息
+				{
+					curpage = 1;
+					HttpUtils.getFavoriteProduct(res_getFavoriteProduct,
+							getSharedPreferenceValue("key"), page + "", curpage + "");
+				} else if (tagStore.equals("1")) {// 获取已下架的产品信息
+					curpage1 = 1;
+					HttpUtils.getFavoriteStore(res_getFavoriteStore,
+							getSharedPreferenceValue("key"), page + "", curpage1 + "");
+				}
+					onLoad();
+			}
+		}, 1000);
+
 	}
 
 	@Override
 	public void onLoadMore(int id) {
-		// TODO Auto-generated method stub
-		curpage++;
-		if (tagProduct.equals("1")) // 获取出售中的产品信息
-		{
-			HttpUtils.getFavoriteProduct(res_getFavoriteProduct,
-					getSharedPreferenceValue("key"), page + "", curpage + "");
-		} else if (tagStore.equals("1")) {// 获取已下架的产品信息
-			HttpUtils.getFavoriteStore(res_getFavoriteStore,
-					getSharedPreferenceValue("key"), page + "", curpage + "");
-		}
-
+		/**上拉加载分页*/
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (tagProduct.equals("1")) // 获取出售中的产品信息
+				{
+					curpage += 1;
+					HttpUtils.getFavoriteProduct(res_getFavoriteProduct,
+							getSharedPreferenceValue("key"), page + "", curpage + "");
+				} else if (tagStore.equals("1")) {// 获取已下架的产品信息
+					curpage1 += 1;
+					HttpUtils.getFavoriteStore(res_getFavoriteStore,
+							getSharedPreferenceValue("key"), page + "", curpage1 + "");
+				}
+					onLoad();
+			}
+		}, 1000);		
 	}
 
+	private void onLoad() {
+		listview.stopRefresh();
+		listview.stopLoadMore();
+		listview.setRefreshTime();
+	}
+	
 	/**
 	 * 商品下架
 	 */
@@ -349,6 +371,9 @@ public class B2_ProductActivity extends BaseActivity implements
 				try {
 					if (curpage == 1) {
 						data.clear();
+						
+					}else {
+						
 					}
 					org.json.JSONArray array = datas.getJSONArray("goods_list");// 等收藏功能完善之后更改array的名字
 					for (int i = 0; i < array.length(); i++) {
@@ -407,7 +432,11 @@ public class B2_ProductActivity extends BaseActivity implements
 			if (error == null)// 成功
 			{
 				try {
-					data.clear();
+					if (curpage1 == 1) {
+						data.clear();
+					}else {
+							
+					}
 					org.json.JSONArray array = datas.getJSONArray("goods_list");// 等收藏功能完善之后更改array的名字
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject jsonItem = array.getJSONObject(i);

@@ -268,7 +268,7 @@ public class JieSuan1Activity extends BaseActivity implements OnSelectedFreightL
 				if(StringUtils.isEmpty(error)){
 					if (jsonData.getFloat("order_amount") <= 0) {
 						Toast.makeText(getApplicationContext(), "用钱包支付成功！", Toast.LENGTH_LONG).show();
-						startActivity(new Intent(JieSuan1Activity.this, B5_5_OrderStatus.class)
+						startActivity(new Intent(JieSuan1Activity.this, B5_5_OrderStatus.class));
 						finish();
 					}else {
 						pay_sn = jsonData.getString("pay_sn");

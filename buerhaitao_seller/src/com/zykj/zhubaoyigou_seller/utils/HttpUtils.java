@@ -337,12 +337,13 @@ public class HttpUtils {
 	public static void getFavoriteProduct(AsyncHttpResponseHandler res,String key,String page,String curpage) {
 //		String url = base_url + "index.php?act=seller_goods&op=goods_online"+"&key"+key+"&page"+page+"&curpage"+curpage;
 //		client.get(url, res);
-		String url = base_url + "index.php?act=seller_goods&op=goods_online";
-		RequestParams params = new RequestParams();
-		params.put("key", key);
-		params.put("page", page);
-		params.put("curpage", curpage);
-		client.post(url, params, res);
+		String url = base_url + "index.php?act=seller_goods&op=goods_online&key=" + key+ "&page="+ page+ "&curpage="+ curpage;
+		client.get(url, res);
+//		RequestParams params = new RequestParams();
+//		params.put("key", key);
+//		params.put("page", page);
+//		params.put("curpage", curpage);
+//		client.post(url, params, res);
 	}
 	/**
 	 * 已下架
@@ -352,12 +353,13 @@ public class HttpUtils {
 	 * @param curpage 当前页码
 	 */
 	public static void getFavoriteStore(AsyncHttpResponseHandler res,String key,String page,String curpage) {
-		String url = base_url + "index.php?act=seller_goods&op=goods_offline";
-		RequestParams params = new RequestParams();
-		params.put("key",key);
-		params.put("page",page);
-		params.put("curpage",curpage);
-		client.post(url, params, res);
+		String url = base_url + "index.php?act=seller_goods&op=goods_offline&key=" + key+ "&page="+ page+ "&curpage="+ curpage;
+		client.get(url, res);
+//		RequestParams params = new RequestParams();
+//		params.put("key",key);
+//		params.put("page",page);
+//		params.put("curpage",curpage);
+//		client.post(url, params, res);
 	}
 
 	/**

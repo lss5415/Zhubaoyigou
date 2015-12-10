@@ -56,7 +56,7 @@ public class B1_a2_CaiNiXiHuan extends BaseActivity implements
 		listview_b1_a2_like.setRefreshTime();
 		RequestDailog.showDialog(this, "正在加载数据，请稍后");
 //		HttpUtils.getCaiNiLike(res_cnlike, "1", "1", "88", "0");
-		HttpUtils.getCaiNiLike(res_cnlike,getSharedPreferenceValue("lng"),getSharedPreferenceValue("lat"),getSharedPreferenceValue("cityid"), "0");
+		HttpUtils.getCaiNiLike(res_cnlike,getSharedPreferenceValue("lng"),getSharedPreferenceValue("lat"),getSharedPreferenceValue("cityid"), String.valueOf(curpage));
 		listview_b1_a2_like.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
