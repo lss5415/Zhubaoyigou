@@ -671,7 +671,7 @@ public class B1_HomeActivity extends BaseActivity {
 		viewPagerx = (AutoScrollViewPager) findViewById(R.id.slideshowViewx);// 晒单圈
 		LayoutParams pageParmsx = viewPagerx.getLayoutParams();
 		pageParmsx.width = Tools.M_SCREEN_WIDTH;
-		pageParmsx.height = Tools.M_SCREEN_WIDTH * 10 / 22;
+		pageParmsx.height = Tools.M_SCREEN_WIDTH / 3;
 
 		viewPagerx.setInterval(2000);
 		viewPagerx.startAutoScroll();

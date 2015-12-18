@@ -1,21 +1,29 @@
 package com.ZYKJ.zhubaoyigou.UI;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -33,6 +41,8 @@ import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
 import com.ZYKJ.zhubaoyigou.utils.ImageOptions;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
 import com.ZYKJ.zhubaoyigou.view.RequestDailog;
+import com.alibaba.fastjson.JSON;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -90,9 +100,9 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 	// 商品分享
 	private LinearLayout ll_goods_fenxiang;
 	private String chanpinprice, kucun, xsprice;
-	private JSONArray leixing1 = null;
+	private com.alibaba.fastjson.JSONArray leixing1 = null;
 	private int pj = 0;
-	private JSONObject jsonitemz, xuanxiang;
+	private com.alibaba.fastjson.JSONObject jsonitemz,xuanxiang;
 	private String choosejiage, choosexinghao;
 	// 选择规格类型
 	private TextView tv_xzgglx;
@@ -112,6 +122,8 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 	private int now_pos = 0;
 	private WebView webView;
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+	private GridView gv_pingjia;
+	private com.alibaba.fastjson.JSONObject jobpj;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -151,6 +163,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 		ll_shoucang = (LinearLayout) findViewById(R.id.ll_shoucang);
 		ll_dianpu = (LinearLayout) findViewById(R.id.ll_dianpu);
 		m_scroll = (ScrollView) findViewById(R.id.index_scroll);
+		gv_pingjia = (GridView) findViewById(R.id.gv_pingjia);
 
 		webView = (WebView) findViewById(R.id.webView);
 		String url = "http://www.zbega.com/mobile/index.php?act=goods&op=goods_body&goods_id="
@@ -308,7 +321,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 						XuanZeLeiXing();
 					}
 				} else {
-					if (leixing1.length() == 1) {
+					if (leixing1.size() == 1) {
 						try {
 							String a = tv_qxzlx_yincang.substring(0,
 									tv_qxzlx_yincang.length() - 1);
@@ -324,7 +337,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 						} catch (Exception e) {
 						}
 					}
-					if (leixing1.length() == 2) {
+					if (leixing1.size() == 2) {
 						if (tv_qxzlx1 == null || tv_qxzlx1 == ""
 								|| tv_qxzlx2 == null || tv_qxzlx2 == "") {
 							XuanZeLeiXing();
@@ -399,10 +412,10 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			Toast.makeText(Sp_GoodsInfoActivity.this, "此产品没有规格，无需选择",
 					Toast.LENGTH_LONG).show();
 		} else {
-			if (leixing1.length() == 1) {
+			if (leixing1.size() == 1) {
 				LeiXing1();
 			}
-			if (leixing1.length() == 2) {
+			if (leixing1.size() == 2) {
 				LeiXing2();
 			}
 
@@ -425,7 +438,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 					leixing1.getJSONObject(0).getString("name").toString());
 
 			// JSONArray jsonarray = xuanxiang.getJSONArray("1");
-			JSONArray jsonarray = xuanxiang.getJSONArray(leixing1
+			com.alibaba.fastjson.JSONArray jsonarray = xuanxiang.getJSONArray(leixing1
 					.getJSONObject(0).getString("id").toString());
 			/*
 			 * List<String> list = new ArrayList<String>(); for (int i = 0; i <
@@ -438,8 +451,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			// String[] stringArray = list.toArray(new String[list.size()]);
 			// itaddcar1.putExtra("arry1", stringArray);
 
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -454,34 +466,43 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			itaddcar1.putExtra("fenlei2",
 					leixing1.getJSONObject(1).getString("name").toString());
 
-			JSONArray jsonarray1 = xuanxiang.getJSONArray(leixing1
+			com.alibaba.fastjson.JSONArray jsonarray1 = xuanxiang.getJSONArray(leixing1
 					.getJSONObject(0).getString("id").toString());
 
 			itaddcar1.putExtra("arry1", jsonarray1.toString());
 
-			JSONArray jsonarray2 = xuanxiang.getJSONArray(leixing1
+			com.alibaba.fastjson.JSONArray jsonarray2 = xuanxiang.getJSONArray(leixing1
 					.getJSONObject(1).getString("id").toString());
 			itaddcar1.putExtra("arry2", jsonarray2.toString());
 
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	JsonHttpResponseHandler res_goodsinfo = new JsonHttpResponseHandler() {
-		public void onSuccess(int statusCode, Header[] headers,
-				JSONObject response) {
+	AsyncHttpResponseHandler res_goodsinfo = new AsyncHttpResponseHandler() {
+		
+		@Override
+		public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+				Throwable arg3) {
 			// TODO Auto-generated method stub
-			super.onSuccess(statusCode, headers, response);
+			
+		}
+
+		@Override
+		public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+			// TODO Auto-generated method stub
+			String responseString = new String(arg2);
+			com.alibaba.fastjson.JSONObject response = JSON.parseObject(responseString);
 			RequestDailog.closeDialog();
 			Tools.Log("res_getAddress=" + response);
 			String error = null;
-			JSONObject datas = null;
-			try {
+			com.alibaba.fastjson.JSONObject datas = null;
+			try { 
 				datas = response.getJSONObject("datas");
 				error = response.getString("error");
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -489,7 +510,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			{
 				try {
 					// 每日好店
-					JSONObject jsonItem = datas.getJSONObject("goods_info");
+					com.alibaba.fastjson.JSONObject jsonItem = datas.getJSONObject("goods_info");
 					// JSONObject jsonItem = array.getJSONObject(0);
 					try {
 						jsonitemz = datas.getJSONObject("evaluate");
@@ -549,6 +570,47 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 						// 产品参数
 						tv_chanpincanshu.setText(jsonitemz
 								.getString("geval_spec"));
+						// 评价图片】
+						try {
+							jobpj = jsonitemz.getJSONObject("image");
+							gv_pingjia.setAdapter(new BaseAdapter() {
+								@Override
+								public int getCount() {
+									return jobpj.values().size();
+								}
+								@Override
+								public Object getItem(int index) {
+									return 0;
+								}
+								@Override
+								public long getItemId(int index) {
+									return index;
+								}
+								@Override
+								public View getView(int index, View photoView, ViewGroup parent) {
+									if(photoView == null){
+										photoView = LayoutInflater.from(Sp_GoodsInfoActivity.this).inflate(R.layout.goodspecial_item, null);
+									}
+									ImageView imageView = (ImageView) photoView.findViewById(R.id.im_b1_a1_pic);
+									try {
+										ImageOptions.displayImage2Circle(imageView, jobpj.getString(index+""), 10f);
+									} catch (Exception e) {
+										
+									}
+//									imageView.setImageBitmap(jobpj.get(goods_id).getImages().get(index));
+//									ImageLoader.getInstance().displayImage("",ImageOptions.getOpstion(),
+//											animateFirstListener);
+									return photoView;
+								}
+							});
+						} catch (Exception e) {
+							
+						}
+//						Iterator iterator = jobpj.keys();
+//						String ss = (String)iterator.next();
+//						org.json.JSONArray objs = o
+						ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+						
 					}
 					// 查看更多评价
 					try {
@@ -566,7 +628,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 					}
 
 					try {
-						JSONObject datsj = datas.getJSONObject("goods_image");
+						com.alibaba.fastjson.JSONObject datsj = datas.getJSONObject("goods_image");
 						// 设置轮播
 						viewPager.setAdapter(new IndexPageAdapter1(
 								Sp_GoodsInfoActivity.this, datsj));
@@ -577,7 +639,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 						}
 						// 设置选中的标识
 						LinearLayout pointLinear = (LinearLayout) findViewById(R.id.gallery_point_linear);
-						for (int i = 0; i < datsj.length(); i++) {
+						for (int i = 0; i < datsj.size(); i++) {
 							ImageView pointView = new ImageView(
 									Sp_GoodsInfoActivity.this);
 							if (i == 0) {
@@ -598,7 +660,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 					// ll_ckgdpj
 					// 继续拖动，查看图文详情
 					// ll_chankantuwen
-				} catch (org.json.JSONException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -611,6 +673,7 @@ public class Sp_GoodsInfoActivity extends BaseActivity {
 			}
 
 		}
+
 	};
 
 	JsonHttpResponseHandler res_shoucang = new JsonHttpResponseHandler() {

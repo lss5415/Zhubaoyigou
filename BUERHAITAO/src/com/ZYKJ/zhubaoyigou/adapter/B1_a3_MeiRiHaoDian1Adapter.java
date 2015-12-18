@@ -27,12 +27,12 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
  * @author lss 2015年6月24日 每日好店adapter
  *
  */
-public class B1_a3_MeiRiHaoDianAdapter  extends BaseAdapter {
+public class B1_a3_MeiRiHaoDian1Adapter  extends BaseAdapter {
 	private Activity context;
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 	List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
-	public B1_a3_MeiRiHaoDianAdapter(Activity context, List<Map<String, String>> data) {
+	public B1_a3_MeiRiHaoDian1Adapter(Activity context, List<Map<String, String>> data) {
 		this.context = context;
 		this.data=data;
 	}
@@ -63,7 +63,7 @@ public class B1_a3_MeiRiHaoDianAdapter  extends BaseAdapter {
 		int width = wm.getDefaultDisplay().getWidth();
 		if(convertView==null){
 			ViewHolder=new ViewHolder();
-			convertView=LinearLayout.inflate(context, R.layout.b1_a3_item1, null);
+			convertView=LinearLayout.inflate(context, R.layout.b1_a3_item, null);
 			ViewHolder.im_a3_pic=(ImageView) convertView.findViewById(R.id.im_a3_pic);
 			 LayoutParams params = ViewHolder.im_a3_pic.getLayoutParams();  
 			 params.height=width/3-10;  

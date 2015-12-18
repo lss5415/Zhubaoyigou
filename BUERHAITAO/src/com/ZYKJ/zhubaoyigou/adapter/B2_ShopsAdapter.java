@@ -47,7 +47,7 @@ public class B2_ShopsAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup arg2) {
 		ViewHolder ViewHolder=null;
 		if(convertView==null){
-			convertView=inflater.inflate(R.layout.b1_a3_item1, null);
+			convertView=inflater.inflate(R.layout.b1_a3_item, null);
 			ViewHolder=new ViewHolder();
 			ViewHolder.im_a3_pic=(ImageView) convertView.findViewById(R.id.im_a3_pic);
 			ViewHolder.tv_a3_storename=(TextView) convertView.findViewById(R.id.tv_a3_storename);

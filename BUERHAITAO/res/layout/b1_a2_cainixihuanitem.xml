@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="100dp" >
 
     <ImageView
         android:id="@+id/im_a2_pic"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="fitXY"
+        android:layout_centerVertical="true"
         android:src="@drawable/buerhaitao" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="90dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/im_a2_pic"
-        android:orientation="vertical" 
-        android:visibility="gone">
+        android:orientation="vertical" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -28,9 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="50dp"
                 android:singleLine="true"
-                android:text="产品名aaaaaaaaaa称"
+                android:text="产品名称"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
@@ -41,7 +43,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:text="500m"/>
+                android:text="小于500米"/>
         </RelativeLayout>
 
         <LinearLayout

@@ -22,13 +22,13 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
  */
 public class IndexPageAdapter1 extends RecyclingPagerAdapter {
 //	private List<Carousels> data;
-	private JSONObject datsj;
+	private com.alibaba.fastjson.JSONObject datsj;
 	private Context context;
 	// 下载图片的属性
 	private DisplayImageOptions m_options;
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
-	public IndexPageAdapter1(Context context, JSONObject datsj) {
+	public IndexPageAdapter1(Context context, com.alibaba.fastjson.JSONObject datsj) {
 		this.datsj = datsj;
 		this.context = context;
 		m_options = ImageOptions.getGoodsOptions(false);
@@ -48,42 +48,42 @@ public class IndexPageAdapter1 extends RecyclingPagerAdapter {
 		if (position==0) {
 			try {
 				aaa = datsj.getString("0").toString();
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else if (position==1) {
 			try {
 				aaa = datsj.getString("1").toString();
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else if (position==2) {
 			try {
 				aaa = datsj.getString("2").toString();
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else if (position==3) {
 			try {
 				aaa = datsj.getString("3").toString();
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else if (position==4) {
 			try {
 				aaa = datsj.getString("4").toString();
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else if (position==5) {
 			try {
 				aaa = datsj.getString("5").toString();
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -102,7 +102,7 @@ public class IndexPageAdapter1 extends RecyclingPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return datsj.length();
+		return datsj.size();
 	}
 
 	class ViewHolder {

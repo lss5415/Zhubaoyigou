@@ -26,12 +26,12 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
  * @author lss 2015年6月26日 天天特价Adapter
  *
  */
-public class B1_a1_DaySpecialAdapter extends BaseAdapter {
+public class B1_a1_DaySpecial1Adapter extends BaseAdapter {
 	private Activity context;
 	List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
-	public B1_a1_DaySpecialAdapter(Activity context, List<Map<String, String>> data) {
+	public B1_a1_DaySpecial1Adapter(Activity context, List<Map<String, String>> data) {
 		this.context = context;
 		this.data=data;
 	}
@@ -62,7 +62,7 @@ public class B1_a1_DaySpecialAdapter extends BaseAdapter {
 		int width = wm.getDefaultDisplay().getWidth();
 		if(convertView==null){
 			ViewHolder=new ViewHolder();
-			convertView=LinearLayout.inflate(context, R.layout.b1_a1_dayspecial1, null);
+			convertView=LinearLayout.inflate(context, R.layout.b1_a1_dayspecial, null);
 			ViewHolder.im_b1_a1_pic1=(ImageView) convertView.findViewById(R.id.im_b1_a1_pic1);
 			 LayoutParams params = ViewHolder.im_b1_a1_pic1.getLayoutParams();  
 			 params.height=width/3-10;  

@@ -17,7 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 
 import com.ZYKJ.zhubaoyigou.R;
-import com.ZYKJ.zhubaoyigou.adapter.B1_a3_MeiRiHaoDianAdapter;
+import com.ZYKJ.zhubaoyigou.adapter.B1_a3_MeiRiHaoDian1Adapter;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
@@ -36,7 +36,7 @@ public class B1_a3_MeiRiHaoDian extends BaseActivity implements IXListViewListen
 	private ImageButton b1_a3_goodstoreback;
 	private MyListView listview_b1_a3_goodstore;
 	private List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-	private B1_a3_MeiRiHaoDianAdapter goodstoredapter;
+	private B1_a3_MeiRiHaoDian1Adapter goodstoredapter;
 	int curpage=1;
 	private Handler mHandler = new Handler();//异步加载或刷新
 
@@ -46,7 +46,7 @@ public class B1_a3_MeiRiHaoDian extends BaseActivity implements IXListViewListen
 
 		b1_a3_goodstoreback = (ImageButton)findViewById(R.id.b1_a3_goodstoreback);
 		listview_b1_a3_goodstore = (MyListView)findViewById(R.id.listview_b1_a3_goodstore);
-		goodstoredapter = new B1_a3_MeiRiHaoDianAdapter(B1_a3_MeiRiHaoDian.this,data);
+		goodstoredapter = new B1_a3_MeiRiHaoDian1Adapter(B1_a3_MeiRiHaoDian.this,data);
 		listview_b1_a3_goodstore.setAdapter(goodstoredapter);
 		listview_b1_a3_goodstore.setPullLoadEnable(true);
 		listview_b1_a3_goodstore.setPullRefreshEnable(true);

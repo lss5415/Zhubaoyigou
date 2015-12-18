@@ -27,12 +27,12 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
  * @author lss 2015年6月24日  猜你喜欢Adapter
  *
  */
-public class B1_a2_CaiNiLikeAdapter extends BaseAdapter {
+public class B1_a2_CaiNiLike1Adapter extends BaseAdapter {
 	private Activity context;
 	List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
-	public B1_a2_CaiNiLikeAdapter(Activity context, List<Map<String, String>> data) {
+	public B1_a2_CaiNiLike1Adapter(Activity context, List<Map<String, String>> data) {
 		this.context = context;
 		this.data=data;
 	}
@@ -63,7 +63,7 @@ public class B1_a2_CaiNiLikeAdapter extends BaseAdapter {
 		int width = wm.getDefaultDisplay().getWidth();
 		if(convertView==null){
 			ViewHolder=new ViewHolder();
-			convertView=LinearLayout.inflate(context, R.layout.b1_a2_cainixihuanitem1, null);
+			convertView=LinearLayout.inflate(context, R.layout.b1_a2_cainixihuanitem, null);
 			ViewHolder.im_a2_pic=(ImageView) convertView.findViewById(R.id.im_a2_pic);
 			 LayoutParams params = ViewHolder.im_a2_pic.getLayoutParams();  
 			 params.height=width/3-10;  

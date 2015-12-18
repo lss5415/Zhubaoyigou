@@ -348,27 +348,16 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp" >
 
-                            <ScrollView
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content" >
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="60dp" >
-
-                                    <ImageView
-                                        android:layout_width="60dp"
-                                        android:layout_height="60dp"
-                                        android:layout_marginRight="10dp"
-                                        android:src="@drawable/buerhaitao" />
-
-                                    <ImageView
-                                        android:layout_width="60dp"
-                                        android:layout_height="60dp"
-                                        android:layout_marginRight="10dp"
-                                        android:src="@drawable/buerhaitao" />
-                                </LinearLayout>
-                            </ScrollView>
+                            <GridView
+	    						android:id="@+id/gv_pingjia"
+	    						android:layout_width="match_parent"
+        						android:layout_height="wrap_content"
+        						android:numColumns="4"
+        						android:stretchMode="columnWidth"
+        						android:cacheColorHint="@android:color/transparent"
+        						android:listSelector="@android:color/transparent">
+                                
+                            </GridView>
                         </LinearLayout>
 
                         <LinearLayout

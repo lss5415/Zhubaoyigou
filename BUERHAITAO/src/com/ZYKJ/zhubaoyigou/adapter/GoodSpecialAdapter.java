@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,10 +52,16 @@ public class GoodSpecialAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup arg2) {
 		// TODO Auto-generated method stub
 		ViewHolder ViewHolder=null;
+		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+		int width = wm.getDefaultDisplay().getWidth();
 		if(convertView==null){
 			ViewHolder=new ViewHolder();
 			convertView=LinearLayout.inflate(context, R.layout.goodspecial_item, null);
-			ViewHolder.im_b1_a1_pic=(ImageView) convertView.findViewById(R.id.im_b1_a1_pic);
+			ViewHolder.im_b1_a1_pic=(ImageView) convertView.findViewById(R.id.im_b1_a1_pic);	
+			 LayoutParams params = ViewHolder.im_b1_a1_pic.getLayoutParams();  
+			 params.height=width/3-10;  
+			 params.width =width/3;  
+			 ViewHolder.im_b1_a1_pic.setLayoutParams(params);  			
 			ViewHolder.goods_id=(TextView) convertView.findViewById(R.id.goods_id);
 			convertView.setTag(ViewHolder);
 		}else{

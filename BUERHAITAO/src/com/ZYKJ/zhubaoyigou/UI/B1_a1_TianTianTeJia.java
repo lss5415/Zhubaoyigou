@@ -17,7 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 
 import com.ZYKJ.zhubaoyigou.R;
-import com.ZYKJ.zhubaoyigou.adapter.B1_a1_DaySpecialAdapter;
+import com.ZYKJ.zhubaoyigou.adapter.B1_a1_DaySpecial1Adapter;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
@@ -36,7 +36,7 @@ public class B1_a1_TianTianTeJia extends BaseActivity implements IXListViewListe
 	private ImageButton b1_a1_back1;
 	private MyListView listview_b1_a1_dayspecial;
 	private List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-	private B1_a1_DaySpecialAdapter dayspecialadapter;
+	private B1_a1_DaySpecial1Adapter dayspecialadapter;
 	int curpage=1;
 	private Handler mHandler = new Handler();//异步加载或刷新
 
@@ -46,7 +46,7 @@ public class B1_a1_TianTianTeJia extends BaseActivity implements IXListViewListe
 
 		b1_a1_back1 = (ImageButton)findViewById(R.id.b1_a1_back1);
 		listview_b1_a1_dayspecial = (MyListView)findViewById(R.id.listview_b1_a1_dayspecial);
-		dayspecialadapter = new B1_a1_DaySpecialAdapter(B1_a1_TianTianTeJia.this,data);
+		dayspecialadapter = new B1_a1_DaySpecial1Adapter(B1_a1_TianTianTeJia.this,data);
 		listview_b1_a1_dayspecial.setAdapter(dayspecialadapter);
 		listview_b1_a1_dayspecial.setPullLoadEnable(true);
 		listview_b1_a1_dayspecial.setPullRefreshEnable(true);

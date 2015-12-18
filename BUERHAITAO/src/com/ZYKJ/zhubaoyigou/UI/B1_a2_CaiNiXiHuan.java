@@ -17,7 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 
 import com.ZYKJ.zhubaoyigou.R;
-import com.ZYKJ.zhubaoyigou.adapter.B1_a2_CaiNiLikeAdapter;
+import com.ZYKJ.zhubaoyigou.adapter.B1_a2_CaiNiLike1Adapter;
 import com.ZYKJ.zhubaoyigou.base.BaseActivity;
 import com.ZYKJ.zhubaoyigou.utils.HttpUtils;
 import com.ZYKJ.zhubaoyigou.utils.Tools;
@@ -37,7 +37,7 @@ public class B1_a2_CaiNiXiHuan extends BaseActivity implements
 	private ImageButton b1_a2_back;
 	private MyListView listview_b1_a2_like;
 	private List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-	private B1_a2_CaiNiLikeAdapter cainilikeadapter; 
+	private B1_a2_CaiNiLike1Adapter cainilikeadapter; 
 	int curpage=1;
 	private Handler mHandler = new Handler();//异步加载或刷新
 
@@ -47,7 +47,7 @@ public class B1_a2_CaiNiXiHuan extends BaseActivity implements
 
 		b1_a2_back = (ImageButton) findViewById(R.id.b1_a2_back);
 		listview_b1_a2_like = (MyListView) findViewById(R.id.listview_b1_a2_like);
-		cainilikeadapter = new B1_a2_CaiNiLikeAdapter(B1_a2_CaiNiXiHuan.this,
+		cainilikeadapter = new B1_a2_CaiNiLike1Adapter(B1_a2_CaiNiXiHuan.this,
 				data);
 		listview_b1_a2_like.setAdapter(cainilikeadapter);
 		listview_b1_a2_like.setPullLoadEnable(true);
